@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">小桃微集</string>
+
+    <string name="skip">跳过</string>
+    <string name="input_user_account">请输入您的账户</string>
+    <string name="input_user_password">请输入您的密码</string>
+    <string name="login_is_representative">登录即代表同意</string>
+    <string name="terms_of_use">小桃微集使用条款</string>
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="third_party_login">第三方登陆</string>
+    <string name="net_error">网络不给力～</string>
+    <string name="reload">重新加载</string>
+
+    <string name="main">首页</string>
+    <string name="category">分类</string>
+    <string name="spell_group">拼团</string>
+    <string name="dynamic">桃粉圈</string>
+    <string name="mine">我的</string>
+
+    <string name="request_permissions_failure">权限申请失败</string>
+    <string name="need_to_go_to_the_settings">权限申请失败,您需要去设置中打开权限</string>
+    <string name="login_expiration">登录过期，请重新登录</string>
+    <string name="input_search_hint">搜索商品名或粘贴宝贝标题</string>
+    <string name="today_selection">今日精选</string>
+    <string name="load_more_end">数据加载完毕</string>
+    <string name="loading">正在载入～～～</string>
+    <string name="load_more_failed">数据加载失败</string>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF1673</color>
+    <color name="colorPrimaryDark">#FF1673</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+
+    <!--app主色-->
+    <color name="themeColor">#ff4650</color>
+    <color name="colorThemePrimary">#ff4650</color>
+    <color name="colorThemePrimaryTransparent">#a0FF664A</color>
+    <color name="colorThemePrimaryLight">#FFFF6C47</color>
+    <color name="color_ff5250">#FFFF5260</color>
+    <color name="color_ff4650">#ff4650</color>
+    <!--toolbar标题等-->
+    <color name="color_282828">#282828</color>
+    <!--商品标题等-->
+    <color name="color_444444">#444444</color>
+    <!--正常文本等-->
+    <color name="color_666666">#666666</color>
+    <color name="color_333333">#333333</color>
+    <!--浅色文本等-->
+    <color name="color_999999">#999999</color>
+    <!--提示文本等-->
+    <color name="color_b6b6b6">#B6B6B6</color>
+    <!--分隔线等-->
+    <color name="color_e7e7e7">#E7E7E7</color>
+    <!--分隔块等-->
+    <color name="spaceColor">#F7F7F7</color>
+    <color name="white41">#41FFFFFF</color>
+
+    <color name="color_fafafa">#fafafa</color>
+    <color name="color_d9d9d9">#d9d9d9</color>
+    <color name="color_808080">#808080</color>
+    <color name="color_e9e9e9">#e9e9e9</color>
+    <color name="color_a7b4be">#FFA7B4BE</color>
+
+</resources>

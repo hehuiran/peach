@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pull_refresh_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <me.jessyan.peach.shop.widget.DispatchTouchRecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView>

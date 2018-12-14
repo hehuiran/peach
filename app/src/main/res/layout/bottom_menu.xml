@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_menu"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/space"
+        tools:src="@mipmap/icon_tab_coupon_selected"/>
+
+    <TextView
+        android:id="@+id/tv_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_menu"
+        android:textColor="@color/colorPrimary"
+        tools:text="首页"
+        tools:textSize="10sp"/>
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/red_dot"
+        app:layout_constraintStart_toEndOf="@+id/iv_menu"
+        app:layout_constraintEnd_toEndOf="@+id/iv_menu"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="98"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:gravity="center"
+        android:paddingBottom="1dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="1dp"
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"/>
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="0.01dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_num"
+        app:layout_constraintTop_toTopOf="@+id/tv_num"
+        app:layout_constraintVertical_bias="0.5"/>
+</android.support.constraint.ConstraintLayout>

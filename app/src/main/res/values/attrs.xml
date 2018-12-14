@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SingleLineView">
+        <attr name="startColor" format="reference|color" />
+        <attr name="centerColor" format="reference|color" />
+        <attr name="endColor" format="reference|color" />
+        <attr name="lineColor" format="reference|color" />
+        <attr name="xyColor" format="reference|color" />
+        <attr name="dateColor" format="reference|color" />
+        <attr name="hintColor" format="reference|color" />
+        <attr name="fill" format="boolean" />
+        <attr name="needXAxis" format="boolean" />
+        <attr name="dateGravity" format="enum">
+            <enum name="top" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BottomMenu">
+        <attr name="menu_text" format="string" />
+        <attr name="menu_icon_normal" format="reference" />
+        <attr name="menu_icon_selected" format="reference" />
+        <attr name="menu_text_size" format="integer" />
+        <attr name="menu_text_normal_color" format="color" />
+        <attr name="menu_text_selected_color" format="color" />
+    </declare-styleable>
+</resources>

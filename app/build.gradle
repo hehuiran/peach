@@ -1,0 +1,129 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'peach'
+            keyPassword 'peach1234'
+            storeFile file('/Users/hehuiran/AndroidStudioProjects/peach/peach.jks')
+            storePassword 'peach1234'
+        }
+    }
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+    useLibrary 'org.apache.http.legacy'
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+    defaultConfig {
+        applicationId "me.jessyan.peach.shop"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+        multiDexEnabled true
+        manifestPlaceholders = [
+                qqappid      : "1106517624",
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "c51a453b8fd6beeea728b901", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可
+        ]
+
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "peach_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "USE_CANARY", "true"
+            buildConfigField "String", "BASE_URL", '"https://hzcangyu.com/"'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            buildConfigField "String", "BASE_URL", '"https://hzcangyu.com/"'
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //support
+    implementation rootProject.ext.dependencies["cardview-v7"]
+    //tools
+    //注意 Arms 核心库现在并不会依赖某个 EventBus, 要想使用 EventBus, 还请在项目中自行依赖对应的 EventBus
+    //现在支持两种 EventBus, greenrobot 的 EventBus 和畅销书 《Android源码设计模式解析与实战》的作者 何红辉 所作的 AndroidEventBus
+    //依赖后 Arms 会自动检测您依赖的 EventBus 并自动注册
+    //建议使用 AndroidEventBus, 特别是组件化项目, 原因请看 https://github.com/hehonghui/AndroidEventBus/issues/49
+    //这种做法可以让使用者有自行选择三方库的权利, 并且还可以减轻 Arms 的体积
+    //    implementation rootProject.ext.dependencies["androideventbus"]
+    implementation rootProject.ext.dependencies["eventbus"]
+    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+    implementation rootProject.ext.dependencies["progressmanager"]
+    implementation rootProject.ext.dependencies["retrofit-url-manager"]
+    implementation rootProject.ext.dependencies["lifecyclemodel"]
+    //view
+    annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
+        exclude module: 'support-annotations'
+    }
+    implementation rootProject.ext.dependencies["paginate"]
+    //arms
+    implementation project(':arms')
+    //test
+    testImplementation rootProject.ext.dependencies["junit"]
+    debugImplementation rootProject.ext.dependencies["canary-debug"]
+    releaseImplementation rootProject.ext.dependencies["canary-release"]
+    implementation rootProject.ext.dependencies["utils"]
+    implementation rootProject.ext.dependencies["brvah"]
+    implementation(rootProject.ext.dependencies["vlayout"]) {
+        transitive = true
+    }
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    implementation 'in.srain.cube:ultra-ptr:1.0.11'
+    implementation 'com.youth.banner:banner:1.4.10'
+    implementation 'com.umeng.sdk:share-core:6.9.1'
+    implementation 'com.umeng.sdk:share-qq:6.9.1.1'
+    implementation 'com.umeng.sdk:share-wechat:6.9.1'
+    implementation 'com.umeng.sdk:share-sina:6.9.1'
+    implementation 'com.umeng.sdk:common:1.5.1'
+    implementation rootProject.ext.dependencies["fastjson"]
+    //阿里百川登录
+    implementation 'com.ali.auth.sdk:alibabauth_core:1.4.3.3@jar'
+    //1.1.4
+    implementation 'com.ali.auth.sdk:alibabauth_ui:1.4.3.3@aar'
+    implementation 'com.ali.auth.sdk:alibabauth_ext:1.4.3.3@jar'
+    //安全基础
+    implementation 'com.taobao.android:securityguardaar3:5.1.81@aar'
+    //Mtop网关
+    implementation 'com.taobao.android:mtopsdk_allinone_open:1.2.2.4@jar'
+    //applink
+    implementation 'com.alibaba.sdk.android:alibc_link_partner:1.1.0.6'
+    //UT
+    implementation 'com.taobao.android:utdid4all:1.1.5.3_proguard@jar'
+    implementation 'com.alibaba.mtl:app-monitor-sdk:2.5.1.3_for_bc_proguard@jar'
+    //联盟SDK
+    implementation 'com.alimama.tunion.sdk:tuniontradesdk:0.3.2'
+    //电商SDK
+    implementation 'com.alibaba.sdk.android:alibc_trade_common:3.1.1.210'
+    implementation 'com.alibaba.sdk.android:alibc_trade_biz:3.1.1.210'
+    implementation 'com.alibaba.sdk.android:alibc_trade_sdk:3.1.1.210'
+}

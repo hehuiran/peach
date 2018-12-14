@@ -1,0 +1,27 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--重点突出放大的文字等-->
+    <dimen name="textSizeStrong">40sp</dimen>
+    <!--数量文字等-->
+    <dimen name="textSizeGreat">30sp</dimen>
+    <!--注册登录手机号等-->
+    <dimen name="textSizeLarge">20sp</dimen>
+    <!--toolbar标题等-->
+    <dimen name="textSizeBigger">18sp</dimen>
+    <dimen name="textSizeBig">16sp</dimen>
+    <!--板块标题等-->
+    <dimen name="textSizeTitle">15sp</dimen>
+    <!--正常阅读文字等-->
+    <dimen name="textSizeNormal">13sp</dimen>
+    <!--图文并茂等-->
+    <dimen name="textSizeSmall">12sp</dimen>
+    <!--最小的文字，用于不重要的信息等-->
+    <dimen name="textSizeMini">10sp</dimen>
+
+
+
+    <dimen name="line_width">0.5dp</dimen>
+</resources>

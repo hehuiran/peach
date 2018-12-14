@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <View
+        android:id="@+id/line"
+        style="@style/line_style"/>
+
+    <me.jessyan.peach.shop.widget.BottomMenuLayout
+        android:id="@+id/ll_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <me.jessyan.peach.shop.widget.BottomMenu
+            android:id="@+id/bm_main"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:menu_icon_normal="@mipmap/icon_tab_home_normal"
+            app:menu_icon_selected="@mipmap/icon_tab_home_selected"
+            app:menu_text="@string/main"
+            app:menu_text_normal_color="@color/black"
+            app:menu_text_selected_color="@color/colorPrimary"
+            app:menu_text_size="10"/>
+
+        <me.jessyan.peach.shop.widget.BottomMenu
+            android:id="@+id/bm_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:menu_icon_normal="@mipmap/icon_tab_home_normal"
+            app:menu_icon_selected="@mipmap/icon_tab_home_selected"
+            app:menu_text="@string/category"
+            app:menu_text_normal_color="@color/black"
+            app:menu_text_selected_color="@color/colorPrimary"
+            app:menu_text_size="10"/>
+
+        <me.jessyan.peach.shop.widget.BottomMenu
+            android:id="@+id/bm_spell_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:menu_icon_normal="@mipmap/icon_tab_home_normal"
+            app:menu_icon_selected="@mipmap/icon_tab_home_selected"
+            app:menu_text="@string/spell_group"
+            app:menu_text_normal_color="@color/black"
+            app:menu_text_selected_color="@color/colorPrimary"
+            app:menu_text_size="10"/>
+
+        <me.jessyan.peach.shop.widget.BottomMenu
+            android:id="@+id/bm_dynamic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:menu_icon_normal="@mipmap/icon_tab_home_normal"
+            app:menu_icon_selected="@mipmap/icon_tab_home_selected"
+            app:menu_text="@string/dynamic"
+            app:menu_text_normal_color="@color/black"
+            app:menu_text_selected_color="@color/colorPrimary"
+            app:menu_text_size="10"/>
+
+        <me.jessyan.peach.shop.widget.BottomMenu
+            android:id="@+id/bm_mine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:menu_icon_normal="@mipmap/icon_tab_home_normal"
+            app:menu_icon_selected="@mipmap/icon_tab_home_selected"
+            app:menu_text="@string/mine"
+            app:menu_text_normal_color="@color/black"
+            app:menu_text_selected_color="@color/colorPrimary"
+            app:menu_text_size="10"/>
+    </me.jessyan.peach.shop.widget.BottomMenuLayout>
+
+
+</LinearLayout>
