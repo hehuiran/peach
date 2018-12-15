@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'peach'
             keyPassword 'peach1234'
-            storeFile file('/Users/hehuiran/AndroidStudioProjects/peach/peach.jks')
+            storeFile file('../peach.jks')
             storePassword 'peach1234'
         }
     }
@@ -100,6 +100,8 @@ dependencies {
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     implementation 'in.srain.cube:ultra-ptr:1.0.11'
     implementation 'com.youth.banner:banner:1.4.10'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
     implementation 'com.umeng.sdk:share-core:6.9.1'
     implementation 'com.umeng.sdk:share-qq:6.9.1.1'
     implementation 'com.umeng.sdk:share-wechat:6.9.1'

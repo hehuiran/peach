@@ -5,7 +5,9 @@ import com.jess.arms.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
-import me.jessyan.peach.shop.entity.HomeMainOptionalBean;
+import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 import me.jessyan.peach.shop.home.mvp.contract.HomeMainContract;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -28,6 +30,7 @@ import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 public class HomeMainPresenter extends BasePresenter<HomeMainContract.Model, HomeMainContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
+    private int page = CommonConstant.PAGE_INITIAL;
 
     @Inject
     public HomeMainPresenter(HomeMainContract.Model model, HomeMainContract.View rootView) {
@@ -35,11 +38,13 @@ public class HomeMainPresenter extends BasePresenter<HomeMainContract.Model, Hom
     }
 
     public void getHomeMainData() {
+        page = CommonConstant.PAGE_INITIAL;
         mModel.getHomeMainData()
                 .compose(new CommonTransformer<>(this))
                 .subscribe(new ErrorHandleSubscriber<HomeMainOptionalBean>(mErrorHandler) {
                     @Override
                     public void onNext(HomeMainOptionalBean homeMainOptionalBean) {
+                        page++;
                         mRootView.onGetHomeMainDataSuccess(homeMainOptionalBean);
                     }
 
@@ -49,6 +54,25 @@ public class HomeMainPresenter extends BasePresenter<HomeMainContract.Model, Hom
                         mRootView.onGetHomeMainDataFailed();
                     }
                 });
+    }
+
+    public void loadMoreGoods() {
+        mModel.loadMoreGoods(page)
+                .compose(new CommonTransformer<>(this, false))
+                .subscribe(new ErrorHandleSubscriber<CouponsCommodityBean>(mErrorHandler) {
+                    @Override
+                    public void onNext(CouponsCommodityBean couponsCommodityBean) {
+                        page++;
+                        mRootView.onLoadMoreGoodsSuccess(couponsCommodityBean.getList());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        mRootView.onLoadMoreGoodsFailed();
+                    }
+                });
+
     }
 
     @Override

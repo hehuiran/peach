@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jessyan.peach.shop.entity.MultiItemBean;
-import me.jessyan.peach.shop.utils.GoodsUtils;
 import me.jessyan.peach.shop.utils.StringUtils;
 
 /**
@@ -217,7 +216,7 @@ public class CouponsCommodityBean extends MultiItemBean {
         }
 
         public String getImg() {
-            return GoodsUtils.getSpecifiedSizeImageUrl(img, 400);
+            return img;
         }
 
         public void setImg(String img) {

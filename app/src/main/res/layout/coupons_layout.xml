@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="20dp"
+    android:background="@drawable/shape_stroke_1_ff89ad_radius_2"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="1dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="2dp"
+        android:paddingStart="2dp"
+        android:text="@string/coupons"
+        android:textColor="@color/color_ff0066"
+        android:textSize="11sp"/>
+
+    <me.jessyan.peach.shop.widget.DashView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:dv_dashOrientation="1"
+        app:dv_dashWidth="3dp"
+        app:dv_lineColor="@color/color_ff89ad"
+        app:dv_lineHeight="1dp"
+        app:dv_lineWidth="3dp"/>
+
+    <TextView
+        android:id="@+id/tv_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:textColor="@color/color_ff0066"
+        android:textSize="10sp"
+        tools:text="100元"/>
+</LinearLayout>

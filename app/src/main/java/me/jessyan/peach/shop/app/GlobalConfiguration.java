@@ -32,7 +32,6 @@ import java.util.List;
 
 import me.jessyan.peach.shop.BuildConfig;
 import me.jessyan.peach.shop.netconfig.BasicParamsInterceptor;
-import me.jessyan.peach.shop.netconfig.CompatHttps;
 
 /**
  * ================================================

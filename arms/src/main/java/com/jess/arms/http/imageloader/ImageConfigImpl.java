@@ -116,7 +116,7 @@ public class ImageConfigImpl extends ImageConfig {
         @Deprecated
         private BitmapTransformation transformation;//glide用它来改变图形的形状
         private ImageView[] imageViews;
-        private boolean isCrossFade;//是否使用淡入淡出过渡动画
+        private boolean isCrossFade = true;//是否使用淡入淡出过渡动画
         private boolean isCenterCrop;//是否将图片剪切为 CenterCrop
         private boolean isCircle;//是否将图片剪切为圆形
         private boolean isClearMemory;//清理内存缓存

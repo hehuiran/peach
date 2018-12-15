@@ -43,9 +43,23 @@ public abstract class VirtualListItemAdapter<T, K extends VirtualItemViewHolder>
      */
     public void setNewData(@Nullable List<T> data) {
         this.mData = data == null ? new ArrayList<T>() : data;
-        try{
+        try {
             notifyDataSetChanged();
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * setting up a new instance to data;
+     *
+     * @param data
+     */
+    public void setNewData(@Nullable List<T> data, int position) {
+        this.mData = data == null ? new ArrayList<T>() : data;
+        try {
+            notifyItemChanged(position);
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
     }

@@ -9,6 +9,7 @@ import com.youth.banner.listener.OnBannerListener;
 import java.util.List;
 
 import me.jessyan.peach.shop.R;
+import me.jessyan.peach.shop.constant.RecyclerViewType;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.help.BannerImageLoader;
 import me.jessyan.peach.shop.vlayout.VirtualItemAdapter;
@@ -62,5 +63,10 @@ public class HomeBannerAdapter extends VirtualItemAdapter<VirtualItemViewHolder>
     @Override
     public LayoutHelper onCreateLayoutHelper() {
         return new SingleLayoutHelper();
+    }
+
+    @Override
+    protected int getDefItemViewType(int position) {
+        return RecyclerViewType.HOME_BANNER_TYPE;
     }
 }

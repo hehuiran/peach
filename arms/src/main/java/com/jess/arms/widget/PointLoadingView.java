@@ -1,4 +1,4 @@
-package com.jess.arms.widget.swipeback;
+package com.jess.arms.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

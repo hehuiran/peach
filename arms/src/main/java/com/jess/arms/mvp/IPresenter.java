@@ -44,6 +44,8 @@ public interface IPresenter {
 
     /*********************************************扩展方法***********************************************/
 
+    IView getView();
+
     Context getContext();
 
     /**

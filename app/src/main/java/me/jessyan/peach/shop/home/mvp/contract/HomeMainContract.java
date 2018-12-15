@@ -3,8 +3,11 @@ package me.jessyan.peach.shop.home.mvp.contract;
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
 
+import java.util.List;
+
 import io.reactivex.Observable;
-import me.jessyan.peach.shop.entity.HomeMainOptionalBean;
+import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 
 
 /**
@@ -25,10 +28,16 @@ public interface HomeMainContract {
         void onGetHomeMainDataSuccess(HomeMainOptionalBean homeMainOptionalBean);
 
         void onGetHomeMainDataFailed();
+
+        void onLoadMoreGoodsSuccess(List<CouponsCommodityBean.CommodityModel> list);
+
+        void onLoadMoreGoodsFailed();
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
         Observable<HomeMainOptionalBean> getHomeMainData();
+
+        Observable<CouponsCommodityBean> loadMoreGoods(int page);
     }
 }

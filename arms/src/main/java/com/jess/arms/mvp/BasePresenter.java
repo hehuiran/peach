@@ -29,7 +29,7 @@ import android.view.View;
 import com.jess.arms.dialog.BaseDialog;
 import com.jess.arms.integration.EventBusManager;
 import com.jess.arms.utils.Preconditions;
-import com.jess.arms.widget.swipeback.PointLoadingView;
+import com.jess.arms.widget.PointLoadingView;
 import com.trello.rxlifecycle2.RxLifecycle;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -170,10 +170,12 @@ public class BasePresenter<M extends IModel, V extends IView> implements IPresen
 
     /*********************************************扩展方法***********************************************/
 
-    public V getRootView() {
+
+
+    @Override
+    public IView getView() {
         return mRootView;
     }
-
 
     private BaseDialog mLoadingDialog;
 

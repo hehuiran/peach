@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.jess.arms.dialog.BaseDialog;
-import com.jess.arms.widget.swipeback.PointLoadingView;
+import com.jess.arms.widget.PointLoadingView;
 
 import java.util.HashMap;
 

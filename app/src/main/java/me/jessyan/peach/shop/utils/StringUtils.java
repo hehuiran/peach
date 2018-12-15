@@ -314,14 +314,14 @@ public final class StringUtils {
         }
     }
 
-    public static String doubleToString2(double num){
-        //使用0.00不足位补0，#.##仅保留有效位
-        return new DecimalFormat("0.00").format(num);
-    }
+    public static String keepTwoDecimal(String num){
+        try {
+            //使用0.00不足位补0，#.##仅保留有效位
+            return new DecimalFormat("0.00").format(num);
+        }catch (IllegalArgumentException e){
 
-    public static String doubleToString1(double num){
-        //使用0.00不足位补0，#.##仅保留有效位
-        return new DecimalFormat("0.0").format(num);
+        }
+        return num;
     }
 
 }

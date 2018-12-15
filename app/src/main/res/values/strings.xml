@@ -27,4 +27,16 @@
     <string name="load_more_end">数据加载完毕</string>
     <string name="loading">正在载入～～～</string>
     <string name="load_more_failed">数据加载失败</string>
+
+    <string name="go">GO</string>
+    <string name="look_all">查看全部</string>
+
+    <string name="rmb">¥%1$s</string>
+    <string name="discount_price">券后¥%1$s</string>
+    <string name="coupons">券</string>
+    <string name="money">%1$s元</string>
+    <string name="estimate_the_commission">预估佣金: ¥%1$s</string>
+
+    <string name="original_price_format">原价: ¥%1$s</string>
+    <string name="sold_count">已售¥%1$s件</string>
 </resources>

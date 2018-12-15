@@ -1,4 +1,6 @@
-package me.jessyan.peach.shop.entity;
+package me.jessyan.peach.shop.entity.home;
+
+import java.util.List;
 
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelBean;
@@ -17,6 +19,9 @@ public class HomeMainOptionalBean {
 
     //子分类 ： 10大金刚
     private CouponsChannelBean.ChannelModel channelData;
+
+    //四大板块
+    private List<HomeSectionBean> homeSectionList;
 
     //每日推荐
     private OrientationGoodsBean orientationGoodsBean;
@@ -54,5 +59,13 @@ public class HomeMainOptionalBean {
 
     public void setCouponsCommodityBean(CouponsCommodityBean couponsCommodityBean) {
         this.couponsCommodityBean = couponsCommodityBean;
+    }
+
+    public List<HomeSectionBean> getHomeSectionList() {
+        return homeSectionList;
+    }
+
+    public void setHomeSectionList(List<HomeSectionBean> homeSectionList) {
+        this.homeSectionList = homeSectionList;
     }
 }

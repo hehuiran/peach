@@ -24,4 +24,12 @@
         <attr name="menu_text_normal_color" format="color" />
         <attr name="menu_text_selected_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="DashView">
+        <attr name="dv_dashWidth" format="dimension"/>
+        <attr name="dv_lineWidth" format="dimension"/>
+        <attr name="dv_lineHeight" format="dimension"/>
+        <attr name="dv_lineColor" format="color"/>
+        <attr name="dv_dashOrientation" format="integer"/>
+    </declare-styleable>
 </resources>

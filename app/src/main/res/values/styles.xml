@@ -26,4 +26,10 @@
         <item name="android:layout_height">@dimen/line_width</item>
         <item name="android:background">@color/color_e7e7e7</item>
     </style>
+
+    <style name="space_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/space_height</item>
+        <item name="android:background">@color/color_e7e7e7</item>
+    </style>
 </resources>
