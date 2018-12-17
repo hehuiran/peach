@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="3dp"
+        android:maxLines="2"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="手机话费还是福建省地方后端收费看电视就是倒海翻江上岛咖啡后回家看到沙发和电视发送到发动机和客户 就看到沙发加电视"/>
+
+    <TextView
+        android:id="@+id/tv_collection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:drawablePadding="3dp"
+        android:drawableTop="@drawable/selector_collection"
+        android:gravity="center_horizontal"
+        android:text="@string/collection"
+        android:textColor="@color/color_010101"
+        android:textSize="9sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
+
+    <TextView
+        android:id="@+id/tv_after"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/shape_solid_ff1673_radius_8"
+        android:paddingBottom="4dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="4dp"
+        android:text="@string/coupon_after_the_price"
+        android:textColor="@color/white"
+        android:textSize="9sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_discount_price"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
+
+    <Space
+        android:id="@+id/s_after"
+        android:layout_width="wrap_content"
+        android:layout_height="0.01dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_after"
+        app:layout_constraintTop_toTopOf="@+id/tv_after"/>
+
+    <TextView
+        android:id="@+id/tv_discount_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textColor="@color/color_ff0000"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_after"
+        app:layout_constraintStart_toEndOf="@+id/tv_yuan"
+        app:layout_constraintTop_toBottomOf="@+id/s_after"
+        tools:text="123.00"/>
+
+    <TextView
+        android:id="@+id/tv_yuan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="12dp"
+        android:includeFontPadding="false"
+        android:text="@string/yuan"
+        android:textColor="@color/color_ff0000"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_discount_price"
+        app:layout_constraintEnd_toStartOf="@+id/tv_discount_price"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tv_discount_price,tv_collection"/>
+
+    <TextView
+        android:id="@+id/tv_original_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/color_807e7f"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrier"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        tools:text="@string/coupon_before_the_price"/>
+
+    <TextView
+        android:id="@+id/tv_sold_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/color_807e7f"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_original_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_original_price"
+        tools:text="@string/sold_count"/>
+</android.support.constraint.ConstraintLayout>

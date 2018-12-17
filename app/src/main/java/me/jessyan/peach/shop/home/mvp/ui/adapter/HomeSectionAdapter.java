@@ -33,7 +33,7 @@ public class HomeSectionAdapter extends VirtualListItemAdapter<HomeSectionBean, 
 
     public HomeSectionAdapter() {
         super(R.layout.item_home_main_section);
-        mImageLoader = ArmsUtils.obtainAppComponentFromContext(Utils.getApp()).imageLoader();
+        mImageLoader = ArmsUtils.getImageLoaderInstance(Utils.getApp());
         textColors[0] = ResourceUtils.getResourceColor(R.color.color_ff006c);
         textColors[1] = ResourceUtils.getResourceColor(R.color.color_9416ff);
         textColors[2] = ResourceUtils.getResourceColor(R.color.color_ff9000);

@@ -6,7 +6,8 @@ import com.jess.arms.mvp.IView;
 import java.util.List;
 
 import io.reactivex.Observable;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 
 
@@ -29,7 +30,7 @@ public interface HomeMainContract {
 
         void onGetHomeMainDataFailed();
 
-        void onLoadMoreGoodsSuccess(List<CouponsCommodityBean.CommodityModel> list);
+        void onLoadMoreGoodsSuccess(List<GoodsBean> list);
 
         void onLoadMoreGoodsFailed();
     }
@@ -38,6 +39,6 @@ public interface HomeMainContract {
     interface Model extends IModel {
         Observable<HomeMainOptionalBean> getHomeMainData();
 
-        Observable<CouponsCommodityBean> loadMoreGoods(int page);
+        Observable<CouponsCommodityBean> loadMoreGoods(int page, String dataTimeStamp);
     }
 }

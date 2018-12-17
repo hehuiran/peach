@@ -1,5 +1,7 @@
 package me.jessyan.peach.shop.home.mvp.ui.adapter;
 
+import android.support.annotation.LayoutRes;
+
 import com.alibaba.android.vlayout.LayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.youth.banner.Banner;
@@ -24,8 +26,8 @@ public class HomeBannerAdapter extends VirtualItemAdapter<VirtualItemViewHolder>
 
     private List<CouponsBannerBean.BannerBean> mData;
 
-    public HomeBannerAdapter() {
-        super(R.layout.item_home_main_banner);
+    public HomeBannerAdapter(@LayoutRes int layoutResId) {
+        super(layoutResId);
     }
 
     public void setData(List<CouponsBannerBean.BannerBean> data) {
@@ -67,6 +69,6 @@ public class HomeBannerAdapter extends VirtualItemAdapter<VirtualItemViewHolder>
 
     @Override
     protected int getDefItemViewType(int position) {
-        return RecyclerViewType.HOME_BANNER_TYPE;
+        return RecyclerViewType.BANNER_TYPE;
     }
 }

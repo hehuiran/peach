@@ -12,12 +12,12 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function4;
 import me.jessyan.peach.shop.constant.CommonConstant;
-import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelBean;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
-import me.jessyan.peach.shop.entity.goods.OrientationGoodsBean;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 import me.jessyan.peach.shop.entity.home.HomeSectionBean;
+import me.jessyan.peach.shop.entity.home.OrientationGoodsBean;
 import me.jessyan.peach.shop.home.mvp.contract.HomeMainContract;
 import me.jessyan.peach.shop.netconfig.function.ResponseFunction;
 import me.jessyan.peach.shop.netconfig.temporary.GoodsCategoryApiService;
@@ -64,7 +64,7 @@ public class HomeMainModel extends BaseModel implements HomeMainContract.Model {
                 .map(new ResponseFunction<>());
 
         return Observable.zip(bannerObservable, channelObservable,
-                orientationObservable, loadMoreGoods(CommonConstant.PAGE_INITIAL),
+                orientationObservable, loadMoreGoods(CommonConstant.PAGE_INITIAL, CommonConstant.EMPTY_STRING),
                 new Function4<CouponsBannerBean, CouponsChannelBean, OrientationGoodsBean, CouponsCommodityBean, HomeMainOptionalBean>() {
                     @Override
                     public HomeMainOptionalBean apply(CouponsBannerBean couponsBannerBean,
@@ -86,10 +86,10 @@ public class HomeMainModel extends BaseModel implements HomeMainContract.Model {
     }
 
     @Override
-    public Observable<CouponsCommodityBean> loadMoreGoods(int page) {
+    public Observable<CouponsCommodityBean> loadMoreGoods(int page, String dataTimeStamp) {
         return mRepositoryManager
                 .obtainRetrofitService(WillBuyApiService.class)
-                .getCommodity(page, 7, CommonConstant.PAGE_SIZE, "首页")
+                .getCommodity(page, 7, CommonConstant.PAGE_SIZE, "首页", dataTimeStamp)
                 .map(new ResponseFunction<>());
 
     }

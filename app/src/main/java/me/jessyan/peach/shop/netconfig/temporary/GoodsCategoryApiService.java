@@ -2,12 +2,11 @@ package me.jessyan.peach.shop.netconfig.temporary;
 
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryBannerBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryGridBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleBean;
-import me.jessyan.peach.shop.entity.goods.OrientationGoodsBean;
-import okhttp3.ResponseBody;
+import me.jessyan.peach.shop.entity.home.OrientationGoodsBean;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -50,17 +49,6 @@ public interface GoodsCategoryApiService {
     @POST("goods/querySpecialsale")
     Observable<BasicResponse<CouponsCommodityBean>> getGoodsCategoryData(@Field("pageNo") int page, @Field("pageSize")
             int pageSize, @Field("shoptype") String shoptype
-            , @Field("typeTwo") String typeTwo, @Field("number") int number, @Field("sort") String sort);
-
-
-    /**
-     * 获取首页分类fragment的商品列表
-     *
-     */
-    @FormUrlEncoded
-    @POST("goods/querySpecialsale")
-    Observable<BasicResponse<CouponsCommodityBean>> getGoodsCategoryData(@Field("pageNo") int page, @Field("pageSize")
-            int pageSize, @Field("shoptype") String shoptype
             , @Field("typeTwo") String typeTwo, @Field("number") int number, @Field("sort") String sort
             , @Field("dataTimeStamp") String dataTimeStamp);
 
@@ -76,18 +64,10 @@ public interface GoodsCategoryApiService {
     /**
      * 获取分类页面的 横向滚动商品列表  12条
      */
-    /*@FormUrlEncoded
-    @POST("goods/queryBroadcast")
-    Observable<BasicResponse<OrientationGoodsBean>> getOrientationGoods(@Field("type") String page, @Field("pageSize") int pageSize);*/
-
     @FormUrlEncoded
     @POST("goods/queryBroadcast")
     Observable<BasicResponse<OrientationGoodsBean>> getOrientationGoods(@Field("type") String type, @Field("pageSize") int pageSize);
 
-
-    @FormUrlEncoded
-    @POST("goods/getLikeGoods")
-    Observable<ResponseBody> getOrientationGoods3(@Field("os") String os, @Field("ip") String ip, @Field("pageSize") int pageSize, @Field("pageNo") int pageNo);
 
 
 }

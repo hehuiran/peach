@@ -11,15 +11,14 @@ import me.jessyan.peach.shop.entity.goods.CollectionBean;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.CouponsCategoryBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelBean;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
 import me.jessyan.peach.shop.entity.goods.FreeShippingOnePlusNWrapBean;
 import me.jessyan.peach.shop.entity.goods.ProductDetailsIntervalBean;
-import me.jessyan.peach.shop.entity.goods.RecommendBean;
 import me.jessyan.peach.shop.entity.goods.SearchBean;
 import me.jessyan.peach.shop.entity.goods.SearchResultBean;
-import me.jessyan.peach.shop.entity.goods.TbDetailsImageBean;
-import me.jessyan.peach.shop.entity.goods.TbDetailsBean;
 import me.jessyan.peach.shop.entity.goods.VirtualMustSeeSectionBean;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.taobao.TaoBaoDetailsBean;
+import me.jessyan.peach.shop.entity.home.taobao.TaoBaoImageBean;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -108,14 +107,9 @@ public interface WillBuyApiService {
      */
     @FormUrlEncoded
     @POST("goods/select")
-    Observable<BasicResponse<CouponsCommodityBean>> getCommodity(@Field("pageNo") int page, @Field("selectType") int selectType, @Field("pageSize") int pageSize, @Field("type") String type);
-
-
-
-    @FormUrlEncoded
-    @POST("goods/select")
-    Observable<ResponseBody> getCommodity2(@Field("pageNo") int page, @Field("selectType")
-            int selectType, @Field("pageSize") int pageSize, @Field("type") String type, @Field("dataTimeStamp") String dataTimeStamp);
+    Observable<BasicResponse<CouponsCommodityBean>> getCommodity(@Field("pageNo") int page, @Field("selectType") int selectType,
+                                                                 @Field("pageSize") int pageSize, @Field("type") String type,
+                                                                 @Field("dataTimeStamp") String dataTimeStamp);
 
 
     /**
@@ -216,41 +210,32 @@ public interface WillBuyApiService {
     @POST("goods/detail")
     Observable<BasicResponse<CouponsCommodityBean>> getGoodsTitleDetails(@Field("itemId") String itemId);
 
-    @FormUrlEncoded
-    @POST("goods/detail")
-    Observable<ResponseBody> getGoodsTitleDetails2(@Field("itemId") String itemId);
-
     /**
      * 淘宝接口
      */
     @GET("https://h5api.m.taobao.com/h5/mtop.taobao.detail.getdetail/6.0/")
-    Observable<TbDetailsBean> getTbGoodsDetails(@Query(value = "data", encoded = true) String dataJson);
+    Observable<TaoBaoDetailsBean> getTbGoodsDetails(@Query(value = "data", encoded = true) String dataJson);
 
     /**
      * 淘宝图片详情接口
      */
     @GET
-    Observable<TbDetailsImageBean> getTbGoodsDetailsImage(@Url String url);
+    Observable<TaoBaoImageBean> getTbGoodsDetailsImage(@Url String url);
 
     /**
      * 商品详情推荐商品列表
-     * BasicResponse<ProductDetailsRecommendModel>
-     *     BasicResponse<RecommendBean>
      */
     @FormUrlEncoded
-    //@POST("goods/recommend")
     @POST("goods/queryRecommend")
-    Observable<BasicResponse<RecommendBean>> getRecommendGoods(@Field("itemid") String itemId, @Field("count") int count, @Field("platform") int platform);
+    Observable<BasicResponse<CouponsCommodityBean>> getRecommendGoods(@Field("itemid") String itemId, @Field("count") int count, @Field("platform") int platform);
 
 
     @FormUrlEncoded
-    //@POST("goods/recommend")
     @POST("goods/queryRecommend")
     Observable<BasicResponse<CollectionBean>> getSimilarData(@Field("itemid") String itemId, @Field("count") int count, @Field("platform") int platform);
 
 
     @FormUrlEncoded
-    //@POST("goods/recommend")
     @POST("goods/queryRecommend")
     Observable<ResponseBody> getSimilarData2(@Field("itemid") String itemId, @Field("count") int count, @Field("platform") int platform);
 

@@ -26,10 +26,13 @@
     <string name="today_selection">今日精选</string>
     <string name="load_more_end">数据加载完毕</string>
     <string name="loading">正在载入～～～</string>
+    <string name="empty_data">暂无数据～～～</string>
     <string name="load_more_failed">数据加载失败</string>
 
     <string name="go">GO</string>
     <string name="look_all">查看全部</string>
+
+    <string name="yuan">¥</string>
 
     <string name="rmb">¥%1$s</string>
     <string name="discount_price">券后¥%1$s</string>
@@ -39,4 +42,30 @@
 
     <string name="original_price_format">原价: ¥%1$s</string>
     <string name="sold_count">已售¥%1$s件</string>
+
+    <string name="coupons_value">券面值</string>
+    <string name="use_coupons_price">券后价</string>
+    <string name="commission">预估佣金</string>
+    <string name="current_sold_count">当前销量</string>
+    <string name="more_channel">更多频道</string>
+    <string name="shape">分享</string>
+    <string name="receive_coupon_buy">领券购买¥%1$s</string>
+    <string name="collection">收藏</string>
+    <string name="coupon_after_the_price">券后价</string>
+    <string name="coupon_before_the_price">券前¥%1$s</string>
+    <string name="into_shop">进店逛逛</string>
+    <string name="colon">：</string>
+    <string name="goods_detail">宝贝详情</string>
+    <string name="guess_you_like">猜你喜欢</string>
+
+    <integer-array name="category_tag_array">
+        <!-- 最新上架 -->
+        <item>2</item>
+        <!-- 销量最高 -->
+        <item>3</item>
+        <!-- 综合最优 -->
+        <item>1</item>
+        <!-- 价格最低 -->
+        <item>4</item>
+    </integer-array>
 </resources>

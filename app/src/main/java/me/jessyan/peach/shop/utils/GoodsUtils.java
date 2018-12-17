@@ -22,6 +22,17 @@ public final class GoodsUtils {
     }
 
     public static String getSizeString(int size) {
+        if (size % 100 != 0) {
+            int prefix = size / 100;
+            prefix++;
+            size = prefix * 100;
+        }
+        if (size < 100) {
+            size = 100;
+        }
+        if (size > 400) {
+            size = 400;
+        }
         String sizeString = String.valueOf(size);
         return "_".concat(sizeString).concat("x").concat(sizeString);
     }

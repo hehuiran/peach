@@ -15,4 +15,6 @@ public interface IntentExtra {
     String TWO_TYPE = "two_type";
 
     String HOME_CATEGORY_LIST = "home_category_list";
+
+    String GOODS_DETAIL_CONFIG_BEAN = "goods_detail_config_bean";
 }

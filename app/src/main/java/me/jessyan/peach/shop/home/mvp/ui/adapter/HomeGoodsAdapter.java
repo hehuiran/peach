@@ -10,19 +10,23 @@ import android.widget.TextView;
 import com.alibaba.android.vlayout.LayoutHelper;
 import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.Utils;
 import com.jess.arms.http.imageloader.ImageConfigImpl;
 import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.ArrayList;
+
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.GoodsBean;
+import me.jessyan.peach.shop.help.glide.GlideTopRoundTransform;
 import me.jessyan.peach.shop.utils.GoodsUtils;
 import me.jessyan.peach.shop.utils.ResourceUtils;
 import me.jessyan.peach.shop.utils.StringUtils;
 import me.jessyan.peach.shop.vlayout.VirtualItemViewHolder;
-import me.jessyan.peach.shop.vlayout.VirtualListItemAdapter;
+import me.jessyan.peach.shop.vlayout.VirtualMultiListItemAdapter;
 import me.jessyan.peach.shop.widget.CouponsLayout;
 import me.jessyan.peach.shop.widget.span.CenterImageSpan;
 
@@ -31,26 +35,43 @@ import me.jessyan.peach.shop.widget.span.CenterImageSpan;
  * email: 15260828327@163.com
  * description:
  */
-public class HomeGoodsAdapter extends VirtualListItemAdapter<CouponsCommodityBean.CommodityModel, VirtualItemViewHolder> {
+public class HomeGoodsAdapter extends VirtualMultiListItemAdapter<GoodsBean, VirtualItemViewHolder> {
 
     private final ImageLoader mImageLoader;
     private final int mSize;
+    private final int mRounderRadius;
 
     public HomeGoodsAdapter() {
-        super(R.layout.item_home_main_goods);
-        mImageLoader = ArmsUtils.obtainAppComponentFromContext(Utils.getApp()).imageLoader();
+        super(new ArrayList<>());
+        addItemType(RecyclerViewType.HOME_GOODS_TYPE, R.layout.item_home_main_goods);
+        addItemType(RecyclerViewType.EMPTY_TYPE, R.layout.empty_layout);
+        addItemType(RecyclerViewType.NET_ERROR_TYPE, R.layout.net_error_layout);
+        mImageLoader = ArmsUtils.getImageLoaderInstance(Utils.getApp());
         mSize = ScreenUtils.getScreenWidth() / 2;
+        mRounderRadius = SizeUtils.dp2px(7);
     }
 
     @Override
     protected void convert(VirtualItemViewHolder holder, int position, int absolutePosition) {
-        CouponsCommodityBean.CommodityModel bean = mData.get(position);
+        GoodsBean bean = mData.get(position);
+        switch (bean.getItemType()) {
+            case RecyclerViewType.HOME_GOODS_TYPE:
+                fillGoods(holder, bean);
+                break;
+            case RecyclerViewType.NET_ERROR_TYPE:
+                fillNetError(holder);
+                break;
+        }
 
+    }
+
+    private void fillGoods(VirtualItemViewHolder holder, GoodsBean bean) {
         ImageView ivImg = holder.getView(R.id.iv_img);
         mImageLoader.loadImage(ivImg.getContext(),
                 ImageConfigImpl.builder()
                         .imageView(ivImg)
                         .url(GoodsUtils.getSpecifiedSizeImageUrl(bean.getImg(), mSize))
+                        .transformation(new GlideTopRoundTransform(mRounderRadius))
                         .build());
 
 
@@ -88,13 +109,25 @@ public class HomeGoodsAdapter extends VirtualListItemAdapter<CouponsCommodityBea
         tvTitle.setText(titleSpannable);
     }
 
-    @Override
-    public LayoutHelper onCreateLayoutHelper() {
-        return new GridLayoutHelper(2);
+    private void fillNetError(VirtualItemViewHolder holder) {
+        holder.addOnClickListener(R.id.tv_reload);
     }
 
     @Override
-    protected int getDefItemViewType(int position) {
-        return RecyclerViewType.HOME_GOODS_TYPE;
+    public LayoutHelper onCreateLayoutHelper() {
+        GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(2);
+        gridLayoutHelper.setAutoExpand(false);
+        gridLayoutHelper.setSpanSizeLookup(new GridLayoutHelper.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int relativePosition = position - getStartPosition();
+                if (relativePosition < mData.size()) {
+                    int itemType = mData.get(relativePosition).getItemType();
+                    return itemType == RecyclerViewType.HOME_GOODS_TYPE ? 1 : 2;
+                }
+                return 0;
+            }
+        });
+        return gridLayoutHelper;
     }
 }

@@ -5,12 +5,13 @@ import android.support.v7.widget.RecyclerView;
 
 import com.alibaba.android.vlayout.LayoutHelper;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.List;
 
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
-import me.jessyan.peach.shop.entity.goods.OrientationGoodsBean;
+import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.vlayout.VirtualItemAdapter;
 import me.jessyan.peach.shop.vlayout.VirtualItemViewHolder;
 
@@ -21,7 +22,7 @@ import me.jessyan.peach.shop.vlayout.VirtualItemViewHolder;
  */
 public class HomeOrientationAdapter extends VirtualItemAdapter<VirtualItemViewHolder> {
 
-    private List<OrientationGoodsBean.Data> mData;
+    private List<GoodsBean> mData;
     private RecyclerView.RecycledViewPool pool;
 
     public HomeOrientationAdapter(RecyclerView.RecycledViewPool pool) {
@@ -29,7 +30,7 @@ public class HomeOrientationAdapter extends VirtualItemAdapter<VirtualItemViewHo
         this.pool = pool;
     }
 
-    public void setData(List<OrientationGoodsBean.Data> data, int position) {
+    public void setData(List<GoodsBean> data, int position) {
         mData = data;
         notifyItemChanged(position);
     }
@@ -53,6 +54,9 @@ public class HomeOrientationAdapter extends VirtualItemAdapter<VirtualItemViewHo
         recyclerView.setHasFixedSize(true);
 
         HomeOrientationItemAdapter itemAdapter = new HomeOrientationItemAdapter(mData);
+        if (mOnItemClickListener != null) {
+            itemAdapter.setOnItemClickListener(mOnItemClickListener);
+        }
         recyclerView.setAdapter(itemAdapter);
     }
 
@@ -64,5 +68,11 @@ public class HomeOrientationAdapter extends VirtualItemAdapter<VirtualItemViewHo
     @Override
     protected int getDefItemViewType(int position) {
         return RecyclerViewType.HOME_ORIENTATION_TYPE;
+    }
+
+    private BaseQuickAdapter.OnItemClickListener mOnItemClickListener;
+
+    public void setQuickAdapterOnItemClickListener(BaseQuickAdapter.OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
     }
 }

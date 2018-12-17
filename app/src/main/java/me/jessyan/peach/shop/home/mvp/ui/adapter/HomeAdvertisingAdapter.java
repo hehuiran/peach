@@ -14,6 +14,7 @@ import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.utils.ArmsUtils;
 
 import me.jessyan.peach.shop.R;
+import me.jessyan.peach.shop.help.glide.GlideRoundTransform;
 import me.jessyan.peach.shop.utils.ResourceUtils;
 import me.jessyan.peach.shop.vlayout.VirtualItemAdapter;
 import me.jessyan.peach.shop.vlayout.VirtualItemViewHolder;
@@ -32,7 +33,7 @@ public class HomeAdvertisingAdapter extends VirtualItemAdapter<VirtualItemViewHo
     public HomeAdvertisingAdapter(boolean isPaddingBottom) {
         super(R.layout.item_home_main_advertising);
         this.isPaddingBottom = isPaddingBottom;
-        mImageLoader = ArmsUtils.obtainAppComponentFromContext(Utils.getApp()).imageLoader();
+        mImageLoader = ArmsUtils.getImageLoaderInstance(Utils.getApp());
     }
 
     public void setAdvertisingUrl(String advertisingUrl, int position) {
@@ -59,7 +60,7 @@ public class HomeAdvertisingAdapter extends VirtualItemAdapter<VirtualItemViewHo
                 ImageConfigImpl.builder()
                         .imageView(ivAd)
                         .url(advertisingUrl)
-                        .imageRadius(SizeUtils.dp2px(5))
+                        .transformation(new GlideRoundTransform())
                         .build());
     }
 

@@ -14,8 +14,10 @@ import android.widget.ImageView;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutViewFactory;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,22 +32,25 @@ import me.jessyan.peach.shop.constant.IntentExtra;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelSubBean;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleBean;
-import me.jessyan.peach.shop.entity.goods.OrientationGoodsBean;
+import me.jessyan.peach.shop.entity.home.GoodsBean;
+import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
 import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 import me.jessyan.peach.shop.entity.home.HomeSectionBean;
 import me.jessyan.peach.shop.home.di.component.DaggerHomeMainComponent;
 import me.jessyan.peach.shop.home.mvp.contract.HomeMainContract;
 import me.jessyan.peach.shop.home.mvp.presenter.HomeMainPresenter;
+import me.jessyan.peach.shop.home.mvp.ui.activity.GoodsDetailActivity;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeAdvertisingAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeBannerAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeChannelAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeGoodsAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeMainRecommendTitleAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeOrientationAdapter;
+import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeOrientationItemAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeSectionAdapter;
 import me.jessyan.peach.shop.vlayout.VirtualAdapter;
+import me.jessyan.peach.shop.vlayout.callback.OnItemClickListener;
 import me.jessyan.peach.shop.widget.DispatchTouchRecyclerView;
 import me.jessyan.peach.shop.widget.RecyclerLoadMoreView;
 import me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView;
@@ -126,7 +131,9 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         mRecyclerView.setRecycledViewPool(viewPool);
 
         viewPool.setMaxRecycledViews(VirtualAdapter.LOADING_VIEW, 3);
-        viewPool.setMaxRecycledViews(RecyclerViewType.HOME_BANNER_TYPE, 3);
+        viewPool.setMaxRecycledViews(RecyclerViewType.EMPTY_TYPE, 1);
+        viewPool.setMaxRecycledViews(RecyclerViewType.NET_ERROR_TYPE, 1);
+        viewPool.setMaxRecycledViews(RecyclerViewType.BANNER_TYPE, 3);
         viewPool.setMaxRecycledViews(RecyclerViewType.HOME_CHANNEL_TYPE, 10);
         viewPool.setMaxRecycledViews(RecyclerViewType.HOME_ADVERTISING_TYPE, 3);
         viewPool.setMaxRecycledViews(RecyclerViewType.HOME_SECTION_TYPE, 5);
@@ -160,7 +167,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
 
         mAdapterList = new ArrayList<>();
 
-        HomeBannerAdapter bannerAdapter = new HomeBannerAdapter();
+        HomeBannerAdapter bannerAdapter = new HomeBannerAdapter(R.layout.item_home_main_banner);
         mAdapterList.add(bannerAdapter);
 
         HomeChannelAdapter channelAdapter = new HomeChannelAdapter();
@@ -176,14 +183,42 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         mAdapterList.add(advertisingAdapter2);
 
         HomeOrientationAdapter orientationAdapter = new HomeOrientationAdapter(viewPool);
+        orientationAdapter.setQuickAdapterOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                GoodsBean bean = ((HomeOrientationItemAdapter) adapter).getData().get(position);
+                launcherGoodsDetail(bean);
+            }
+        });
         mAdapterList.add(orientationAdapter);
 
         mAdapterList.add(new HomeMainRecommendTitleAdapter());
 
         HomeGoodsAdapter goodsAdapter = new HomeGoodsAdapter();
+        goodsAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
+                GoodsBean bean = ((HomeGoodsAdapter) adapter).getData().get(position);
+                if (bean.getItemType() == RecyclerViewType.HOME_GOODS_TYPE) {
+                    launcherGoodsDetail(bean);
+                }
+            }
+        });
         mAdapterList.add(goodsAdapter);
 
         mVirtualAdapter.setAdapters(mAdapterList);
+    }
+
+    /**
+     * 跳转商品详情
+     */
+    private void launcherGoodsDetail(GoodsBean bean) {
+        Context context = getContext();
+        if (context != null) {
+            GoodsDetailActivity.launcher(context, GoodsDetailConfigBean.generateConfigBean(bean));
+        } else {
+            Timber.tag(TAG).w("context is null...");
+        }
     }
 
     @Override
@@ -230,12 +265,12 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         }
 
         HomeOrientationAdapter orientationAdapter = getAdapter(5);
-        List<OrientationGoodsBean.Data> dataList = homeMainOptionalBean.getOrientationGoodsBean().getData();
+        List<GoodsBean> dataList = homeMainOptionalBean.getOrientationGoodsBean().getData();
         if (dataList != null && !dataList.isEmpty() && orientationAdapter != null) {
             orientationAdapter.setData(dataList, 5);
         }
 
-        List<CouponsCommodityBean.CommodityModel> goodsList = homeMainOptionalBean.getCouponsCommodityBean().getList();
+        List<GoodsBean> goodsList = homeMainOptionalBean.getCouponsCommodityBean().getList();
         int size = goodsList == null ? 0 : goodsList.size();
         if (size > 0) {
             HomeMainRecommendTitleAdapter recommendTitleAdapter = getAdapter(6);
@@ -268,7 +303,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
     }
 
     @Override
-    public void onLoadMoreGoodsSuccess(List<CouponsCommodityBean.CommodityModel> list) {
+    public void onLoadMoreGoodsSuccess(List<GoodsBean> list) {
         final int size = list == null ? 0 : list.size();
         HomeGoodsAdapter goodsAdapter = getAdapter(7);
         if (goodsAdapter != null && size > 0) {
@@ -286,6 +321,37 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         if (mVirtualAdapter.isLoading()) {
             mVirtualAdapter.loadMoreFail();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Banner banner = getBanner();
+        if (banner != null) {
+            banner.stopAutoPlay();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Banner banner = getBanner();
+        if (banner != null) {
+            banner.startAutoPlay();
+        }
+    }
+
+    private Banner getBanner() {
+        RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            return null;
+
+        }
+        View view = layoutManager.findViewByPosition(0);
+        if (view == null) {
+            return null;
+        }
+        return view.findViewById(R.id.banner);
     }
 
     /**

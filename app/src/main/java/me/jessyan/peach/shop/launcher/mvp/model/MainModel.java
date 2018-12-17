@@ -92,6 +92,7 @@ public class MainModel extends BaseModel implements MainContract.Model {
                         SPUtils.getInstance().put(SPKey.WX_SHARE_ICON, wxShareModel.getIcon());
                         SPUtils.getInstance().put(SPKey.WX_SHARE_TITLE, wxShareModel.getTitle());
                         SPUtils.getInstance().put(SPKey.WX_SHARE_URL, wxShareModel.getUrl());
+                        SPUtils.getInstance().put(SPKey.WX_SHARE_DESCRIPTION, wxShareModel.getDescription());
                     }
                     return configBeanBasicResponse;
                 });

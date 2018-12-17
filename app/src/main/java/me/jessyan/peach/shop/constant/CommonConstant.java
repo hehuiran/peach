@@ -9,6 +9,8 @@ public interface CommonConstant {
 
     String EMPTY_STRING = "";
 
+    String HTTPS = "https:";
+
     /**
      * 商户ID
      */
@@ -33,4 +35,10 @@ public interface CommonConstant {
     int PAGE_SIZE_ORIENTATION = 10;
     int PAGE_INITIAL = 1;
     int PAGE_SIZE = 20;
+
+    /**
+     * 分类下面的二级分类数据
+     */
+    int TYPE_CATEGORY_SECOND_TEN = 0;       //只查询10条
+    int TYPE_CATEGORY_SECOND_ALL = 1;       //查询全部子分类
 }

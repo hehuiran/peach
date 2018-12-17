@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        android:src="@mipmap/icon_empty_network"/>
+        android:src="@mipmap/ic_empty_network"/>
     <Space
         android:layout_width="match_parent"
         android:layout_height="10dp" />

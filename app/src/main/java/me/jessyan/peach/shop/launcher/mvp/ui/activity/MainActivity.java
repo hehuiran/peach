@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     private void initErrorView() {
-        if (mViewStubError != null) {
+        if (mViewStubError != null && mErrorView == null) {
             //网络请求出错，加载error视图
             mViewStubError.setOnInflateListener(new ViewStub.OnInflateListener() {
                 @Override

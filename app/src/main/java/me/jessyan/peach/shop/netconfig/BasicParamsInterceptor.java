@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import me.jessyan.peach.shop.BuildConfig;
 import me.jessyan.peach.shop.entity.user.UserInfo;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -38,16 +39,21 @@ public class BasicParamsInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        RequestBody body = request.body();
-        if (body instanceof MultipartBody) {
-            request = handlerMultipartBody(request);
-        } else {
-            request = handlerRequest(request);
+
+        String url = request.url().toString();
+        if (url.contains(BuildConfig.BASE_URL)) {
+            RequestBody body = request.body();
+            if (body instanceof MultipartBody) {
+                request = handlerMultipartBody(request);
+            } else {
+                request = handlerRequest(request);
+            }
+
+            if (request == null) {
+                throw new NullPointerException("Request返回值不能为空");
+            }
         }
 
-        if (request == null) {
-            throw new NullPointerException("Request返回值不能为空");
-        }
 
         return chain.proceed(request);
     }
@@ -252,7 +258,7 @@ public class BasicParamsInterceptor implements Interceptor {
             if (size > 0) {
                 params = new HashMap<>();
                 for (int i = 0; i < size; i++) {
-                    if(!params.containsKey(body.name(i))){
+                    if (!params.containsKey(body.name(i))) {
                         //参数去重
                         params.put(body.name(i), body.value(i));
                     }

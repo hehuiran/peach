@@ -25,4 +25,6 @@
 
     <dimen name="line_width">0.5dp</dimen>
     <dimen name="space_height">10dp</dimen>
+
+    <dimen name="action_bar_height">47dp</dimen>
 </resources>

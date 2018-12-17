@@ -1,6 +1,10 @@
-package me.jessyan.peach.shop.entity.goods;
+package me.jessyan.peach.shop.entity.home.taobao;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import me.jessyan.peach.shop.entity.home.GoodsDetailSellerBean;
 
 /**
  * author: Created by HuiRan on 2018/1/19 18:14
@@ -8,7 +12,7 @@ import java.util.List;
  * description:
  */
 
-public class TbDetailsBean {
+public class TaoBaoDetailsBean {
 
 
     private String api;
@@ -57,7 +61,8 @@ public class TbDetailsBean {
         private Props2Bean props2;
         private RateBean rate;
         private ResourceBean resource;
-        private SellerBean seller;
+        @SerializedName("seller")
+        private GoodsDetailSellerBean seller;
         private SkuBaseBean skuBase;
         private VerticalBean vertical;
         private List<ApiStackBean> apiStack;
@@ -118,11 +123,11 @@ public class TbDetailsBean {
             this.resource = resource;
         }
 
-        public SellerBean getSeller() {
+        public GoodsDetailSellerBean getSeller() {
             return seller;
         }
 
-        public void setSeller(SellerBean seller) {
+        public void setSeller(GoodsDetailSellerBean seller) {
             this.seller = seller;
         }
 
@@ -619,239 +624,6 @@ public class TbDetailsBean {
                     public void setLink(String link) {
                         this.link = link;
                     }
-                }
-            }
-        }
-
-        public static class SellerBean {
-
-            private String userId;
-            private String shopId;
-            private String shopName;
-            private String shopUrl;
-            private String taoShopUrl;
-            private String shopIcon;
-            private String fans;
-            private String allItemCount;
-            private boolean showShopLinkIcon;
-            private String shopCard;
-            private String sellerType;
-            private String shopType;
-            private String sellerNick;
-            private String creditLevel;
-            private String creditLevelIcon;
-            private String starts;
-            private String goodRatePercentage;
-            private List<EvaluatesBean> evaluates;
-
-            public String getUserId() {
-                return userId;
-            }
-
-            public void setUserId(String userId) {
-                this.userId = userId;
-            }
-
-            public String getShopId() {
-                return shopId;
-            }
-
-            public void setShopId(String shopId) {
-                this.shopId = shopId;
-            }
-
-            public String getShopName() {
-                return shopName;
-            }
-
-            public void setShopName(String shopName) {
-                this.shopName = shopName;
-            }
-
-            public String getShopUrl() {
-                return shopUrl;
-            }
-
-            public void setShopUrl(String shopUrl) {
-                this.shopUrl = shopUrl;
-            }
-
-            public String getTaoShopUrl() {
-                return taoShopUrl;
-            }
-
-            public void setTaoShopUrl(String taoShopUrl) {
-                this.taoShopUrl = taoShopUrl;
-            }
-
-            public String getShopIcon() {
-                return shopIcon;
-            }
-
-            public void setShopIcon(String shopIcon) {
-                this.shopIcon = shopIcon;
-            }
-
-            public String getFans() {
-                return fans;
-            }
-
-            public void setFans(String fans) {
-                this.fans = fans;
-            }
-
-            public String getAllItemCount() {
-                return allItemCount;
-            }
-
-            public void setAllItemCount(String allItemCount) {
-                this.allItemCount = allItemCount;
-            }
-
-            public boolean isShowShopLinkIcon() {
-                return showShopLinkIcon;
-            }
-
-            public void setShowShopLinkIcon(boolean showShopLinkIcon) {
-                this.showShopLinkIcon = showShopLinkIcon;
-            }
-
-            public String getShopCard() {
-                return shopCard;
-            }
-
-            public void setShopCard(String shopCard) {
-                this.shopCard = shopCard;
-            }
-
-            public String getSellerType() {
-                return sellerType;
-            }
-
-            public void setSellerType(String sellerType) {
-                this.sellerType = sellerType;
-            }
-
-            public String getShopType() {
-                return shopType;
-            }
-
-            public void setShopType(String shopType) {
-                this.shopType = shopType;
-            }
-
-            public String getSellerNick() {
-                return sellerNick;
-            }
-
-            public void setSellerNick(String sellerNick) {
-                this.sellerNick = sellerNick;
-            }
-
-            public String getCreditLevel() {
-                return creditLevel;
-            }
-
-            public void setCreditLevel(String creditLevel) {
-                this.creditLevel = creditLevel;
-            }
-
-            public String getCreditLevelIcon() {
-                return creditLevelIcon;
-            }
-
-            public void setCreditLevelIcon(String creditLevelIcon) {
-                this.creditLevelIcon = creditLevelIcon;
-            }
-
-            public String getStarts() {
-                return starts;
-            }
-
-            public void setStarts(String starts) {
-                this.starts = starts;
-            }
-
-            public String getGoodRatePercentage() {
-                return goodRatePercentage;
-            }
-
-            public void setGoodRatePercentage(String goodRatePercentage) {
-                this.goodRatePercentage = goodRatePercentage;
-            }
-
-            public List<EvaluatesBean> getEvaluates() {
-                return evaluates;
-            }
-
-            public void setEvaluates(List<EvaluatesBean> evaluates) {
-                this.evaluates = evaluates;
-            }
-
-            public static class EvaluatesBean {
-
-                private String title;
-                private String score;
-                private String type;
-                private String level;
-                private String levelText;
-                private String levelTextColor;
-                private String levelBackgroundColor;
-
-                public String getTitle() {
-                    return title;
-                }
-
-                public void setTitle(String title) {
-                    this.title = title;
-                }
-
-                public String getScore() {
-                    return score;
-                }
-
-                public void setScore(String score) {
-                    this.score = score;
-                }
-
-                public String getType() {
-                    return type;
-                }
-
-                public void setType(String type) {
-                    this.type = type;
-                }
-
-                public String getLevel() {
-                    return level;
-                }
-
-                public void setLevel(String level) {
-                    this.level = level;
-                }
-
-                public String getLevelText() {
-                    return levelText;
-                }
-
-                public void setLevelText(String levelText) {
-                    this.levelText = levelText;
-                }
-
-                public String getLevelTextColor() {
-                    return levelTextColor;
-                }
-
-                public void setLevelTextColor(String levelTextColor) {
-                    this.levelTextColor = levelTextColor;
-                }
-
-                public String getLevelBackgroundColor() {
-                    return levelBackgroundColor;
-                }
-
-                public void setLevelBackgroundColor(String levelBackgroundColor) {
-                    this.levelBackgroundColor = levelBackgroundColor;
                 }
             }
         }

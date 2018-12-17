@@ -28,7 +28,7 @@ public class GuidePagerAdapter extends PagerAdapter {
 
     public GuidePagerAdapter(List<Integer> list) {
         mList = list;
-        mImageLoader = ArmsUtils.obtainAppComponentFromContext(Utils.getApp()).imageLoader();
+        mImageLoader = ArmsUtils.getImageLoaderInstance(Utils.getApp());
     }
 
     @Override

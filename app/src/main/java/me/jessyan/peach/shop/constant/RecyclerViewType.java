@@ -7,7 +7,7 @@ package me.jessyan.peach.shop.constant;
  */
 public interface RecyclerViewType {
 
-    int HOME_BANNER_TYPE = 111;
+    int BANNER_TYPE = 111;
     int HOME_CHANNEL_TYPE = 112;
     int HOME_ADVERTISING_TYPE = 113;
     int HOME_SECTION_TYPE = 114;
@@ -15,4 +15,14 @@ public interface RecyclerViewType {
     int HOME_ORIENTATION_ITEM_TYPE = 116;
     int HOME_GOODS_TYPE = 117;
     int HOME_GOODS_TITLE_TYPE = 118;
+
+    int EMPTY_TYPE = 119;
+    int NET_ERROR_TYPE = 120;
+
+    int STICKY_TYPE = 121;
+
+    int GOODS_DETAIL_INFO_TYPE = 122;
+    int GOODS_DETAIL_SELLER_TYPE = 123;
+    int GOODS_DETAIL_DECORATION_TYPE = 124;
+    int GOODS_DETAIL_IMAGE_TYPE = 125;
 }

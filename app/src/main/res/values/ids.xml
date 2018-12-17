@@ -3,4 +3,5 @@
     <item name="tag_position" type="id"/>
     <item name="click_tag" type="id"/>
     <item name="image_loader_uri" type="id"/>
+    <item name="tag_state" type="id"/>
 </resources>

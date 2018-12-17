@@ -28,6 +28,7 @@ import me.jessyan.peach.shop.home.di.component.DaggerHomeComponent;
 import me.jessyan.peach.shop.home.mvp.contract.HomeContract;
 import me.jessyan.peach.shop.home.mvp.presenter.HomePresenter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomePagerAdapter;
+import me.jessyan.peach.shop.home.mvp.ui.window.MoreChannelWindow;
 import me.jessyan.peach.shop.utils.ResourceUtils;
 
 
@@ -49,6 +50,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     ConstraintLayout mRoot;
     @BindView(R.id.status_view)
     View mStatusView;
+    @BindView(R.id.v_target)
+    View mTargetView;
     @BindView(R.id.tab_layout)
     SlidingTabLayout mTabLayout;
     @BindView(R.id.view_stub_error)
@@ -103,8 +106,22 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
             case R.id.iv_msg:
                 break;
             case R.id.iv_category:
+                showMoreChannelWindow();
                 break;
         }
+    }
+
+    private void showMoreChannelWindow() {
+        MoreChannelWindow moreChannelWindow = new MoreChannelWindow(getContext(), mData);
+        moreChannelWindow.setOnMoreChannelItemClickListener(new MoreChannelWindow.OnMoreChannelItemClickListener() {
+            @Override
+            public void onMoreChannelItemClick(int position) {
+                if (position < mTabLayout.getTabCount() - 1) {
+                    mTabLayout.setCurrentTab(position);
+                }
+            }
+        });
+        moreChannelWindow.show(mTargetView);
     }
 
     @Override
@@ -160,7 +177,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     }
 
     private void initErrorView() {
-        if (mViewStubError != null) {
+        if (mViewStubError != null && mErrorView == null) {
             //网络请求出错，加载error视图
             mViewStubError.setOnInflateListener(new ViewStub.OnInflateListener() {
                 @Override

@@ -5,7 +5,7 @@ import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.MessageBean;
 import me.jessyan.peach.shop.entity.goods.CollectionBean;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

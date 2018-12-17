@@ -6,7 +6,7 @@ import com.jess.arms.mvp.BasePresenter;
 import javax.inject.Inject;
 
 import me.jessyan.peach.shop.constant.CommonConstant;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
 import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 import me.jessyan.peach.shop.home.mvp.contract.HomeMainContract;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
@@ -31,6 +31,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainContract.Model, Hom
     @Inject
     RxErrorHandler mErrorHandler;
     private int page = CommonConstant.PAGE_INITIAL;
+    private String dataTimeStamp = CommonConstant.EMPTY_STRING;
 
     @Inject
     public HomeMainPresenter(HomeMainContract.Model model, HomeMainContract.View rootView) {
@@ -45,6 +46,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainContract.Model, Hom
                     @Override
                     public void onNext(HomeMainOptionalBean homeMainOptionalBean) {
                         page++;
+                        dataTimeStamp = homeMainOptionalBean.getCouponsCommodityBean().getDataTimestamp();
                         mRootView.onGetHomeMainDataSuccess(homeMainOptionalBean);
                     }
 
@@ -57,7 +59,7 @@ public class HomeMainPresenter extends BasePresenter<HomeMainContract.Model, Hom
     }
 
     public void loadMoreGoods() {
-        mModel.loadMoreGoods(page)
+        mModel.loadMoreGoods(page, dataTimeStamp)
                 .compose(new CommonTransformer<>(this, false))
                 .subscribe(new ErrorHandleSubscriber<CouponsCommodityBean>(mErrorHandler) {
                     @Override

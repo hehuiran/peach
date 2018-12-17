@@ -1,4 +1,4 @@
-package me.jessyan.peach.shop.entity.goods;
+package me.jessyan.peach.shop.entity.home.taobao;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * description:
  */
 
-public class TbDetailsImageBean {
+public class TaoBaoImageBean {
 
 
     private String api;

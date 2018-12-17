@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <Space
+        android:id="@+id/status_view"
+        android:layout_width="0dp"
+        android:layout_height="0.01dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/action_bar_height"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:scaleType="center"
+        android:src="@mipmap/ic_black_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_view"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2666"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7333"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_back"
+        app:layout_constraintEnd_toEndOf="@+id/gl_two"
+        app:layout_constraintStart_toStartOf="@+id/gl_one"
+        app:layout_constraintTop_toTopOf="@+id/iv_back"
+        tools:text="黑色的还是风华绝代收到回复见多识广分"/>
+
+    <me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView
+        android:id="@+id/pull_refresh_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_back">
+
+        <me.jessyan.peach.shop.widget.DispatchTouchRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView>
+
+    <Space
+        android:id="@+id/bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="58dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2826"/>
+
+    <View
+        android:id="@+id/v_shape"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="17dp"
+        android:background="@drawable/shape_gradient_ffcc00_ff7430_left_radius_22"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_bar"
+        app:layout_constraintEnd_toEndOf="@+id/gl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottom_bar"/>
+
+    <TextView
+        android:id="@+id/tv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="7dp"
+        android:drawableStart="@mipmap/ic_share_white"
+        android:text="@string/shape"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/v_shape"
+        app:layout_constraintEnd_toEndOf="@+id/v_shape"
+        app:layout_constraintStart_toStartOf="@+id/v_shape"
+        app:layout_constraintTop_toTopOf="@+id/v_shape"/>
+
+    <View
+        android:id="@+id/v_buy"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="17dp"
+        android:background="@drawable/shape_gradient_ff008a_ff732e_right_radius_22"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/gl"
+        app:layout_constraintTop_toTopOf="@+id/bottom_bar"/>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/v_buy"
+        app:layout_constraintEnd_toEndOf="@+id/v_buy"
+        app:layout_constraintStart_toStartOf="@+id/v_buy"
+        app:layout_constraintTop_toTopOf="@+id/v_buy"
+        tools:text="@string/receive_coupon_buy"/>
+
+    <android.support.constraint.Group
+        android:id="@+id/group_bottom_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:constraint_referenced_ids="bottom_bar,v_shape,tv_share,v_buy,tv_price"/>
+</android.support.constraint.ConstraintLayout>

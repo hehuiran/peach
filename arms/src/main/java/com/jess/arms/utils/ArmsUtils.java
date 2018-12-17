@@ -17,12 +17,11 @@ package com.jess.arms.utils;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 
 /**
@@ -68,42 +67,13 @@ public class ArmsUtils {
         AppManager.getAppManager().showSnackbar(text, false);
     }
 
-
-
-    /**
-     * 配置 RecyclerView
-     *
-     * @param recyclerView
-     * @param layoutManager
-     * @deprecated Use {@link #configRecyclerView(RecyclerView, RecyclerView.LayoutManager)} instead
-     */
-    @Deprecated
-    public static void configRecycleView(final RecyclerView recyclerView
-            , RecyclerView.LayoutManager layoutManager) {
-        recyclerView.setLayoutManager(layoutManager);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-    }
-
-    /**
-     * 配置 RecyclerView
-     *
-     * @param recyclerView
-     * @param layoutManager
-     */
-    public static void configRecyclerView(final RecyclerView recyclerView
-            , RecyclerView.LayoutManager layoutManager) {
-        recyclerView.setLayoutManager(layoutManager);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-    }
-
     public static AppComponent obtainAppComponentFromContext(Context context) {
         Preconditions.checkNotNull(context, "%s cannot be null", Context.class.getName());
         Preconditions.checkState(context.getApplicationContext() instanceof App, "%s must be implements %s", context.getApplicationContext().getClass().getName(), App.class.getName());
         return ((App) context.getApplicationContext()).getAppComponent();
     }
 
+    public static ImageLoader getImageLoaderInstance(Context context) {
+        return obtainAppComponentFromContext(context).imageLoader();
+    }
 }

@@ -55,5 +55,14 @@
     <color name="color_ff89ad">#ff89ad</color>
     <color name="color_ff0066">#ff0066</color>
     <color name="color_c8ff458f">#c8ff458f</color>
+    <color name="cover_black">#64000000</color>
+    <color name="color_7a7a7a">#7A7A7A</color>
+    <color name="color_ffcc00">#ffcc00</color>
+    <color name="color_ff7430">#ff7430</color>
+    <color name="color_ff732e">#ff732e</color>
+    <color name="color_ff008a">#ff008a</color>
+    <color name="color_fd5b9c">#fd5b9c</color>
+    <color name="color_010101">#010101</color>
+    <color name="color_ff2525">#ff2525</color>
 
 </resources>

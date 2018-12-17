@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/v_space"
+        style="@style/space_style"/>
+
+    <ImageView
+        android:id="@+id/iv_shop"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_space"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tv_shop_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_282828"
+        android:textSize="@dimen/textSizeTitle"
+        app:layout_constraintBottom_toTopOf="@+id/iv_shop_type"
+        app:layout_constraintEnd_toStartOf="@+id/tv_go"
+        app:layout_constraintStart_toEndOf="@+id/iv_shop"
+        app:layout_constraintTop_toTopOf="@+id/iv_shop"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="回家啊帅哥的煽风点火时间"/>
+
+    <ImageView
+        android:id="@+id/iv_shop_type"
+        android:layout_width="82.5dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="4dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_shop"
+        app:layout_constraintStart_toStartOf="@+id/tv_shop_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_shop_name"
+        tools:src="@mipmap/ic_goods_detail_seller_tmall"/>
+
+    <TextView
+        android:id="@+id/tv_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:drawableEnd="@mipmap/ic_right_arrow"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:text="@string/into_shop"
+        android:textColor="@color/color_999999"
+        android:textSize="@dimen/textSizeSmall"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_shop_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_shop_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_shop_name"/>
+
+    <View
+        android:id="@+id/v_line"
+        style="@style/line_style"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/iv_shop"/>
+
+    <Space
+        android:id="@+id/s_box"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_line"/>
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33333"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66666"/>
+
+    <TextView
+        android:id="@+id/tv_goods_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/textSizeSmall"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintEnd_toStartOf="@+id/tv_goods_score"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        tools:text="宝贝详情:"/>
+
+    <TextView
+        android:id="@+id/tv_goods_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSizeSmall"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintStart_toEndOf="@+id/tv_goods_des"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        app:layout_constraintEnd_toStartOf="@+id/tv_goods_lever"
+        tools:text="5.0"/>
+
+    <TextView
+        android:id="@+id/tv_goods_lever"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textSize="@dimen/textSizeMini"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        app:layout_constraintStart_toEndOf="@+id/tv_goods_score"
+        app:layout_constraintEnd_toEndOf="@+id/gl_one"
+        tools:text="高"/>
+
+    <TextView
+        android:id="@+id/tv_seller_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/textSizeSmall"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintEnd_toStartOf="@+id/tv_seller_score"
+        app:layout_constraintStart_toEndOf="@+id/gl_one"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        tools:text="宝贝详情:"/>
+
+    <TextView
+        android:id="@+id/tv_seller_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSizeSmall"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintStart_toEndOf="@+id/tv_seller_des"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        app:layout_constraintEnd_toStartOf="@+id/tv_seller_lever"
+        tools:text="5.0"/>
+
+    <TextView
+        android:id="@+id/tv_seller_lever"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textSize="@dimen/textSizeMini"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        app:layout_constraintStart_toEndOf="@+id/tv_seller_score"
+        app:layout_constraintEnd_toEndOf="@+id/gl_two"
+        tools:text="高"/>
+
+    <TextView
+        android:id="@+id/tv_ship_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/textSizeSmall"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintEnd_toStartOf="@+id/tv_ship_score"
+        app:layout_constraintStart_toEndOf="@+id/gl_two"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        tools:text="宝贝详情:"/>
+
+    <TextView
+        android:id="@+id/tv_ship_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSizeSmall"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintStart_toEndOf="@+id/tv_ship_des"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        app:layout_constraintEnd_toStartOf="@+id/tv_ship_lever"
+        tools:text="5.0"/>
+
+    <TextView
+        android:id="@+id/tv_ship_lever"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textSize="@dimen/textSizeMini"
+        app:layout_constraintBottom_toBottomOf="@+id/s_box"
+        app:layout_constraintTop_toTopOf="@+id/s_box"
+        app:layout_constraintStart_toEndOf="@+id/tv_ship_score"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="高"/>
+</android.support.constraint.ConstraintLayout>

@@ -48,7 +48,7 @@ public class BottomMenu extends RelativeLayout {
 
     public BottomMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mImageLoader = ArmsUtils.obtainAppComponentFromContext(context).imageLoader();
+        mImageLoader = ArmsUtils.getImageLoaderInstance(context);
         View view = View.inflate(context, R.layout.bottom_menu, this);
         ivMenu = view.findViewById(R.id.iv_menu);
         tvMenu = view.findViewById(R.id.tv_menu);

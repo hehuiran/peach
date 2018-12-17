@@ -20,6 +20,11 @@
         <item name="android:activityCloseExitAnimation">@anim/translate_center_to_right</item>
     </style>
 
+    <style name="dialog_from_alpha_anim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/alpha_enter</item>
+        <item name="android:windowExitAnimation">@anim/alpha_exit</item>
+    </style>
+
     <!--view-->
     <style name="line_style">
         <item name="android:layout_width">match_parent</item>

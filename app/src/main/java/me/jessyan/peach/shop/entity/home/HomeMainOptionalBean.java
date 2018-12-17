@@ -4,8 +4,6 @@ import java.util.List;
 
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelBean;
-import me.jessyan.peach.shop.entity.goods.CouponsCommodityBean;
-import me.jessyan.peach.shop.entity.goods.OrientationGoodsBean;
 
 /**
  * author: Create by HuiRan on 2018/12/14 下午10:33

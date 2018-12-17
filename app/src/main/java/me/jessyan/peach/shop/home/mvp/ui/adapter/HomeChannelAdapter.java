@@ -26,17 +26,19 @@ import me.jessyan.peach.shop.vlayout.VirtualListItemAdapter;
 public class HomeChannelAdapter extends VirtualListItemAdapter<CouponsChannelSubBean, VirtualItemViewHolder> {
 
     private final ImageLoader mImageLoader;
+    private final int space;
 
     public HomeChannelAdapter() {
         super(R.layout.item_home_main_channel);
-        mImageLoader = ArmsUtils.obtainAppComponentFromContext(Utils.getApp()).imageLoader();
+        mImageLoader = ArmsUtils.getImageLoaderInstance(Utils.getApp());
+        space = SizeUtils.dp2px(10);
     }
 
     @Override
     protected void convert(VirtualItemViewHolder holder, int position, int absolutePosition) {
         CouponsChannelSubBean channelBean = mData.get(position);
-        int top = position < 5 ? SizeUtils.dp2px(10) : 0;
-        int bottom = SizeUtils.dp2px(10);
+        int top = position < 5 ? space : 0;
+        int bottom = space;
         holder.setText(R.id.tv_channel, channelBean.getTitle())
                 .getView(R.id.ll_box)
                 .setPadding(0, top, 0, bottom);
@@ -52,7 +54,7 @@ public class HomeChannelAdapter extends VirtualListItemAdapter<CouponsChannelSub
     @Override
     public LayoutHelper onCreateLayoutHelper() {
         GridLayoutHelper gridLayoutHelper = new GridLayoutHelper(5);
-        int space = SizeUtils.dp2px(10);
+        gridLayoutHelper.setAutoExpand(false);
         gridLayoutHelper.setPadding(space, space, space, 0);
         gridLayoutHelper.setLayoutViewHelper(new BaseLayoutHelper.DefaultLayoutViewHelper(new BaseLayoutHelper.LayoutViewBindListener() {
             @Override

@@ -49,6 +49,8 @@
         </activity>
         <activity android:name=".launcher.mvp.ui.activity.MainActivity">
         </activity>
+        <activity android:name=".home.mvp.ui.activity.GoodsDetailActivity">
+        </activity>
     </application>
 
 </manifest>

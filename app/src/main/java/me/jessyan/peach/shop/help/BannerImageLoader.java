@@ -20,7 +20,7 @@ public abstract class BannerImageLoader<T, V> extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         if (mImageLoader == null) {
-            mImageLoader = ArmsUtils.obtainAppComponentFromContext(context).imageLoader();
+            mImageLoader = ArmsUtils.getImageLoaderInstance(context);
         }
         mImageLoader.loadImage(context, ImageConfigImpl.builder()
                 .imageView(imageView)
