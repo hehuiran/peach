@@ -17,6 +17,7 @@ import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
+import com.youth.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -248,6 +249,37 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
             });
         }
         mVirtualAdapter.setEmptyView(mNetErrorView);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Banner banner = getBanner();
+        if (banner != null) {
+            banner.stopAutoPlay();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Banner banner = getBanner();
+        if (banner != null) {
+            banner.startAutoPlay();
+        }
+    }
+
+    private Banner getBanner() {
+        RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            return null;
+
+        }
+        View view = layoutManager.findViewByPosition(0);
+        if (view == null) {
+            return null;
+        }
+        return view.findViewById(R.id.banner);
     }
 
     /**

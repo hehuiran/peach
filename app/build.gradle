@@ -41,7 +41,7 @@ android {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "true"
-            buildConfigField "String", "BASE_URL", '"https://hzcangyu.com/"'
+            buildConfigField "String", "BASE_URL", '"http://47.99.168.168:8085/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config

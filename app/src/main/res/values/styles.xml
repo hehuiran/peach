@@ -37,4 +37,9 @@
         <item name="android:layout_height">@dimen/space_height</item>
         <item name="android:background">@color/color_e7e7e7</item>
     </style>
+
+    <style name="edit_text_style" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/color_ff1673</item>
+        <item name="colorControlActivated">@color/color_ff1673</item>
+    </style>
 </resources>

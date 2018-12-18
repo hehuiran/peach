@@ -26,6 +26,7 @@ import me.jessyan.peach.shop.entity.user.UserInfo;
 import me.jessyan.peach.shop.launcher.di.component.DaggerSplashComponent;
 import me.jessyan.peach.shop.launcher.mvp.contract.SplashContract;
 import me.jessyan.peach.shop.launcher.mvp.presenter.SplashPresenter;
+import me.jessyan.peach.shop.user.mvp.ui.activity.LoginActivity;
 import me.jessyan.peach.shop.widget.CountDownProgressView;
 import me.jessyan.peach.shop.widget.RecyclerImageView;
 
@@ -77,7 +78,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         getWindow().setBackgroundDrawable(null);
-        SPUtils.getInstance().put(SPKey.TOKEN,"fc2c7c47b91830c29792a719dfb602ef");
+//        SPUtils.getInstance().put(SPKey.TOKEN,"fc2c7c47b91830c29792a719dfb602ef");
 
         mProgressView.setOnProgressEndListener(() -> toNextPage());
 
@@ -140,8 +141,8 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             GuideActivity.launcher(this);
         } else {
             if (TextUtils.isEmpty(mToken)) {
-                MainActivity.launcher(this, false);
-//                LoginActivity.launcher(this, LoginActivity.LOGIN_WAY_SPLASH);
+//                MainActivity.launcher(this, false);
+                LoginActivity.launcher(this, LoginActivity.LOGIN_WAY_SPLASH);
             } else {
                 MainActivity.launcher(this, true);
             }

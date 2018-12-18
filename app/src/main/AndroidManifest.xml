@@ -51,6 +51,8 @@
         </activity>
         <activity android:name=".home.mvp.ui.activity.GoodsDetailActivity">
         </activity>
+        <activity android:name=".user.mvp.ui.activity.RegisterActivity">
+        </activity>
     </application>
 
 </manifest>

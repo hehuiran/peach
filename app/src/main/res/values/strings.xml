@@ -1,13 +1,20 @@
 <resources>
     <string name="app_name">小桃微集</string>
 
+    <string name="digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^*,./</string>
+
     <string name="skip">跳过</string>
-    <string name="input_user_account">请输入您的账户</string>
+    <string name="input_user_mobile">请输入您的手机号码</string>
     <string name="input_user_password">请输入您的密码</string>
+    <string name="input_user_verify_code">请输入您的验证码</string>
+    <string name="input_user_new_password">请输入您的新密码</string>
+    <string name="input_user_new_password_again">请确认您的新密码</string>
+    <string name="input_user_invite_code">请输入邀请码(必填)</string>
     <string name="login_is_representative">登录即代表同意</string>
     <string name="terms_of_use">小桃微集使用条款</string>
     <string name="login">登陆</string>
     <string name="register">注册</string>
+    <string name="agree_register">同意协议并注册</string>
     <string name="forget_password">忘记密码</string>
     <string name="third_party_login">第三方登陆</string>
     <string name="net_error">网络不给力～</string>
