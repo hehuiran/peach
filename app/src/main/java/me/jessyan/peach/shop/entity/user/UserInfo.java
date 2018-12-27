@@ -238,7 +238,7 @@ public class UserInfo {
         setToken(loginBean.getToken());
         setAlipay(loginBean.getAlipayAccount());
         setRealName(loginBean.getRealName());
-        setSubordinate(StringUtils.NumberFormat(loginBean.getSubordinate()));
+        setSubordinate(StringUtils.parseInt(loginBean.getSubordinate()));
 
         setHeadImgUrl(user.getHeadimgurl());
         setId(user.getId());
@@ -266,7 +266,7 @@ public class UserInfo {
 
         setInviteMobile(user.getInviterMobile());
         setIdentity(user.getUsergrade());
-        setIdentityStatus(StringUtils.NumberFormat(TextUtils.isEmpty(user.getUseridentity()) ? "0" : user.getUseridentity()));
+        setIdentityStatus(StringUtils.parseInt(TextUtils.isEmpty(user.getUseridentity()) ? "0" : user.getUseridentity()));
         String inviteCode = user.getInviter_code();
         setInviteCode(TextUtils.isEmpty(inviteCode) ? String.valueOf(user.getId()) : inviteCode);
 

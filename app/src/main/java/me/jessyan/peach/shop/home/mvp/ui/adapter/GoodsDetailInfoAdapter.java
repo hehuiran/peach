@@ -26,6 +26,7 @@ import me.jessyan.peach.shop.widget.span.CenterImageSpan;
 public class GoodsDetailInfoAdapter extends VirtualItemAdapter<VirtualItemViewHolder> {
 
     private GoodsDetailInfoBean mBean;
+    private int absolutePosition;
 
     public GoodsDetailInfoAdapter() {
         super(R.layout.item_goods_detail_info);
@@ -36,6 +37,14 @@ public class GoodsDetailInfoAdapter extends VirtualItemAdapter<VirtualItemViewHo
         notifyItemChanged(position);
     }
 
+    public int getAbsolutePosition() {
+        return absolutePosition;
+    }
+
+    public GoodsDetailInfoBean getData() {
+        return mBean;
+    }
+
     @Override
     public int getDefItemCount() {
         return mBean == null ? 0 : 1;
@@ -43,7 +52,7 @@ public class GoodsDetailInfoAdapter extends VirtualItemAdapter<VirtualItemViewHo
 
     @Override
     protected void convert(VirtualItemViewHolder holder, int position, int absolutePosition) {
-
+        this.absolutePosition = absolutePosition;
         TextView tvCollection = holder.getView(R.id.tv_collection);
         tvCollection.setSelected(mBean.isCollection());
 
@@ -69,6 +78,8 @@ public class GoodsDetailInfoAdapter extends VirtualItemAdapter<VirtualItemViewHo
         CenterImageSpan imageSpan = new CenterImageSpan(drawable);
         titleSpannable.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         tvTitle.setText(titleSpannable);
+
+        holder.addOnClickListener(R.id.tv_collection);
     }
 
     @Override

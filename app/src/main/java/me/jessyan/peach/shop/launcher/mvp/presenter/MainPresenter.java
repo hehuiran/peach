@@ -7,16 +7,12 @@ import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.PermissionUtil;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ConfigBean;
 import me.jessyan.peach.shop.launcher.mvp.contract.MainContract;
@@ -60,16 +56,6 @@ public class MainPresenter extends BasePresenter<MainContract.Model, MainContrac
                         getConfigInfo(isNeedAutoLogin, token, deviceId);
                     }
                 }
-            }
-
-            @Override
-            public void onRequestPermissionFailure(List<String> permissions) {
-                ToastUtils.showShort(R.string.request_permissions_failure);
-            }
-
-            @Override
-            public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
-                ToastUtils.showShort(R.string.need_to_go_to_the_settings);
             }
         }, mRootView.getRxPermissions(), mErrorHandler);
     }

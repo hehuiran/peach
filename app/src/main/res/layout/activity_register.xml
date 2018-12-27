@@ -94,6 +94,23 @@
         app:layout_constraintStart_toStartOf="@+id/edit_mobile"
         app:layout_constraintTop_toBottomOf="@+id/edit_mobile"/>
 
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7"/>
+    <TextView
+        android:id="@+id/tv_send_code"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical|end"
+        android:text="@string/send_verify_code"
+        android:textColor="@color/color_ff1673"
+        app:layout_constraintTop_toTopOf="@+id/edit_verify_code"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_verify_code"
+        app:layout_constraintStart_toStartOf="@+id/gl_one"
+        app:layout_constraintEnd_toEndOf="@+id/edit_verify_code"/>
     <EditText
         android:id="@+id/edit_password"
         android:layout_width="0dp"
@@ -139,7 +156,7 @@
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginTop="15dp"
-        android:digits="@string/digits"
+        android:digits="@string/invite_digits"
         android:ellipsize="end"
         android:hint="@string/input_user_invite_code"
         android:inputType="text"

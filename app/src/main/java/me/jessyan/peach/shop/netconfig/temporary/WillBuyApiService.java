@@ -13,8 +13,6 @@ import me.jessyan.peach.shop.entity.goods.CouponsCategoryBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelBean;
 import me.jessyan.peach.shop.entity.goods.FreeShippingOnePlusNWrapBean;
 import me.jessyan.peach.shop.entity.goods.ProductDetailsIntervalBean;
-import me.jessyan.peach.shop.entity.goods.SearchBean;
-import me.jessyan.peach.shop.entity.goods.SearchResultBean;
 import me.jessyan.peach.shop.entity.goods.VirtualMustSeeSectionBean;
 import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
 import me.jessyan.peach.shop.entity.home.taobao.TaoBaoDetailsBean;
@@ -268,10 +266,6 @@ public interface WillBuyApiService {
      * 获取搜索结果
      */
     @FormUrlEncoded
-    @POST("goods/queryHaoDanKu")
-    Observable<BasicResponse<SearchResultBean>> getSearchResult(@Field("pageNo") int page, @Field("pageSize") int pageSize
-            , @Field("condition") String keywords, @Field("sort") String type);
-    @FormUrlEncoded
     @POST("goods/queryTaoBaoOptional")
     Observable<ResponseBody> getSearchResult2(@Field("pageNo") int page, @Field("pageSize") int pageSize
             , @Field("condition") String keywords, @Field("sort") String type, @Field("member") String member);
@@ -279,8 +273,8 @@ public interface WillBuyApiService {
 
     @FormUrlEncoded
     @POST("goods/queryHaoDanKu")
-    Observable<BasicResponse<SearchBean>> getSearchResult(@Field("pageNo") int page, @Field("pageSize") int pageSize
-            , @Field("condition") String keywords, @Field("sort") String type, @Field("iscoupon") int iscoupon);
+    Observable<BasicResponse<CouponsCommodityBean>> getSearchResult(@Field("pageNo") int page, @Field("pageSize") int pageSize
+            , @Field("condition") String keywords, @Field("sort") String sort, @Field("iscoupon") int iscoupon);
 
     /**
      * 查询商店商品列表

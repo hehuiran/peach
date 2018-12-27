@@ -1,30 +1,60 @@
 package me.jessyan.peach.shop.user.mvp.ui.activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Space;
+import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.http.imageloader.ImageConfigImpl;
 import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.utils.ArmsUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.constant.IntentExtra;
+import me.jessyan.peach.shop.constant.SPKey;
+import me.jessyan.peach.shop.entity.BasicResponse;
+import me.jessyan.peach.shop.entity.user.LoginBean;
+import me.jessyan.peach.shop.entity.user.ThirdPartyInfoBean;
+import me.jessyan.peach.shop.launcher.mvp.ui.activity.MainActivity;
 import me.jessyan.peach.shop.user.di.component.DaggerLoginComponent;
 import me.jessyan.peach.shop.user.mvp.contract.LoginContract;
 import me.jessyan.peach.shop.user.mvp.presenter.LoginPresenter;
+import me.jessyan.peach.shop.utils.StringUtils;
 
 /**
  * ================================================
@@ -44,6 +74,9 @@ import me.jessyan.peach.shop.user.mvp.presenter.LoginPresenter;
  */
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
 
+
+    @Inject
+    RxPermissions mRxPermissions;
     @BindView(R.id.iv_bg)
     ImageView mIvBg;
     @BindView(R.id.status_view)
@@ -54,6 +87,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     EditText mEditPassword;
     @BindView(R.id.check_box)
     AppCompatCheckBox mCheckBox;
+    @BindView(R.id.tv_login)
+    TextView mTvLogin;
     private int mLoginType;
 
 
@@ -63,6 +98,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public static final int LOGIN_WAY_SPLASH = 2;
     //token失效等
     public static final int LOGIN_WAY_OTHER = 3;
+    private long mExitTime;
+    private SHARE_MEDIA mPlatform;
+    private String mDeviceId;
+    private UMAuthListener mAuthListener;
+    private ThirdPartyInfoBean mThirdPartyInfoBean;
+    private String mMobile;
+    private String mPassword;
 
     @IntDef({LOGIN_WAY_MODULES, LOGIN_WAY_SPLASH, LOGIN_WAY_OTHER})
     public @interface LoginType {
@@ -117,6 +159,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_skip:
+                skip();
                 break;
             case R.id.tv_register:
                 RegisterActivity.launcher(this, mLoginType);
@@ -124,17 +167,251 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             case R.id.tv_forget:
                 break;
             case R.id.tv_login:
+                checkMobileLogin();
                 break;
             case R.id.tv_agreement:
                 break;
             case R.id.iv_wechat:
+                mPlatform = SHARE_MEDIA.WEIXIN;
+                mPresenter.readPhoneState(false);
                 break;
             case R.id.iv_qq:
+                mPlatform = SHARE_MEDIA.QQ;
+                mPresenter.readPhoneState(false);
                 break;
             case R.id.iv_taobao:
                 break;
             case R.id.iv_sina:
+                mPlatform = SHARE_MEDIA.SINA;
+                mPresenter.readPhoneState(false);
                 break;
         }
+    }
+
+    private void skip() {
+        if (mLoginType == LoginActivity.LOGIN_WAY_MODULES) {
+            //从MainActivity跳转至登录界面,关闭当前页面即可
+            finish();
+        } else if (mLoginType == LoginActivity.LOGIN_WAY_SPLASH) {
+            //从SplashActivity跳转至登录界面,MainActivity还未实例化
+            MainActivity.launcher(this, false);
+            finish();
+        } else if (mLoginType == LoginActivity.LOGIN_WAY_OTHER) {
+            //删除无效token 退出应用
+            removeTokenAndExitApplication();
+        }
+    }
+
+    private void checkMobileLogin() {
+        mMobile = checkMobile();
+        mPassword = checkPassword();
+        if (!StringUtils.isEmpty(mMobile, mPassword)) {
+            if (!mCheckBox.isChecked()) {
+                ToastUtils.showShort(R.string.hint_agreement);
+                return;
+            }
+            mPresenter.readPhoneState(true);
+        }
+    }
+
+    private String checkMobile() {
+        Editable text = mEditMobile.getText();
+        if (RegexUtils.isMobileSimple(text)) {
+            return text.toString();
+        }
+        ToastUtils.showShort(R.string.hint_mobile_error);
+        return null;
+    }
+
+    private String checkPassword() {
+        Editable text = mEditPassword.getText();
+        if (!TextUtils.isEmpty(text) && text.length() >= 6 && text.length() <= 12) {
+            return text.toString();
+        }
+        ToastUtils.showShort(R.string.hint_password_error);
+        return null;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            switch (mLoginType) {
+                case LoginActivity.LOGIN_WAY_SPLASH:
+                    exitTime();
+                    return true;
+                case LoginActivity.LOGIN_WAY_OTHER:
+                    removeTokenAndExitApplication();
+                    return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exitTime() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            ToastUtils.showShort(R.string.hint_exit);
+            mExitTime = System.currentTimeMillis();
+        } else {
+            ActivityUtils.finishAllActivities();
+        }
+    }
+
+    private void removeTokenAndExitApplication() {
+        SPUtils.getInstance().remove(SPKey.TOKEN);
+        ActivityUtils.finishAllActivities();
+    }
+
+    @Override
+    public RxPermissions getRxPermissions() {
+        return mRxPermissions;
+    }
+
+    @Override
+    public FragmentActivity getActivity() {
+        return this;
+    }
+
+    @Override
+    public void onMobileLoginSuccess(LoginBean bean) {
+        if (mLoginType == LoginActivity.LOGIN_WAY_MODULES) {
+            //从MainActivity跳转至登录界面
+            MainActivity.backToMain(this, MainActivity.BACK_TO_MAIN_DO_NOTHING);
+        } else if (mLoginType == LoginActivity.LOGIN_WAY_SPLASH) {
+            //从SplashActivity跳转至登录界面,MainActivity还未实例化
+            MainActivity.launcher(this, false);
+            finish();
+        } else if (mLoginType == LoginActivity.LOGIN_WAY_OTHER) {
+            //token过期从首页跳转至登录界面
+            MainActivity.backToMain(this, MainActivity.BACK_TO_MAIN_RESET_TOKEN);
+        }
+    }
+
+    @Override
+    public void onMobileLoginFailed() {
+        mTvLogin.setEnabled(true);
+    }
+
+    @SuppressLint("HardwareIds")
+    @Override
+    public void readPhoneStateSuccess(boolean isMobileLogin) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            TelephonyManager telephonyManager =
+                    (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            if (telephonyManager != null) {
+                mDeviceId = telephonyManager.getDeviceId();
+                if (TextUtils.isEmpty(mDeviceId)) {
+                    mDeviceId = "unknown";
+                }
+                if (isMobileLogin) {
+                    mobileLogin();
+                } else {
+                    thirdPartyAuth();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onThirdPartyLoginSuccess(BasicResponse<LoginBean> response) {
+        int code = response.getCode();
+        if (code == 0) {
+            //登陆成功
+            if (mLoginType == LoginActivity.LOGIN_WAY_MODULES) {
+                //从MainActivity跳转至登录界面
+                MainActivity.backToMain(this, MainActivity.BACK_TO_MAIN_DO_NOTHING);
+            } else if (mLoginType == LoginActivity.LOGIN_WAY_SPLASH) {
+                //从SplashActivity跳转至登录界面,MainActivity还未实例化
+                MainActivity.launcher(this, false);
+                finish();
+            } else if (mLoginType == LoginActivity.LOGIN_WAY_OTHER) {
+                //token过期从首页跳转至登录界面
+                MainActivity.backToMain(this, MainActivity.BACK_TO_MAIN_RESET_TOKEN);
+            }
+        } else if (code == 1002) {
+            //去绑定手机
+            BindMobileActivity.launcher(this, mLoginType, mThirdPartyInfoBean);
+        }
+    }
+
+    private void mobileLogin() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("mobile", mMobile);
+        map.put("passworld", mPassword);
+        map.put("deviceSerialId", mDeviceId);
+        mTvLogin.setEnabled(false);
+        mPresenter.mobileLogin(map);
+    }
+
+    private void thirdPartyAuth() {
+        if (mPlatform == null) {
+            return;
+        }
+        if (UMShareAPI.get(this).isInstall(this, mPlatform)) {
+            if (mAuthListener == null) {
+                mAuthListener = new UMAuthListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+                        mPresenter.showLoading();
+                    }
+
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        for (Map.Entry<String, String> entry : map.entrySet()) {
+                            LogUtils.d(TAG, "key= " + entry.getKey() + " and value= "
+                                    + entry.getValue());
+                        }
+                        String uid = map.get("uid");
+                        String iconUrl = map.get("iconurl");
+                        int gender = map.get("gender").equals("男") ? 0 : 1;
+                        String nickname = StringUtils.filterEmoji(map.get("name"));
+                        thirdPartyLogin(uid, iconUrl, gender, nickname);
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                        mPresenter.hideLoading();
+
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media, int i) {
+                        mPresenter.hideLoading();
+                    }
+                };
+            }
+            UMShareAPI.get(this).getPlatformInfo(this, mPlatform, mAuthListener);
+        } else {
+            String hint = String.format(getString(R.string.un_install_third_party_app), mPlatform.getName());
+            ToastUtils.showShort(hint);
+        }
+    }
+
+    private void thirdPartyLogin(String uid, String iconUrl, int gender, String nickname) {
+        mThirdPartyInfoBean = new ThirdPartyInfoBean();
+        mThirdPartyInfoBean.setDeviceId(mDeviceId);
+        mThirdPartyInfoBean.setGender(gender);
+        mThirdPartyInfoBean.setIconUrl(iconUrl);
+        mThirdPartyInfoBean.setOpenId(uid);
+        mThirdPartyInfoBean.setPlatform(mPlatform == SHARE_MEDIA.QQ ? 0 : 1);
+        mThirdPartyInfoBean.setNickName(nickname);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(mPlatform == SHARE_MEDIA.WEIXIN ? "wxopenid" :
+                mPlatform == SHARE_MEDIA.SINA ? "sinaopenid" :
+                        "qqopenid", uid);
+        map.put("deviceSerialId", mDeviceId);
+        mPresenter.thirdPartyLogin(map);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        UMShareAPI.get(this).release();
+        super.onDestroy();
     }
 }

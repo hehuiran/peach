@@ -21,6 +21,7 @@ import me.jessyan.peach.shop.entity.mine.MineLoginCompletedLineBean;
 import me.jessyan.peach.shop.entity.mine.MineLoginCompletedOrderBean;
 import me.jessyan.peach.shop.entity.mine.OrderStatusBean;
 import me.jessyan.peach.shop.entity.mine.WithDrawBean;
+import me.jessyan.peach.shop.entity.user.UserAccountBean;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -81,7 +82,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("user/queryAccumulative")
-    Observable<ResponseBody> queryUserSaveMoney(@Field("timestamp") long millis);
+    Observable<BasicResponse<UserAccountBean>> queryUserSaveMoney(@Field("timestamp") long millis);
 
 
     /**
@@ -210,9 +211,6 @@ public interface MineApiService {
     @FormUrlEncoded
     @POST("order/withdraw/logger")
     Observable<BasicResponse<IncomeReportsListBean>> getIncomeReportsListData(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize, @Field("type") int type);
-
-
-
 
 
     /**

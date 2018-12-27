@@ -1,11 +1,11 @@
 package me.jessyan.peach.shop.user.di.module;
 
 import com.jess.arms.di.scope.ActivityScope;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
-
 import me.jessyan.peach.shop.user.mvp.contract.RegisterContract;
 import me.jessyan.peach.shop.user.mvp.model.RegisterModel;
 
@@ -27,4 +27,10 @@ public abstract class RegisterModule {
 
     @Binds
     abstract RegisterContract.Model bindRegisterModel(RegisterModel model);
+
+    @ActivityScope
+    @Provides
+    static RxPermissions provideRxPermissions(RegisterContract.View view) {
+        return new RxPermissions(view.getActivity());
+    }
 }

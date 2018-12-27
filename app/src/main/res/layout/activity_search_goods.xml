@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Space
+        android:id="@+id/status_view"
+        android:layout_width="0dp"
+        android:layout_height="0.1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/shape_solid_f0f0f0_radius_15"
+        android:drawablePadding="10dp"
+        android:drawableStart="@mipmap/ic_search"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:hint="@string/input_goods_name"
+        android:imeOptions="actionSearch"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_7a7a7a"
+        android:textColorHint="@color/color_7a7a7a"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_view"/>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="@string/cancel"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/edit_text"/>
+
+    <View
+        android:id="@+id/v_line"
+        style="@style/line_style"
+        android:layout_marginTop="7dp"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text"/>
+
+    <TextView
+        android:id="@+id/tv_title_hot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="5dp"
+        android:drawableStart="@mipmap/ic_hot_fir"
+        android:gravity="center_vertical"
+        android:text="@string/hot_search"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_line"/>
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/flow_layout_hot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_hot"/>
+
+    <TextView
+        android:id="@+id/tv_title_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:drawablePadding="5dp"
+        android:drawableStart="@mipmap/ic_search_record"
+        android:gravity="center_vertical"
+        android:text="@string/record_search"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flow_layout_hot"/>
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/flow_layout_record"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_record"/>
+
+    <android.support.constraint.Group
+        android:id="@+id/group_hot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_title_hot,flow_layout_hot"
+        tools:visibility="visible"/>
+
+    <android.support.constraint.Group
+        android:id="@+id/group_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_title_record,flow_layout_record"
+        tools:visibility="visible"/>
+</android.support.constraint.ConstraintLayout>

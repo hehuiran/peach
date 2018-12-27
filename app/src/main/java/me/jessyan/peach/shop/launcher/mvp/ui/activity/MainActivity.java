@@ -3,6 +3,7 @@ package me.jessyan.peach.shop.launcher.mvp.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -77,9 +78,27 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private BottomMenu lastView;
     private BottomMenuLayout mBottomMenuLayout;
 
+
+    //返回首页用新token重新请求配置信息
+    public static final int BACK_TO_MAIN_RESET_TOKEN = 1;
+    //仅仅是返回首页,不做任何事情
+    public static final int BACK_TO_MAIN_DO_NOTHING = 2;
+
+    @IntDef({BACK_TO_MAIN_RESET_TOKEN,BACK_TO_MAIN_DO_NOTHING})
+    public @interface BackToMain {
+
+    }
+
     public static void launcher(@NonNull Context context, boolean isNeedAutoLogin) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(IntentExtra.IS_NEED_AUTO_LOGIN, isNeedAutoLogin);
+        context.startActivity(intent);
+    }
+
+    public static void backToMain(@NonNull Context context, @BackToMain int type) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(IntentExtra.BACK_TO_MAIN, type);
         context.startActivity(intent);
     }
 
@@ -290,5 +309,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         }
         //已经登录显示相对应的fragment
         addFragment(position, bottomMenu);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        int type = intent.getIntExtra(IntentExtra.BACK_TO_MAIN, -1);
+        if (type == BACK_TO_MAIN_RESET_TOKEN){
+            //重新请求配置信息
+            mIsNeedAutoLogin = false;
+            requestNetData();
+        }
     }
 }

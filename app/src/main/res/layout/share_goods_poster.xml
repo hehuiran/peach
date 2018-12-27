@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_goods"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <ImageView
+        android:id="@+id/iv_qr"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="10dp"
+        android:padding="4dp"
+        android:scaleType="fitXY"
+        tools:src="@mipmap/ic_launcher"
+        android:background="@mipmap/ic_qr_code_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_goods"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/iv_qr"
+        app:layout_constraintEnd_toEndOf="@+id/iv_qr"
+        app:layout_constraintTop_toBottomOf="@+id/iv_qr"
+        android:textSize="12sp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/color_333333"
+        android:text="@string/decoding_qr_code"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_qr"
+        app:layout_constraintTop_toTopOf="@+id/iv_qr"
+        android:maxLines="2"
+        tools:text="双方就开始恢复健康舒服手机繁花似锦分和东方科技大厦减肥开始的福建省倒海翻江可"
+        android:ellipsize="end"
+        android:textSize="14sp"
+        android:textColor="@color/color_333333"/>
+
+    <TextView
+        android:id="@+id/tv_discount_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_ff1673"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:textSize="34sp"
+        android:includeFontPadding="false"
+        tools:text="@string/rmb"/>
+
+    <TextView
+        android:id="@+id/tv_original_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/color_999999"
+        tools:text="@string/coupon_before_price_yuan"
+        app:layout_constraintTop_toBottomOf="@+id/iv_qr"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_qr"/>
+
+    <me.jessyan.peach.shop.widget.CouponsLayout
+        android:id="@+id/coupons_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        app:layout_constraintTop_toTopOf="@+id/tv_original_price"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_original_price"
+        app:layout_constraintStart_toEndOf="@+id/tv_original_price"/>
+</android.support.constraint.ConstraintLayout>

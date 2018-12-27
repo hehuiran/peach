@@ -89,8 +89,8 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
                             GoodsBean goodsBean = ourServerGoodsDetailList.get(0);
                             infoBean.setItemId(goodsBean.getItemId());
                             infoBean.setTitle(goodsBean.getTitle());
-                            infoBean.setCouponEndTime(StringUtils.longNumberFormat(goodsBean.getCouponEndTime()));
-                            infoBean.setCouponStartTime(StringUtils.longNumberFormat(goodsBean.getCouponStartTime()));
+                            infoBean.setCouponEndTime(StringUtils.parseLong(goodsBean.getCouponEndTime()));
+                            infoBean.setCouponStartTime(StringUtils.parseLong(goodsBean.getCouponStartTime()));
                             infoBean.setCouponMoney(goodsBean.getCouponmoney());
                             infoBean.setTkMoney(goodsBean.getTkMoney());
                             infoBean.setSoldCount(goodsBean.getSoldCount());
@@ -108,6 +108,18 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
                         return goodsDetailOptionalBean;
                     }
                 });
+    }
+
+    @Override
+    public Observable<BasicResponse<String>> collectionGoods(String itemId) {
+        return mRepositoryManager.obtainRetrofitService(CollectionApiService.class)
+                .collectionCommodity(itemId);
+    }
+
+    @Override
+    public Observable<BasicResponse<String>> cancelCollectionGoods(String itemId) {
+        return mRepositoryManager.obtainRetrofitService(CollectionApiService.class)
+                .cancelCollectionCommodity(itemId);
     }
 
     private Observable<Boolean> getGoodsCollectionStatus(String itemId) {
@@ -226,8 +238,8 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
                                                             String picUrl = params.getPicUrl();
                                                             if (!TextUtils.isEmpty(picUrl)) {
                                                                 TaoBaoImageBean.DataBean.ChildrenBeanX.ParamsBeanX.SizeBean sizeBean = params.getSize();
-                                                                int width = StringUtils.NumberFormat(sizeBean.getWidth());
-                                                                int height = StringUtils.NumberFormat(sizeBean.getHeight());
+                                                                int width = StringUtils.parseInt(sizeBean.getWidth());
+                                                                int height = StringUtils.parseInt(sizeBean.getHeight());
 
                                                                 GoodsDetailImageBean goodsDetailImageBean = new GoodsDetailImageBean();
                                                                 goodsDetailImageBean.setImgUrl(getUrl(picUrl));

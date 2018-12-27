@@ -1,10 +1,12 @@
 package me.jessyan.peach.shop.home.mvp.presenter;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
+import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailOptionalBean;
 import me.jessyan.peach.shop.home.mvp.contract.GoodsDetailContract;
@@ -48,6 +50,34 @@ public class GoodsDetailPresenter extends BasePresenter<GoodsDetailContract.Mode
                     public void onError(Throwable t) {
                         super.onError(t);
                         mRootView.onGetGoodsDetailDataFailed();
+                    }
+                });
+    }
+
+    public void collectionGoods(String itemId) {
+        mModel.collectionGoods(itemId)
+                .compose(new CommonTransformer<>(this,false))
+                .subscribe(new ErrorHandleSubscriber<BasicResponse<String>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BasicResponse<String> stringBasicResponse) {
+                        ToastUtils.showShort(stringBasicResponse.getData());
+                        if (stringBasicResponse.getCode()==0){
+                            mRootView.onGoodsCollectionStateChangeSuccess(true);
+                        }
+                    }
+                });
+    }
+
+    public void cancelCollectionGoods(String itemId) {
+        mModel.cancelCollectionGoods(itemId)
+                .compose(new CommonTransformer<>(this,false))
+                .subscribe(new ErrorHandleSubscriber<BasicResponse<String>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BasicResponse<String> stringBasicResponse) {
+                        ToastUtils.showShort(stringBasicResponse.getData());
+                        if (stringBasicResponse.getCode()==0){
+                            mRootView.onGoodsCollectionStateChangeSuccess(false);
+                        }
                     }
                 });
     }

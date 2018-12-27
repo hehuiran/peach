@@ -17,6 +17,8 @@ package com.jess.arms.utils;
 
 import android.Manifest;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.jess.arms.R;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -57,14 +59,18 @@ public class PermissionUtil {
          *
          * @param permissions 请求失败的权限名
          */
-        void onRequestPermissionFailure(List<String> permissions);
+        default void onRequestPermissionFailure(List<String> permissions){
+            ToastUtils.showShort(R.string.request_permissions_failure);
+        }
 
         /**
          * 用户拒绝了权限请求并且用户选择了以后不再询问, 权限请求失败, 这时将不能继续请求该权限, 需要提示用户进入设置页面打开该权限
          *
          * @param permissions 请求失败的权限名
          */
-        void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions);
+        default void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions){
+            ToastUtils.showShort(R.string.need_to_go_to_the_settings);
+        }
     }
 
 

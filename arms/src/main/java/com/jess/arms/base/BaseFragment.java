@@ -115,7 +115,7 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
             isInitView = true;
             lazyLoad();
         } else {
-            if (isImmersionBarEnabled()){
+            if (isImmersionBarEnabled()) {
                 initImmersionBar();
             }
             initData();
@@ -133,7 +133,7 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
             //如果不是第一次加载、不是可见的、不是初始化view，则不加载数据
             return;
         }
-        if (isImmersionBarEnabled()){
+        if (isImmersionBarEnabled()) {
             initImmersionBar();
         }
         initData();
@@ -143,6 +143,14 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
 
     public void onLazyLoadVisible() {
 
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && isImmersionBarEnabled()) {
+            initImmersionBar();
+        }
     }
 
     /**

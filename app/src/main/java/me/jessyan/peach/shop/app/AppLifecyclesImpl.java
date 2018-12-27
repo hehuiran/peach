@@ -19,12 +19,19 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.ali.auth.third.core.MemberSDK;
+import com.alibaba.baichuan.android.trade.AlibcTradeSDK;
+import com.alibaba.baichuan.android.trade.callback.AlibcTradeInitCallback;
 import com.blankj.utilcode.util.Utils;
 import com.jess.arms.base.delegate.AppLifecycles;
 import com.jess.arms.integration.cache.IntelligentCache;
 import com.jess.arms.utils.ArmsUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
 
 import butterknife.ButterKnife;
 import me.jessyan.peach.shop.BuildConfig;
@@ -40,6 +47,8 @@ import timber.log.Timber;
  * ================================================
  */
 public class AppLifecyclesImpl implements AppLifecycles {
+
+    private static final String TAG = "AppLifecyclesImpl";
 
     @Override
     public void attachBaseContext(@NonNull Context base) {
@@ -77,6 +86,44 @@ public class AppLifecyclesImpl implements AppLifecycles {
 
 
         Utils.init(application);
+        initUM(application);
+        initAlibc(application);
+    }
+
+    private void initUM(Application application) {
+        UMConfigure.setLogEnabled(BuildConfig.LOG_DEBUG);
+        UMConfigure.init(application, "5a0d0b64a40fa32ca700006f"
+                , "UMENG_APPKEY", UMConfigure.DEVICE_TYPE_PHONE, "");
+
+        PlatformConfig.setWeixin("wxbf3fbd46edb500cd", "d62ce95759ef12d9e0ee6914132c7056");
+
+        PlatformConfig.setSinaWeibo("2986931077", "5dce102ce33a69cbc853484b97176077"
+                , "http://sns.whalecloud.com/sina2/callback");
+        PlatformConfig.setQQZone("1106517624", "AR9JoCIeYTwuUYgd");
+
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(application).setShareConfig(config);
+    }
+
+    private void initAlibc(Application application) {
+        if (BuildConfig.LOG_DEBUG) {
+            MemberSDK.turnOnDebug();
+        }
+        AlibcTradeSDK.asyncInit(application, new AlibcTradeInitCallback() {
+            @Override
+            public void onSuccess() {
+                Timber.tag(TAG).d("阿里百川初始化成功");
+                /*AlibcTaokeParams params = new AlibcTaokeParams("mm_52605298_11108750_38144362","","");
+                AlibcTradeSDK.setTaokeParams(params);*/
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                Timber.tag(TAG).e("阿里百川初始化失败" + "code=" + code + " msg=" + msg);
+            }
+        });
+
     }
 
     @Override

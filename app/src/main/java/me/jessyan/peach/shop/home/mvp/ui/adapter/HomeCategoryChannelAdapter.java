@@ -37,7 +37,9 @@ public class HomeCategoryChannelAdapter extends VirtualListItemAdapter<GoodsCate
     @Override
     protected void convert(VirtualItemViewHolder holder, int position, int absolutePosition) {
         GoodsCategoryGridBean.DataBean channelBean = mData.get(position);
-        int row = mData.size() / SPAN_COUNT;
+        int size = mData.size();
+        int value = size / SPAN_COUNT;
+        int row = size % SPAN_COUNT == 0 ? value : value + 1;
         int index = position / SPAN_COUNT;
         int top = index < 1 ? space15 : space10;
         int bottom = index >= row - 1 ? space15 : 0;

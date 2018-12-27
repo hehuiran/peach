@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_solid_white_radius_5">
+
+        <ImageView
+            android:id="@+id/iv_img"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_commission"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:background="@color/color_c8ff458f"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_img"
+            app:layout_constraintEnd_toEndOf="@+id/iv_img"
+            app:layout_constraintStart_toStartOf="@+id/iv_img"
+            tools:text="@string/estimate_the_commission"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_img"
+            app:layout_constraintTop_toTopOf="@+id/iv_img"
+            tools:text="情侣冬装格情侣冬装格子小西装外套加厚版情侣冬装格子小西装外套加厚版情侣冬装格子小西装外套加厚版情侣冬装格子小西装外套加厚版子小西装外套加厚版"/>
+
+        <TextView
+            android:id="@+id/tv_original_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:includeFontPadding="false"
+            android:textColor="@color/color_808080"
+            android:textSize="10sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_discount_price"
+            app:layout_constraintStart_toEndOf="@+id/tv_discount_price"
+            tools:text="@string/original_price_format"/>
+
+        <TextView
+            android:id="@+id/tv_sold_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textColor="@color/color_808080"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_img"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            tools:text="@string/sold_count"/>
+
+        <me.jessyan.peach.shop.widget.CouponsLayout
+            android:id="@+id/coupons_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/tv_original_price"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sold_count"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title"/>
+
+        <TextView
+            android:id="@+id/tv_discount_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="9dp"
+            android:includeFontPadding="false"
+            android:textColor="@color/color_ff0066"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sold_count"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            tools:text="@string/rmb"/>
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

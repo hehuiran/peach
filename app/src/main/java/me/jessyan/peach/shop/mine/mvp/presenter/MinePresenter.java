@@ -5,8 +5,11 @@ import com.jess.arms.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
+import me.jessyan.peach.shop.entity.mine.MineOptionalBean;
 import me.jessyan.peach.shop.mine.mvp.contract.MineContract;
+import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 /**
@@ -29,6 +32,23 @@ public class MinePresenter extends BasePresenter<MineContract.Model, MineContrac
     @Inject
     public MinePresenter(MineContract.Model model, MineContract.View rootView) {
         super(model, rootView);
+    }
+
+    public void getMineData(boolean showLoading) {
+        mModel.getMineData()
+                .compose(new CommonTransformer<>(this, showLoading))
+                .subscribe(new ErrorHandleSubscriber<MineOptionalBean>(mErrorHandler) {
+                    @Override
+                    public void onNext(MineOptionalBean mineOptionalBean) {
+                        mRootView.onGetMineDataSuccess(mineOptionalBean);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        mRootView.onGetMineDataFailed();
+                    }
+                });
     }
 
     @Override

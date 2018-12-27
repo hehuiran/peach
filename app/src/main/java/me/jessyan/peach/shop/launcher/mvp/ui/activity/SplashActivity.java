@@ -78,7 +78,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         getWindow().setBackgroundDrawable(null);
-//        SPUtils.getInstance().put(SPKey.TOKEN,"fc2c7c47b91830c29792a719dfb602ef");
 
         mProgressView.setOnProgressEndListener(() -> toNextPage());
 
@@ -141,7 +140,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             GuideActivity.launcher(this);
         } else {
             if (TextUtils.isEmpty(mToken)) {
-//                MainActivity.launcher(this, false);
                 LoginActivity.launcher(this, LoginActivity.LOGIN_WAY_SPLASH);
             } else {
                 MainActivity.launcher(this, true);

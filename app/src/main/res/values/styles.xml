@@ -25,6 +25,21 @@
         <item name="android:windowExitAnimation">@anim/alpha_exit</item>
     </style>
 
+    <style name="share_dialog_style" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:backgroundDimEnabled">true</item><!-- 去掉灰色背景 -->
+        <item name="android:windowAnimationStyle">@style/from_bottom_anim</item>
+    </style>
+
+    <style name="from_bottom_anim">
+        <item name="android:windowEnterAnimation">@anim/bottom_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/bottom_exit_anim</item>
+    </style>
+
     <!--view-->
     <style name="line_style">
         <item name="android:layout_width">match_parent</item>

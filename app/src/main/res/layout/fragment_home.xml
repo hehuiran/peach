@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/status_view"
@@ -38,7 +37,9 @@
         android:paddingEnd="5dp"
         android:paddingStart="5dp"
         android:text="@string/input_search_hint"
+        android:textColor="@color/color_7a7a7a"
         android:textSize="12sp"
+        android:layout_marginTop="7dp"
         app:layout_constraintEnd_toStartOf="@+id/iv_msg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/status_view"/>

@@ -112,6 +112,7 @@ dependencies {
     api rootProject.ext.dependencies["timber"]
     implementation rootProject.ext.dependencies["multidex"]
     api rootProject.ext.dependencies["immersionbar"]
+    api rootProject.ext.dependencies["utils"]
 }
 
 apply from: '../bintray.gradle'

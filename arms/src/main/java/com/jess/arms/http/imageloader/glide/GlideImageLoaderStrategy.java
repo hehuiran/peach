@@ -1,6 +1,7 @@
 package com.jess.arms.http.imageloader.glide;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
@@ -9,9 +10,13 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.FutureTarget;
 import com.jess.arms.http.imageloader.BaseImageLoaderStrategy;
 import com.jess.arms.http.imageloader.ImageConfigImpl;
 import com.jess.arms.utils.Preconditions;
+
+import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -30,12 +35,49 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
     public void loadImage(Context ctx, ImageConfigImpl config) {
         Preconditions.checkNotNull(ctx, "Context is required");
         Preconditions.checkNotNull(config, "ImageConfigImpl is required");
-        Preconditions.checkNotNull(config.getImageView(), "ImageView is required");
 
         GlideRequests requests;
 
         requests = GlideArms.with(ctx);//如果context是activity则自动使用Activity的生命周期
 
+        if (config.getDownloadOnlyListener() != null && config.getWidth() != 0 && config.getHeight() != 0) {
+            downloadFile(requests, config);
+        } else {
+            applyImageView(requests, config);
+        }
+    }
+
+    @Override
+    public Bitmap synGetBitmap(Context ctx, ImageConfigImpl config) {
+        Preconditions.checkNotNull(ctx, "Context is required");
+        Preconditions.checkNotNull(config, "ImageConfigImpl is required");
+        FutureTarget<Bitmap> futureTarget = GlideArms.with(ctx).asBitmap()
+                .load(config.getUrl())
+                .submit(config.getWidth(), config.getHeight());
+
+        try {
+            return futureTarget.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void downloadFile(GlideRequests requests, ImageConfigImpl config) {
+        ImageConfigImpl.DownloadOnlyListener listener = config.getDownloadOnlyListener();
+        FutureTarget<File> futureTarget = requests.downloadOnly()
+                .load(config.getUrl())
+                .submit(config.getWidth(), config.getHeight());
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                File file = futureTarget.get();
+                listener.downloadCompleted(file);
+            }
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
+    private void applyImageView(GlideRequests requests, ImageConfigImpl config) {
         GlideRequest<Drawable> glideRequest = requests.load(config.getUrl());
 
         switch (config.getCacheStrategy()) {//缓存策略
@@ -81,6 +123,10 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
 
         if (config.getTransformation() != null) {//glide用它来改变图形的形状
             glideRequest.transform(config.getTransformation());
+        }
+
+        if (config.getPlaceDrawable() != null) {
+            glideRequest.placeholder(config.getPlaceDrawable());
         }
 
         if (config.getPlaceholder() != 0)//设置占位符

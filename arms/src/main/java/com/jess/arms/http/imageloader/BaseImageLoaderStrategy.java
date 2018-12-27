@@ -16,6 +16,7 @@
 package com.jess.arms.http.imageloader;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 /**
  * ================================================
@@ -35,6 +36,11 @@ public interface BaseImageLoaderStrategy<T extends ImageConfig> {
      * @param config
      */
     void loadImage(Context ctx, T config);
+
+    /**
+     * 同步方式获取图片
+     */
+    Bitmap synGetBitmap(Context ctx, T config);
 
     /**
      * 停止加载

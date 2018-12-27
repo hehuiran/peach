@@ -1,8 +1,10 @@
 package me.jessyan.peach.shop.utils;
 
-import android.support.annotation.NonNull;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Random;
 
@@ -30,7 +32,10 @@ public final class StringUtils {
         return sb.toString();
     }
 
-    public static boolean isEmpty(@NonNull CharSequence... charSequences) {
+    public static boolean isEmpty(CharSequence... charSequences) {
+        if (charSequences == null) {
+            return true;
+        }
         for (CharSequence charSequence : charSequences) {
             if (TextUtils.isEmpty(charSequence)) {
                 return true;
@@ -39,7 +44,7 @@ public final class StringUtils {
         return false;
     }
 
-       public static String getShareUrl(String baseShareUrl, String inviteCode) {
+    public static String getShareUrl(String baseShareUrl, String inviteCode) {
         return baseShareUrl.concat(inviteCode).concat("#wechat_redirect");
     }
 
@@ -112,7 +117,7 @@ public final class StringUtils {
         return TextUtils.isEmpty(decimalStr) ? split[0] : split[0] + "." + decimalStr;
     }
 
-    public static int NumberFormat(String format) {
+    public static int parseInt(String format) {
         int number;
         try {
             number = Integer.parseInt(format);
@@ -120,6 +125,18 @@ public final class StringUtils {
             number = 0;
         } catch (NullPointerException e) {
             number = 0;
+        }
+        return number;
+    }
+
+    public static long parseLong(String format) {
+        long number;
+        try {
+            number = Long.parseLong(format);
+        } catch (NumberFormatException e) {
+            number = 0L;
+        } catch (NullPointerException e) {
+            number = 0L;
         }
         return number;
     }
@@ -138,32 +155,9 @@ public final class StringUtils {
         return money;
     }
 
-    public static float floatFormat(String format) {
-        float number;
-        try {
-            number = Float.parseFloat(format);
-        } catch (NumberFormatException e) {
-            number = 0f;
-        } catch (NullPointerException e) {
-            number = 0f;
-        }
-        return number;
-    }
-
-    public static long longNumberFormat(String format) {
-        long number;
-        try {
-            number = Long.parseLong(format);
-        } catch (NumberFormatException e) {
-            number = 0L;
-        } catch (NullPointerException e) {
-            number = 0L;
-        }
-        return number;
-    }
 
     public static String getUnitString(String count) {
-        int countInt = NumberFormat(count);
+        int countInt = parseInt(count);
         if (countInt < 10000) {
             return count;
         }
@@ -189,7 +183,7 @@ public final class StringUtils {
     }
 
     public static String getUnitAccurateString(String count) {
-        int countInt = NumberFormat(count);
+        int countInt = parseInt(count);
         if (countInt < 10000) {
             return count;
         }
@@ -286,42 +280,56 @@ public final class StringUtils {
                 ((codePoint >= 0x10000) && (codePoint <= 0x10FFFF)));
     }
 
-    public static String stringToDouble(String d){
+    public static String stringToDouble(String d) {
         //使用0.00不足位补0，#.##仅保留有效位
         return new DecimalFormat("0.00").format(d);
     }
 
-    public static String stringToDoubleString2(String num){
+    public static String stringToDoubleString2(String num) {
         String strNum = String.valueOf(num);
         int n = strNum.indexOf(".");
-        if(n>0){
+        if (n > 0) {
             //截取小数点后的数字
-            String dotNum = strNum.substring(n+1);
-            if("0".equals(dotNum)){
+            String dotNum = strNum.substring(n + 1);
+            if ("0".equals(dotNum)) {
                 //小数点后面为0
-                return strNum+"0";
-            }else{
-                if(dotNum.length()==1){
+                return strNum + "0";
+            } else {
+                if (dotNum.length() == 1) {
                     //一位小数
-                    return strNum +"0";
-                }else{
+                    return strNum + "0";
+                } else {
                     //
-                    return strNum.substring(0,n+3);
+                    return strNum.substring(0, n + 3);
                 }
             }
-        }else{
-            return strNum+".00";
+        } else {
+            return strNum + ".00";
         }
     }
 
-    public static String keepTwoDecimal(String num){
+    public static String keepTwoDecimal(String num) {
         try {
-            //使用0.00不足位补0，#.##仅保留有效位
-            return new DecimalFormat("0.00").format(num);
-        }catch (IllegalArgumentException e){
-
+            BigDecimal bg = new BigDecimal(num);
+            double value = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            return String.valueOf(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            num = "";
         }
         return num;
+    }
+
+    public static Spanned formatHtml(String content, String color) {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            return Html.fromHtml("<font color='" + color + "'>" + content + "</font>", Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml("<font color='#FF4650'>商品详情></font>");
+        }
+
     }
 
 }

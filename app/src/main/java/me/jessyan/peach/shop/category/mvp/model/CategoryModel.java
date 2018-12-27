@@ -1,13 +1,17 @@
 package me.jessyan.peach.shop.category.mvp.model;
 
+import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 
-import com.jess.arms.di.scope.FragmentScope;
-
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import me.jessyan.peach.shop.category.mvp.contract.CategoryContract;
+import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.entity.goods.GoodsCategoryGridBean;
+import me.jessyan.peach.shop.netconfig.function.ResponseFunction;
+import me.jessyan.peach.shop.netconfig.temporary.GoodsCategoryApiService;
 
 
 /**
@@ -28,5 +32,12 @@ public class CategoryModel extends BaseModel implements CategoryContract.Model {
     @Inject
     public CategoryModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
+    }
+
+    @Override
+    public Observable<GoodsCategoryGridBean> getSubCategoryData(int typeId) {
+        return mRepositoryManager.obtainRetrofitService(GoodsCategoryApiService.class)
+                .getGridData(typeId, CommonConstant.TYPE_CATEGORY_SECOND_ALL)
+                .map(new ResponseFunction<>());
     }
 }

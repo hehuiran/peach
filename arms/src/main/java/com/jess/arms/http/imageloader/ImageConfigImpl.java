@@ -1,8 +1,11 @@
 package com.jess.arms.http.imageloader;
 
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+
+import java.io.File;
 
 /**
  * author: Create by HuiRan on 2018/12/8 下午3:22
@@ -24,6 +27,10 @@ public class ImageConfigImpl extends ImageConfig {
     private boolean isCircle;//是否将图片剪切为圆形
     private boolean isClearMemory;//清理内存缓存
     private boolean isClearDiskCache;//清理本地缓存
+    private Drawable placeDrawable;
+    private DownloadOnlyListener downloadOnlyListener;
+    private int width;
+    private int height;
 
     private ImageConfigImpl(Builder builder) {
         this.url = builder.url;
@@ -41,6 +48,26 @@ public class ImageConfigImpl extends ImageConfig {
         this.isCircle = builder.isCircle;
         this.isClearMemory = builder.isClearMemory;
         this.isClearDiskCache = builder.isClearDiskCache;
+        this.placeDrawable = builder.placeDrawable;
+        this.downloadOnlyListener = builder.downloadOnlyListener;
+        this.width = builder.width;
+        this.height = builder.height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public DownloadOnlyListener getDownloadOnlyListener() {
+        return downloadOnlyListener;
+    }
+
+    public Drawable getPlaceDrawable() {
+        return placeDrawable;
     }
 
     public int getCacheStrategy() {
@@ -119,8 +146,22 @@ public class ImageConfigImpl extends ImageConfig {
         private boolean isCircle;//是否将图片剪切为圆形
         private boolean isClearMemory;//清理内存缓存
         private boolean isClearDiskCache;//清理本地缓存
+        private Drawable placeDrawable;
+        private DownloadOnlyListener downloadOnlyListener;
+        private int width;
+        private int height;
 
         private Builder() {
+        }
+
+        public Builder width(int width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder height(int height) {
+            this.height = height;
+            return this;
         }
 
         public Builder url(Object url) {
@@ -128,8 +169,18 @@ public class ImageConfigImpl extends ImageConfig {
             return this;
         }
 
+        public Builder downloadOnlyListener(DownloadOnlyListener downloadOnlyListener) {
+            this.downloadOnlyListener = downloadOnlyListener;
+            return this;
+        }
+
         public Builder placeholder(int placeholder) {
             this.placeholder = placeholder;
+            return this;
+        }
+
+        public Builder placeholder(Drawable drawable) {
+            this.placeDrawable = drawable;
             return this;
         }
 
@@ -171,14 +222,13 @@ public class ImageConfigImpl extends ImageConfig {
          * 此 API 会在后面的版本中被删除, 请使用其他 API 替代
          *
          * @param transformation {@link BitmapTransformation}
-         * 请使用 {@link #isCircle()}, {@link #isCenterCrop()}, {@link #isImageRadius()} 替代
-         * 如果有其他自定义 BitmapTransformation 的需求, 请自行扩展 {@link BaseImageLoaderStrategy}
+         *                       请使用 {@link #isCircle()}, {@link #isCenterCrop()}, {@link #isImageRadius()} 替代
+         *                       如果有其他自定义 BitmapTransformation 的需求, 请自行扩展 {@link BaseImageLoaderStrategy}
          */
         /*public Builder transformation(BitmapTransformation transformation) {
             this.transformation = transformation;
             return this;
         }*/
-
         public Builder transformation(BitmapTransformation transformation) {
             this.transformation = transformation;
             return this;
@@ -220,5 +270,10 @@ public class ImageConfigImpl extends ImageConfig {
         }
 
 
+    }
+
+    public interface DownloadOnlyListener {
+
+        void downloadCompleted(File file);
     }
 }

@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/space"
-        tools:src="@mipmap/icon_tab_coupon_selected"/>
+        tools:src="@mipmap/icon_tab_home_selected"/>
 
     <TextView
         android:id="@+id/tv_menu"
@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_menu"
-        android:textColor="@color/colorPrimary"
+        tools:textColor="@color/colorPrimary"
         tools:text="首页"
         tools:textSize="10sp"/>
 

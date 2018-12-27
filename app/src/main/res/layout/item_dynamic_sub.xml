@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="@+id/v_space">
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="49dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_time"
+        app:layout_constraintEnd_toStartOf="@+id/tv_share"
+        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="你好吗你好吗"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/color_808080"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+        app:layout_constraintStart_toStartOf="@+id/tv_nickname"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+        tools:text="3小时前"/>
+
+    <TextView
+        android:id="@+id/tv_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/shape_solid_ffebeb_radius_7"
+        android:drawablePadding="3dp"
+        android:drawableStart="@mipmap/ic_share_pink"
+        android:gravity="center_vertical"
+        android:paddingBottom="3dp"
+        android:paddingEnd="7dp"
+        android:paddingStart="7dp"
+        android:paddingTop="3dp"
+        android:textColor="@color/color_ff4b81"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+        tools:text="1000"/>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/color_4b4b4b"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_avatar"/>
+
+    <me.jessyan.peach.shop.widget.nine.NineGridView
+        android:id="@+id/nine_grid_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_content"
+        app:layout_constraintStart_toStartOf="@+id/tv_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content"
+        app:ngv_gridSpacing="3dp"
+        app:ngv_maxSize="9"
+        app:ngv_mode="grid"/>
+
+    <TextView
+        android:id="@+id/tv_discount_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/color_ff0000"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_content"
+        app:layout_constraintTop_toBottomOf="@+id/nine_grid_view"
+        tools:text="@string/rmb"/>
+
+    <TextView
+        android:id="@+id/tv_commission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/color_ff1673"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_discount_price"
+        app:layout_constraintTop_toBottomOf="@+id/tv_discount_price"
+        tools:text="@string/estimate_the_commission"/>
+
+    <View
+        android:id="@+id/v_line"
+        style="@style/line_style"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_commission"/>
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/color_4b4b4b"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_content"
+        app:layout_constraintStart_toStartOf="@+id/tv_content"
+        app:layout_constraintTop_toBottomOf="@+id/v_line"
+        tools:text="睡衣质量真心好，纯棉的，南极人大牌，买过很多次了，样式也很多，关键便宜啊！"/>
+
+    <TextView
+        android:id="@+id/tv_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_solid_ffebeb_radius_7"
+        android:drawablePadding="3dp"
+        android:drawableStart="@mipmap/ic_copy_pink"
+        android:gravity="center_vertical"
+        android:paddingBottom="3dp"
+        android:paddingEnd="7dp"
+        android:paddingStart="7dp"
+        android:paddingTop="3dp"
+        android:text="@string/copy_comment"
+        android:textColor="@color/color_ff4b81"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_comment"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment"/>
+
+    <View
+        android:id="@+id/v_space"
+        style="@style/space_style"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_copy"/>
+</android.support.constraint.ConstraintLayout>

@@ -45,7 +45,9 @@ import me.jessyan.peach.shop.home.mvp.ui.adapter.GoodsDetailImageAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.GoodsDetailInfoAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.GoodsDetailSellerAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeGoodsAdapter;
+import me.jessyan.peach.shop.utils.StringUtils;
 import me.jessyan.peach.shop.vlayout.VirtualAdapter;
+import me.jessyan.peach.shop.vlayout.callback.OnItemChildClickListener;
 import me.jessyan.peach.shop.widget.DispatchTouchRecyclerView;
 import me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView;
 import timber.log.Timber;
@@ -147,7 +149,15 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
         GoodsDetailBannerAdapter bannerAdapter = new GoodsDetailBannerAdapter();
         mAdapterList.add(bannerAdapter);
 
+        OnItemChildClickListener onItemChildClickListener = new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(RecyclerView.Adapter adapter, View view, int position) {
+                onRecyclerViewItemChildClick(adapter, view, position);
+            }
+        };
+
         GoodsDetailInfoAdapter infoAdapter = new GoodsDetailInfoAdapter();
+        infoAdapter.setOnItemChildClickListener(onItemChildClickListener);
         mAdapterList.add(infoAdapter);
 
         GoodsDetailSellerAdapter sellerAdapter = new GoodsDetailSellerAdapter();
@@ -168,6 +178,26 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
         mVirtualAdapter.setAdapters(mAdapterList);
     }
 
+    private void onRecyclerViewItemChildClick(RecyclerView.Adapter adapter, View view, int position) {
+        if (view.getId() == R.id.tv_collection) {
+            goodsCollectionOrCancel();
+        }
+    }
+
+    private void goodsCollectionOrCancel() {
+        GoodsDetailInfoAdapter infoAdapter = getAdapter(1);
+        if (infoAdapter != null) {
+            GoodsDetailInfoBean data = infoAdapter.getData();
+            if (data.isCollection()) {
+                //取消收藏
+                mPresenter.cancelCollectionGoods(data.getItemId());
+            } else {
+                //添加收藏
+                mPresenter.collectionGoods(data.getItemId());
+            }
+        }
+    }
+
     @Override
     protected void initImmersionBar() {
         super.initImmersionBar();
@@ -184,9 +214,22 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
                 onBackPressed();
                 break;
             case R.id.v_shape:
+                launcherCreateShare();
                 break;
             case R.id.v_buy:
                 break;
+        }
+    }
+
+    private void launcherCreateShare() {
+        GoodsDetailBannerAdapter bannerAdapter = getAdapter(0);
+        GoodsDetailInfoAdapter infoAdapter = getAdapter(1);
+        if (bannerAdapter != null && infoAdapter != null) {
+            ArrayList<String> data = (ArrayList<String>) bannerAdapter.getData();
+            GoodsDetailInfoBean infoBean = infoAdapter.getData();
+            if (infoBean != null && data != null && !data.isEmpty()) {
+                CreateShareActivity.launcher(this, infoBean, data);
+            }
         }
     }
 
@@ -195,14 +238,22 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
         if (mPullRefreshView.isRefreshing()) {
             mPullRefreshView.refreshComplete();
         }
+        if (mGroupBottomBar.getVisibility() != View.VISIBLE) {
+            mGroupBottomBar.setVisibility(View.VISIBLE);
+        }
+
+        GoodsDetailInfoBean infoBean = optionalBean.getGoodsDetailInfoBean();
+
         GoodsDetailBannerAdapter bannerAdapter = getAdapter(0);
         List<String> bannerList = optionalBean.getBannerList();
-        if (bannerAdapter != null && !bannerList.isEmpty()) {
-            bannerAdapter.setData(bannerList);
+        if (bannerAdapter != null && !bannerList.isEmpty() && infoBean != null) {
+            bannerAdapter.setData(bannerList, infoBean.getTkMoney());
         }
         GoodsDetailInfoAdapter infoAdapter = getAdapter(1);
-        GoodsDetailInfoBean infoBean = optionalBean.getGoodsDetailInfoBean();
+
         if (infoAdapter != null && infoBean != null) {
+            String format = String.format(getString(R.string.receive_coupon_buy), StringUtils.keepTwoDecimal(infoBean.getDiscountPrice()));
+            mTvPrice.setText(format);
             infoAdapter.setData(infoBean, 1);
         }
         GoodsDetailSellerAdapter sellerAdapter = getAdapter(2);
@@ -249,6 +300,32 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
             });
         }
         mVirtualAdapter.setEmptyView(mNetErrorView);
+    }
+
+    @Override
+    public void onGoodsCollectionStateChangeSuccess(boolean isCollection) {
+        GoodsDetailInfoAdapter infoAdapter = getAdapter(1);
+        if (infoAdapter == null) {
+            return;
+        }
+        infoAdapter.getData().setCollection(isCollection);
+        int absolutePosition = infoAdapter.getAbsolutePosition();
+        RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            infoAdapter.notifyDataSetChanged();
+            return;
+        }
+        View view = layoutManager.findViewByPosition(absolutePosition);
+        if (view == null) {
+            infoAdapter.notifyDataSetChanged();
+            return;
+        }
+        TextView tvCollection = view.findViewById(R.id.tv_collection);
+        if (tvCollection == null) {
+            infoAdapter.notifyDataSetChanged();
+            return;
+        }
+        tvCollection.setSelected(isCollection);
     }
 
     @Override

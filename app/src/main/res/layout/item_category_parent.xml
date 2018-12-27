@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:id="@+id/fl_root"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="12sp"
+        tools:text="美妆"
+        tools:textColor="@color/black"/>
+
+    <View
+        android:id="@+id/v_decoration"
+        android:layout_width="3dp"
+        android:layout_height="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="@drawable/shape_solid_ff9344_radius_1_5"
+        android:layout_gravity="center_vertical"/>
+</FrameLayout>

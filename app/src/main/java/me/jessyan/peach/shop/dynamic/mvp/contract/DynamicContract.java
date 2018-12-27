@@ -3,6 +3,10 @@ package me.jessyan.peach.shop.dynamic.mvp.contract;
 import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
 
+import java.util.List;
+
+import me.jessyan.peach.shop.entity.DynamicBean;
+
 
 /**
  * ================================================

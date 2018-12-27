@@ -85,7 +85,7 @@ public class HomeGoodsAdapter extends VirtualMultiListItemAdapter<GoodsBean, Vir
                 StringUtils.keepTwoDecimal(bean.getDiscountPrice()));
 
         String soldCount = String.format(ResourceUtils.getResourceString(R.string.sold_count),
-                StringUtils.keepTwoDecimal(bean.getSoldCount()));
+                bean.getSoldCount());
 
         holder.setText(R.id.tv_commission, commissionMoney)
                 .setText(R.id.tv_original_price, originalPrice)

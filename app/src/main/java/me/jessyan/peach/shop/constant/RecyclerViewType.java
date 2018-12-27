@@ -25,4 +25,12 @@ public interface RecyclerViewType {
     int GOODS_DETAIL_SELLER_TYPE = 123;
     int GOODS_DETAIL_DECORATION_TYPE = 124;
     int GOODS_DETAIL_IMAGE_TYPE = 125;
+
+    int GOODS_LINEAR = 126;
+    int GOODS_GRID = 127;
+
+    int ACTIVITY_TYPE = 128;            //活动消息
+    int SYSTEM_TYPE = 129;              //系统消息
+    int ALLIANCE_TYPE = 130;            //联盟消息
+    int INCOME_TYPE = 131;              //收益消息
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="wrap_content"
+          android:layout_height="30dp"
+          android:layout_margin="5dp"
+          android:background="@drawable/shape_solid_f0f0f0_radius_15"
+          android:ellipsize="end"
+          android:gravity="center"
+          android:maxWidth="130dp"
+          android:paddingBottom="3dp"
+          android:paddingLeft="12dp"
+          android:paddingRight="12dp"
+          android:paddingTop="3dp"
+          android:singleLine="true"
+          android:textColor="@color/color_7a7a7a"
+          android:textSize="@dimen/textSizeSmall"
+          tools:text="@string/record_search"/>

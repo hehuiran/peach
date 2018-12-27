@@ -35,10 +35,14 @@ public interface CommonConstant {
     int PAGE_SIZE_ORIENTATION = 10;
     int PAGE_INITIAL = 1;
     int PAGE_SIZE = 20;
+    int DYNAMIC_PAGE_SIZE = 10;
 
     /**
      * 分类下面的二级分类数据
      */
     int TYPE_CATEGORY_SECOND_TEN = 0;       //只查询10条
     int TYPE_CATEGORY_SECOND_ALL = 1;       //查询全部子分类
+
+
+    String SHARE_POSTER_BASE_URL ="https://hzcangyu.com/goods/goodsDetails.html?itemId=%s&invitercode=%s&userPid=%s";
 }

@@ -1,5 +1,8 @@
 package me.jessyan.peach.shop.entity.home;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import me.jessyan.peach.shop.utils.StringUtils;
@@ -9,7 +12,7 @@ import me.jessyan.peach.shop.utils.StringUtils;
  * email: 15260828327@163.com
  * description:
  */
-public class GoodsDetailInfoBean {
+public class GoodsDetailInfoBean implements Parcelable {
 
     @SerializedName("couponendtime")
     private long couponEndTime;
@@ -35,6 +38,37 @@ public class GoodsDetailInfoBean {
     private String itemId;
     //商品是否收藏
     private boolean isCollection;
+
+    public GoodsDetailInfoBean() {
+
+    }
+
+    protected GoodsDetailInfoBean(Parcel in) {
+        couponEndTime = in.readLong();
+        couponMoney = in.readString();
+        couponStartTime = in.readLong();
+        discountPrice = in.readString();
+        originalPrice = in.readString();
+        soldCount = in.readString();
+        title = in.readString();
+        shopType = in.readString();
+        tkMoney = in.readString();
+        guideArticle = in.readString();
+        itemId = in.readString();
+        isCollection = in.readByte() != 0;
+    }
+
+    public static final Creator<GoodsDetailInfoBean> CREATOR = new Creator<GoodsDetailInfoBean>() {
+        @Override
+        public GoodsDetailInfoBean createFromParcel(Parcel in) {
+            return new GoodsDetailInfoBean(in);
+        }
+
+        @Override
+        public GoodsDetailInfoBean[] newArray(int size) {
+            return new GoodsDetailInfoBean[size];
+        }
+    };
 
     public boolean isCollection() {
         return isCollection;
@@ -130,5 +164,26 @@ public class GoodsDetailInfoBean {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(couponEndTime);
+        dest.writeString(couponMoney);
+        dest.writeLong(couponStartTime);
+        dest.writeString(discountPrice);
+        dest.writeString(originalPrice);
+        dest.writeString(soldCount);
+        dest.writeString(title);
+        dest.writeString(shopType);
+        dest.writeString(tkMoney);
+        dest.writeString(guideArticle);
+        dest.writeString(itemId);
+        dest.writeByte((byte) (isCollection ? 1 : 0));
     }
 }

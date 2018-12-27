@@ -120,7 +120,6 @@ public class BasicParamsInterceptor implements Interceptor {
         params.put("deviceType", String.valueOf(2));
         params.put("channel", "");
         params.put("token", UserInfo.getInstance().getToken());
-        //params.put("deviceSerialId", SampleApplicationLike.getIMEI());
         String sign = getSign(params);
         params.put("sign", sign);
 

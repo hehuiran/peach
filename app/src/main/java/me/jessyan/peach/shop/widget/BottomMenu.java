@@ -65,6 +65,7 @@ public class BottomMenu extends RelativeLayout {
         typedArray.recycle();
 
         ivMenu.setImageResource(resNormalId);
+        tvMenu.setTextColor(mNormalColor);
         tvMenu.setText(menuText);
         tvMenu.setTextSize(textSize);
 

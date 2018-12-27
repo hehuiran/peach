@@ -2,11 +2,18 @@ package me.jessyan.peach.shop.user.mvp.presenter;
 
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.PermissionUtil;
+
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import me.jessyan.peach.shop.entity.BasicResponse;
+import me.jessyan.peach.shop.entity.user.LoginBean;
+import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.peach.shop.user.mvp.contract.LoginContract;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 /**
@@ -29,6 +36,50 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
     @Inject
     public LoginPresenter(LoginContract.Model model, LoginContract.View rootView) {
         super(model, rootView);
+    }
+
+    public void readPhoneState(boolean isMobileLogin) {
+        PermissionUtil.readPhonestate(new PermissionUtil.RequestPermission() {
+            @Override
+            public void onRequestPermissionSuccess() {
+                mRootView.readPhoneStateSuccess(isMobileLogin);
+            }
+        }, mRootView.getRxPermissions(), mErrorHandler);
+    }
+
+    public void mobileLogin(HashMap<String, Object> map){
+        mModel.mobileLogin(map)
+                .compose(new CommonTransformer<>(this))
+                .subscribe(new ErrorHandleSubscriber<LoginBean>(mErrorHandler) {
+                    @Override
+                    public void onNext(LoginBean bean) {
+                        mRootView.onMobileLoginSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        mRootView.onMobileLoginFailed();
+                    }
+                });
+    }
+
+    public void thirdPartyLogin(HashMap<String, Object> map) {
+        mModel.thirdPartyLogin(map)
+                .compose(new CommonTransformer<>(this,false))
+                .subscribe(new ErrorHandleSubscriber<BasicResponse<LoginBean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BasicResponse<LoginBean> loginBeanBasicResponse) {
+                        hideLoading();
+                        mRootView.onThirdPartyLoginSuccess(loginBeanBasicResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        hideLoading();
+                    }
+                });
     }
 
     @Override

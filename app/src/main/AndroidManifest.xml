@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <!-- 用于开启 debug 版本的应用在 6.0 系统上的层叠窗口权限 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -52,6 +51,18 @@
         <activity android:name=".home.mvp.ui.activity.GoodsDetailActivity">
         </activity>
         <activity android:name=".user.mvp.ui.activity.RegisterActivity">
+        </activity>
+        <activity android:name=".user.mvp.ui.activity.BindMobileActivity">
+        </activity>
+        <activity android:name=".home.mvp.ui.activity.SearchGoodsActivity">
+        </activity>
+        <activity android:name=".home.mvp.ui.activity.SearchResultActivity">
+        </activity>
+        <activity android:name=".home.mvp.ui.activity.CreateShareActivity">
+        </activity>
+        <activity android:name=".category.mvp.ui.activity.CategorySubActivity">
+        </activity>
+        <activity android:name=".user.mvp.ui.activity.MessageActivity">
         </activity>
     </application>
 

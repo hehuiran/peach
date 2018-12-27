@@ -24,11 +24,14 @@ import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.callback.OnSingleClickListener;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleMainBean;
+import me.jessyan.peach.shop.help.LoginHelper;
 import me.jessyan.peach.shop.home.di.component.DaggerHomeComponent;
 import me.jessyan.peach.shop.home.mvp.contract.HomeContract;
 import me.jessyan.peach.shop.home.mvp.presenter.HomePresenter;
+import me.jessyan.peach.shop.home.mvp.ui.activity.SearchGoodsActivity;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomePagerAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.window.MoreChannelWindow;
+import me.jessyan.peach.shop.user.mvp.ui.activity.MessageActivity;
 import me.jessyan.peach.shop.utils.ResourceUtils;
 
 
@@ -102,8 +105,14 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_search:
+                if (LoginHelper.checkLogin(getContext())) {
+                    SearchGoodsActivity.launcher(getContext());
+                }
                 break;
             case R.id.iv_msg:
+                if (LoginHelper.checkLogin(getContext())) {
+                    MessageActivity.launcher(getContext());
+                }
                 break;
             case R.id.iv_category:
                 showMoreChannelWindow();
@@ -132,6 +141,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         } else {
             initErrorView();
         }
+    }
+
+    public List<GoodsCategoryTitleBean.DataBean> getTabCategory() {
+        return mData;
     }
 
     @Override

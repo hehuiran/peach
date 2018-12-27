@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">arms</string>
+
+    <string name="request_permissions_failure">权限申请失败</string>
+    <string name="need_to_go_to_the_settings">权限申请失败,您需要去设置中打开权限</string>
 </resources>

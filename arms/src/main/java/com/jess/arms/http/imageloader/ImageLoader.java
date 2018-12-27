@@ -16,6 +16,7 @@
 package com.jess.arms.http.imageloader;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
 import com.jess.arms.utils.Preconditions;
@@ -56,6 +57,14 @@ public final class ImageLoader {
     public <T extends ImageConfig> void loadImage(Context context, T config) {
         Preconditions.checkNotNull(mStrategy, "Please implement BaseImageLoaderStrategy and call GlobalConfigModule.Builder#imageLoaderStrategy(BaseImageLoaderStrategy) in the applyOptions method of ConfigModule");
         this.mStrategy.loadImage(context, config);
+    }
+
+    /**
+     * 同步方式获取图片
+     */
+    public <T extends ImageConfig> Bitmap synGetBitmap(Context context, T config) {
+        Preconditions.checkNotNull(mStrategy, "Please implement BaseImageLoaderStrategy and call GlobalConfigModule.Builder#imageLoaderStrategy(BaseImageLoaderStrategy) in the applyOptions method of ConfigModule");
+        return this.mStrategy.synGetBitmap(context, config);
     }
 
     /**

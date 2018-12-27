@@ -4,12 +4,13 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
-import me.jessyan.peach.shop.entity.FindBean;
+import me.jessyan.peach.shop.entity.DynamicBean;
 import me.jessyan.peach.shop.entity.NavigationBarBean;
 import me.jessyan.peach.shop.entity.WebShipBean;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.SearchCommodityBean;
 import me.jessyan.peach.shop.entity.goods.SuperBean;
+import me.jessyan.peach.shop.entity.search.SearchHotBean;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -72,18 +73,14 @@ public interface NewApi {
 
     /**
      * 获取搜索页面 热门搜索词
-     *
      */
     @GET("user/getHotsearch")
-    Observable<ResponseBody> getHotSearchWords();
-
-
-
-
+    Observable<BasicResponse<SearchHotBean>> getHotSearchWords();
 
 
     /**
      * 获取超级入口
+     *
      * @return
      */
     @GET("appMain/queryBrandLink")
@@ -101,8 +98,7 @@ public interface NewApi {
      * 发现链接
      */
     @GET("appMain/getSendCircle")
-    Observable<BasicResponse<FindBean>> findList(@Query("type") int type, @Query("pageNo") int pageNo, @Query("pageSize") int pageSize);
-
+    Observable<BasicResponse<DynamicBean>> getDynamicData(@Query("type") int type, @Query("pageNo") int pageNo, @Query("pageSize") int pageSize);
 
 
     @GET("appMain/addSendCircleShareNum")
@@ -115,7 +111,6 @@ public interface NewApi {
 
     @GET("user/validationTbAuthorization")
     Observable<ResponseBody> bindAli(@Query("tb_openid") String tb_openid);
-
 
 
     @GET("sug?code=utf-8")

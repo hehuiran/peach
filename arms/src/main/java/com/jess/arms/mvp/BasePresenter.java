@@ -171,7 +171,6 @@ public class BasePresenter<M extends IModel, V extends IView> implements IPresen
     /*********************************************扩展方法***********************************************/
 
 
-
     @Override
     public IView getView() {
         return mRootView;
@@ -196,19 +195,17 @@ public class BasePresenter<M extends IModel, V extends IView> implements IPresen
         if (context == null) {
             return;
         }
-        mLoadingDialog = new BaseDialog.Builder(context)
-                .setContentView(new PointLoadingView(context))
-                .setCanceledOnTouchOutside(false)
-                .setWindowAlpha(0f)
-                .show();
+        if (mLoadingDialog == null || !mLoadingDialog.isShowing()) {
+            mLoadingDialog = new BaseDialog.Builder(context)
+                    .setContentView(new PointLoadingView(context))
+                    .setCanceledOnTouchOutside(false)
+                    .setWindowAlpha(0f)
+                    .show();
+        }
     }
 
     @Override
     public void hideLoading() {
-        Context context = getContext();
-        if (context == null) {
-            return;
-        }
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }

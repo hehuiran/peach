@@ -3,13 +3,20 @@ package me.jessyan.peach.shop.dynamic.mvp.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Space;
 
+import com.flyco.tablayout.SlidingTabLayout;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 
+import butterknife.BindView;
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.dynamic.di.component.DaggerDynamicComponent;
 import me.jessyan.peach.shop.dynamic.mvp.contract.DynamicContract;
@@ -29,6 +36,13 @@ import me.jessyan.peach.shop.dynamic.mvp.presenter.DynamicPresenter;
  * ================================================
  */
 public class DynamicFragment extends BaseFragment<DynamicPresenter> implements DynamicContract.View {
+
+    @BindView(R.id.status_view)
+    Space mStatusView;
+    @BindView(R.id.tab_layout)
+    SlidingTabLayout mTabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
 
     public static DynamicFragment newInstance() {
         DynamicFragment fragment = new DynamicFragment();
@@ -52,6 +66,45 @@ public class DynamicFragment extends BaseFragment<DynamicPresenter> implements D
 
     @Override
     public void initData() {
+        String[] tabs = getResources().getStringArray(R.array.dynamic_tab_array);
 
+        DynamicPagerAdapter pagerAdapter = new DynamicPagerAdapter(getChildFragmentManager(), tabs);
+        mViewPager.setAdapter(pagerAdapter);
+        mViewPager.setOffscreenPageLimit(tabs.length);
+        mTabLayout.setViewPager(mViewPager);
+    }
+
+    @Override
+    protected void initImmersionBar() {
+        super.initImmersionBar();
+        mImmersionBar.statusBarView(mStatusView)
+                .statusBarDarkFont(true, 0.2f)
+                .init();
+    }
+
+    private static class DynamicPagerAdapter extends FragmentPagerAdapter {
+
+        private String[] mTabs;
+
+        private DynamicPagerAdapter(FragmentManager fm, String[] tabs) {
+            super(fm);
+            this.mTabs = tabs;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return DynamicSubFragment.newInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mTabs == null ? 0 : mTabs.length;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabs[position];
+        }
     }
 }

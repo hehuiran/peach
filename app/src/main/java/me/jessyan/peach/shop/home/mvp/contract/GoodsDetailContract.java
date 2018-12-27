@@ -4,6 +4,7 @@ import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
 
 import io.reactivex.Observable;
+import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailOptionalBean;
 
@@ -26,10 +27,16 @@ public interface GoodsDetailContract {
         void onGetGoodsDetailDataSuccess(GoodsDetailOptionalBean optionalBean);
 
         void onGetGoodsDetailDataFailed();
+
+        void onGoodsCollectionStateChangeSuccess(boolean isCollection);
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
         Observable<GoodsDetailOptionalBean> getGoodsDetailData(GoodsDetailConfigBean configBean);
+
+        Observable<BasicResponse<String>> collectionGoods(String itemId);
+
+        Observable<BasicResponse<String>> cancelCollectionGoods(String itemId);
     }
 }
