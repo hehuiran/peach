@@ -65,7 +65,7 @@ public class MineModel extends BaseModel implements MineContract.Model {
                     int newestIdentityStatus = StringUtils.parseInt(dataBean.getUseridentity());
                     if (status != newestIdentityStatus) {
                         UserInfo.getInstance().setIdentityStatus(newestIdentityStatus);
-                        // TODO: 2018/12/27 身份发生了改变 之前是EventBus发送时间
+                        // TODO: 2018/12/27 身份发生了改变 之前是EventBus发送事件
                     }
                 }
 

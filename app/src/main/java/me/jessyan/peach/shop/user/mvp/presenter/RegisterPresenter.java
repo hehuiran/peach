@@ -48,7 +48,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
                 .subscribe(new ErrorHandleSubscriber<BasicResponse<ResultBean>>(mErrorHandler) {
                     @Override
                     public void onNext(BasicResponse<ResultBean> resultBeanBasicResponse) {
-                        if (resultBeanBasicResponse.getCode() == 1006) {
+                        if (resultBeanBasicResponse.getCode() == 0) {
                             //验证码发送成功
                             mRootView.onGetVerifyCodeSuccess();
                         } else {

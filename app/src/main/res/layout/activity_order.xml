@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".mine.mvp.ui.activity.OrderActivity">
+
+    <Space
+        android:id="@+id/status_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:scaleType="center"
+            android:src="@mipmap/ic_black_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/my_order"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <View
+            style="@style/line_style"
+            android:layout_gravity="bottom"/>
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_buy"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_checked_order_left"
+            android:button="@null"
+            tools:checked="true"
+            android:gravity="center"
+            android:text="@string/buy_order"
+            android:textColor="@color/selector_text_checked_ffffff_ff1673"
+            android:textSize="14sp"/>
+
+        <RadioButton
+            android:id="@+id/rb_reward"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_checked_order_right"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/reward_order"
+            android:textColor="@color/selector_text_checked_ffffff_ff1673"
+            android:textSize="14sp"/>
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

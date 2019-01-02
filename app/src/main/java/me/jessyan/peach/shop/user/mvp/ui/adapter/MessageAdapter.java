@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
-import me.jessyan.peach.shop.entity.MessageBean;
+import me.jessyan.peach.shop.entity.user.MessageBean;
 import me.jessyan.peach.shop.help.ImageLoaderHelper;
 import me.jessyan.peach.shop.help.glide.GlideRoundTransform;
 import me.jessyan.peach.shop.utils.ResourceUtils;

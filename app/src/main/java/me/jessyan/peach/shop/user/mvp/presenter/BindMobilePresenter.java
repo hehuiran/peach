@@ -4,10 +4,13 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ResultBean;
+import me.jessyan.peach.shop.entity.user.LoginBean;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.peach.shop.user.mvp.contract.BindMobileContract;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -42,7 +45,7 @@ public class BindMobilePresenter extends BasePresenter<BindMobileContract.Model,
                 .subscribe(new ErrorHandleSubscriber<BasicResponse<ResultBean>>(mErrorHandler) {
                     @Override
                     public void onNext(BasicResponse<ResultBean> resultBeanBasicResponse) {
-                        if (resultBeanBasicResponse.getCode() == 1006) {
+                        if (resultBeanBasicResponse.getCode() == 0) {
                             //验证码发送成功
                             mRootView.onGetVerifyCodeSuccess();
                         } else {
@@ -57,6 +60,23 @@ public class BindMobilePresenter extends BasePresenter<BindMobileContract.Model,
                     public void onError(Throwable t) {
                         super.onError(t);
                         mRootView.onGetVerifyCodeFailed();
+                    }
+                });
+    }
+
+    public void bindMobile(HashMap<String, Object> map) {
+        mModel.bindMobile(map)
+                .compose(new CommonTransformer<>(this))
+                .subscribe(new ErrorHandleSubscriber<BasicResponse<LoginBean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BasicResponse<LoginBean> loginBeanBasicResponse) {
+                        mRootView.onBindMobileSuccess(loginBeanBasicResponse);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        mRootView.onBindMobileFailed();
                     }
                 });
     }

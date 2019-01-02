@@ -37,6 +37,6 @@ public class HomeModel extends BaseModel implements HomeContract.Model {
     public Observable<GoodsCategoryTitleBean> getTabCategory() {
         return mRepositoryManager.obtainRetrofitService(GoodsCategoryApiService.class)
                 .getTitleData(System.currentTimeMillis())
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(GoodsCategoryTitleBean.class));
     }
 }

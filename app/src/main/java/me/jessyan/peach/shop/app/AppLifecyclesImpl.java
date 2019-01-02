@@ -92,14 +92,17 @@ public class AppLifecyclesImpl implements AppLifecycles {
 
     private void initUM(Application application) {
         UMConfigure.setLogEnabled(BuildConfig.LOG_DEBUG);
-        UMConfigure.init(application, "5a0d0b64a40fa32ca700006f"
+        UMConfigure.init(application, "5c2b43fdf1f556f1860002d3"
                 , "UMENG_APPKEY", UMConfigure.DEVICE_TYPE_PHONE, "");
 
-        PlatformConfig.setWeixin("wxbf3fbd46edb500cd", "d62ce95759ef12d9e0ee6914132c7056");
+        PlatformConfig.setWeixin("wx6079f1dafdd1ebd1", "e90182aa51c437457145a49f84ffa9c4");
 
-        PlatformConfig.setSinaWeibo("2986931077", "5dce102ce33a69cbc853484b97176077"
-                , "http://sns.whalecloud.com/sina2/callback");
-        PlatformConfig.setQQZone("1106517624", "AR9JoCIeYTwuUYgd");
+        /*PlatformConfig.setSinaWeibo("2763906099", "855c8d550a2eca79eb46aad7488e1cc8"
+                , "http://sns.whalecloud.com/sina2/callback");*/
+
+        PlatformConfig.setSinaWeibo("2763906099", "855c8d550a2eca79eb46aad7488e1cc8"
+                , "http://open.weibo.com/apps/2763906099/info/advanced");
+        PlatformConfig.setQQZone("1107926243", "KUDWUWobClTMsb35");
 
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);

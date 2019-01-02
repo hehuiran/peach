@@ -136,7 +136,9 @@ public class NineGridView extends ViewGroup {
         }
     }
 
-    /** 设置适配器 */
+    /**
+     * 设置适配器
+     */
     public void setAdapter(@NonNull NineGridViewAdapter adapter) {
         mAdapter = adapter;
         List imageInfo = adapter.getImageInfo();
@@ -197,7 +199,9 @@ public class NineGridView extends ViewGroup {
         requestLayout();
     }
 
-    /** 获得 ImageView 保证了 ImageView 的重用 */
+    /**
+     * 获得 ImageView 保证了 ImageView 的重用
+     */
     private ImageView getImageView(final int position) {
         ImageView imageView;
         if (position < imageViews.size()) {
@@ -207,7 +211,7 @@ public class NineGridView extends ViewGroup {
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mAdapter.onImageItemClick(getContext(), NineGridView.this, position, mAdapter.getImageInfo());
+                    mAdapter.onImageItemClick(getContext(), v, NineGridView.this, position, mAdapter.getImageInfo());
                 }
             });
             imageViews.add(imageView);
@@ -215,22 +219,30 @@ public class NineGridView extends ViewGroup {
         return imageView;
     }
 
-    /** 设置宫格间距 */
+    /**
+     * 设置宫格间距
+     */
     public void setGridSpacing(int spacing) {
         gridSpacing = spacing;
     }
 
-    /** 设置只有一张图片时的宽 */
+    /**
+     * 设置只有一张图片时的宽
+     */
     public void setSingleImageSize(int maxImageSize) {
         singleImageSize = maxImageSize;
     }
 
-    /** 设置只有一张图片时的宽高比 */
+    /**
+     * 设置只有一张图片时的宽高比
+     */
     public void setSingleImageRatio(float ratio) {
         singleImageRatio = ratio;
     }
 
-    /** 设置最大图片数 */
+    /**
+     * 设置最大图片数
+     */
     public void setMaxSize(int maxSize) {
         maxImageSize = maxSize;
     }

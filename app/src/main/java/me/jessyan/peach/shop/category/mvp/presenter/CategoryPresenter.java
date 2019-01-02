@@ -6,6 +6,7 @@ import com.jess.arms.mvp.BasePresenter;
 import javax.inject.Inject;
 
 import me.jessyan.peach.shop.category.mvp.contract.CategoryContract;
+import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryGridBean;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -34,13 +35,13 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.Model, Cat
         super(model, rootView);
     }
 
-    public void getSubCategoryData(int typeId){
+    public void getSubCategoryData(int typeId) {
         mModel.getSubCategoryData(typeId)
                 .compose(new CommonTransformer<>(this))
-                .subscribe(new ErrorHandleSubscriber<GoodsCategoryGridBean>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<BasicResponse<GoodsCategoryGridBean>>(mErrorHandler) {
                     @Override
-                    public void onNext(GoodsCategoryGridBean goodsCategoryGridBean) {
-                        mRootView.onGetSubCategoryDataSuccess(goodsCategoryGridBean.getData());
+                    public void onNext(BasicResponse<GoodsCategoryGridBean> basicResponse) {
+                        mRootView.onGetSubCategoryDataSuccess(basicResponse.getData() == null ? null : basicResponse.getData().getData());
                     }
 
                     @Override

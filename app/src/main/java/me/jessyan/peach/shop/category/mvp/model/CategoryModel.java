@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.category.mvp.contract.CategoryContract;
 import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryGridBean;
-import me.jessyan.peach.shop.netconfig.function.ResponseFunction;
 import me.jessyan.peach.shop.netconfig.temporary.GoodsCategoryApiService;
 
 
@@ -35,9 +35,8 @@ public class CategoryModel extends BaseModel implements CategoryContract.Model {
     }
 
     @Override
-    public Observable<GoodsCategoryGridBean> getSubCategoryData(int typeId) {
+    public Observable<BasicResponse<GoodsCategoryGridBean>> getSubCategoryData(int typeId) {
         return mRepositoryManager.obtainRetrofitService(GoodsCategoryApiService.class)
-                .getGridData(typeId, CommonConstant.TYPE_CATEGORY_SECOND_ALL)
-                .map(new ResponseFunction<>());
+                .getGridData(typeId, CommonConstant.TYPE_CATEGORY_SECOND_ALL);
     }
 }

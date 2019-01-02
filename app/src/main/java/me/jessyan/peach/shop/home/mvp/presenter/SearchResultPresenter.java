@@ -3,10 +3,12 @@ package me.jessyan.peach.shop.home.mvp.presenter;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.jessyan.peach.shop.constant.CommonConstant;
-import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
+import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.home.mvp.contract.SearchResultContract;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -42,11 +44,11 @@ public class SearchResultPresenter extends BasePresenter<SearchResultContract.Mo
         }
         mModel.getSearchResult(page, keywords, sort)
                 .compose(new CommonTransformer<>(this, showLoading))
-                .subscribe(new ErrorHandleSubscriber<CouponsCommodityBean>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<List<GoodsBean>>(mErrorHandler) {
                     @Override
-                    public void onNext(CouponsCommodityBean couponsCommodityBean) {
+                    public void onNext(List<GoodsBean> list) {
                         page++;
-                        mRootView.onGetSearchResultSuccess(couponsCommodityBean.getList());
+                        mRootView.onGetSearchResultSuccess(list);
                     }
 
                     @Override

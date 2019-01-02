@@ -3,9 +3,12 @@ package me.jessyan.peach.shop.user.mvp.contract;
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
 
+import java.util.HashMap;
+
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ResultBean;
+import me.jessyan.peach.shop.entity.user.LoginBean;
 
 
 /**
@@ -27,11 +30,17 @@ public interface BindMobileContract {
         void onGetVerifyCodeSuccess();
 
         void onGetVerifyCodeFailed();
+
+        void onBindMobileSuccess(BasicResponse<LoginBean> response);
+
+        void onBindMobileFailed();
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
 
         Observable<BasicResponse<ResultBean>> getVerifyCode(String mobile);
+
+        Observable<BasicResponse<LoginBean>> bindMobile(HashMap<String, Object> map);
     }
 }

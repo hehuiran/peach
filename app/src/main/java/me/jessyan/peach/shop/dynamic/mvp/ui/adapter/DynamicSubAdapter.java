@@ -62,8 +62,11 @@ public class DynamicSubAdapter extends BaseQuickAdapter<DynamicBean.ListBean, Ba
             nineGridView.setImageLoader(mNineGridViewImageLoader);
             NineGridViewAdapter<String> adapter = new NineGridViewAdapter<String>(smallImages) {
                 @Override
-                protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List<String> imageInfo) {
-                    super.onImageItemClick(context, nineGridView, index, imageInfo);
+                protected void onImageItemClick(Context context, View view, NineGridView nineGridView, int index, List<String> imageInfo) {
+                    super.onImageItemClick(context, view, nineGridView, index, imageInfo);
+                    if (mOnImageClickListener != null) {
+                        mOnImageClickListener.onImageClick(view, imageInfo.get(index));
+                    }
                 }
             };
             nineGridView.setAdapter(adapter);
@@ -87,5 +90,15 @@ public class DynamicSubAdapter extends BaseQuickAdapter<DynamicBean.ListBean, Ba
                     .url(((String) data))
                     .build());
         }
+    }
+
+    private OnImageClickListener mOnImageClickListener;
+
+    public interface OnImageClickListener {
+        void onImageClick(View view, String url);
+    }
+
+    public void setOnImageClickListener(OnImageClickListener onImageClickListener) {
+        mOnImageClickListener = onImageClickListener;
     }
 }

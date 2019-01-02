@@ -13,16 +13,22 @@ import android.widget.EditText;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.constant.IntentExtra;
+import me.jessyan.peach.shop.entity.BasicResponse;
+import me.jessyan.peach.shop.entity.user.LoginBean;
 import me.jessyan.peach.shop.entity.user.ThirdPartyInfoBean;
+import me.jessyan.peach.shop.launcher.mvp.ui.activity.MainActivity;
 import me.jessyan.peach.shop.user.di.component.DaggerBindMobileComponent;
 import me.jessyan.peach.shop.user.mvp.contract.BindMobileContract;
 import me.jessyan.peach.shop.user.mvp.presenter.BindMobilePresenter;
@@ -60,6 +66,8 @@ public class BindMobileActivity extends BaseActivity<BindMobilePresenter> implem
     @BindView(R.id.tv_confirm)
     TextView mTvConfirm;
     private CountDownTimer mCountDownTimer;
+    private ThirdPartyInfoBean mInfoBean;
+    private int mLoginType;
 
     public static void launcher(@NonNull Context context, @LoginActivity.LoginType int loginType, ThirdPartyInfoBean infoBean) {
         Intent intent = new Intent(context, BindMobileActivity.class);
@@ -86,8 +94,8 @@ public class BindMobileActivity extends BaseActivity<BindMobilePresenter> implem
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         Intent intent = getIntent();
-        int loginType = intent.getIntExtra(IntentExtra.LOGIN_WAY, -1);
-        ThirdPartyInfoBean infoBean = intent.getParcelableExtra(IntentExtra.THIRD_PARTY_INFO);
+        mLoginType = intent.getIntExtra(IntentExtra.LOGIN_WAY, -1);
+        mInfoBean = intent.getParcelableExtra(IntentExtra.THIRD_PARTY_INFO);
     }
 
     @Override
@@ -124,13 +132,20 @@ public class BindMobileActivity extends BaseActivity<BindMobilePresenter> implem
         if (!StringUtils.isEmpty(mobile, verifyCode, password, againPassword, inviteCode)) {
             if (password.equals(againPassword)) {
                 //绑定手机
-                /*HashMap<String, Object> map = new HashMap<>();
+                HashMap<String, Object> map = new HashMap<>();
                 map.put("mobile", mobile);
                 map.put("verifyCode", verifyCode);
                 map.put("inviterCode", inviteCode);
                 map.put("password", password);
-                mTvRegister.setEnabled(false);
-                mPresenter.registerAccount(map);*/
+
+                map.put("wxopenid", mInfoBean.getOpenId());
+                map.put("accounttype", String.valueOf(mInfoBean.getPlatform()));
+                map.put("deviceSerialId", mInfoBean.getDeviceId());
+                map.put("gender", mInfoBean.getGender());
+                map.put("headimgurl", mInfoBean.getIconUrl());
+                map.put("nickname", mInfoBean.getNickName());
+                mTvConfirm.setEnabled(false);
+                mPresenter.bindMobile(map);
             } else {
                 ToastUtils.showShort(R.string.hint_password_twice_error);
             }
@@ -219,6 +234,35 @@ public class BindMobileActivity extends BaseActivity<BindMobilePresenter> implem
     @Override
     public void onGetVerifyCodeFailed() {
         mTvSendCode.setEnabled(true);
+    }
+
+    @Override
+    public void onBindMobileSuccess(BasicResponse<LoginBean> response) {
+        int code = response.getCode();
+        if (code == 0) {
+            //登陆成功
+            if (mLoginType == LoginActivity.LOGIN_WAY_MODULES) {
+                //从MainActivity跳转至登录界面
+                MainActivity.backToMain(this, MainActivity.BACK_TO_MAIN_DO_NOTHING);
+            } else if (mLoginType == LoginActivity.LOGIN_WAY_SPLASH) {
+                //从SplashActivity跳转至登录界面,MainActivity还未实例化
+                ActivityUtils.finishActivity(LoginActivity.class);
+                MainActivity.launcher(this, false);
+                finish();
+            } else if (mLoginType == LoginActivity.LOGIN_WAY_OTHER) {
+                //token过期从首页跳转至登录界面
+                MainActivity.backToMain(this, MainActivity.BACK_TO_MAIN_RESET_TOKEN);
+            }
+        } else if (code == 1030) {
+            //邀请码不存在
+            mTvConfirm.setEnabled(true);
+            ToastUtils.showShort(R.string.invite_code_is_not_exist);
+        }
+    }
+
+    @Override
+    public void onBindMobileFailed() {
+        mTvConfirm.setEnabled(true);
     }
 
     @Override

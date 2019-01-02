@@ -10,6 +10,7 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.FutureTarget;
 import com.jess.arms.http.imageloader.BaseImageLoaderStrategy;
 import com.jess.arms.http.imageloader.ImageConfigImpl;
@@ -42,8 +43,10 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
 
         if (config.getDownloadOnlyListener() != null && config.getWidth() != 0 && config.getHeight() != 0) {
             downloadFile(requests, config);
+        } else if (config.isGif()) {
+            applyGifDrawableImageView(requests, config);
         } else {
-            applyImageView(requests, config);
+            applyDrawableImageView(requests, config);
         }
     }
 
@@ -77,8 +80,9 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
-    private void applyImageView(GlideRequests requests, ImageConfigImpl config) {
-        GlideRequest<Drawable> glideRequest = requests.load(config.getUrl());
+
+    private void applyGifDrawableImageView(GlideRequests requests, ImageConfigImpl config) {
+        GlideRequest<GifDrawable> glideRequest = requests.asGif().load(config.getUrl());
 
         switch (config.getCacheStrategy()) {//缓存策略
             case 0:
@@ -107,6 +111,10 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
 
         if (config.isCenterCrop()) {
             glideRequest.centerCrop();
+        }
+
+        if (config.isFitCenter()) {
+            glideRequest.fitCenter();
         }
 
         if (config.isCircle()) {
@@ -138,6 +146,90 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
         if (config.getFallback() != 0)//设置请求 url 为空图片
             glideRequest.fallback(config.getFallback());
 
+        if (config.getWidth() != 0 && config.getHeight() != 0) {
+            glideRequest.override(config.getWidth(), config.getHeight());
+        }
+
+        if (config.getPriority() != null) {
+            glideRequest.priority(config.getPriority());
+        }
+
+        glideRequest
+                .into(config.getImageView());
+    }
+
+    private void applyDrawableImageView(GlideRequests requests, ImageConfigImpl config) {
+        GlideRequest<Drawable> glideRequest = requests.load(config.getUrl());
+
+        switch (config.getCacheStrategy()) {//缓存策略
+            case 0:
+                glideRequest.diskCacheStrategy(DiskCacheStrategy.ALL);
+                break;
+            case 1:
+                glideRequest.diskCacheStrategy(DiskCacheStrategy.NONE);
+                break;
+            case 2:
+                glideRequest.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+                break;
+            case 3:
+                glideRequest.diskCacheStrategy(DiskCacheStrategy.DATA);
+                break;
+            case 4:
+                glideRequest.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+                break;
+            default:
+                glideRequest.diskCacheStrategy(DiskCacheStrategy.ALL);
+                break;
+        }
+
+        if (config.isCrossFade()) {
+            glideRequest.transition(DrawableTransitionOptions.withCrossFade());
+        }
+
+        if (config.isCenterCrop()) {
+            glideRequest.centerCrop();
+        }
+
+        if (config.isFitCenter()) {
+            glideRequest.fitCenter();
+        }
+
+        if (config.isCircle()) {
+            glideRequest.circleCrop();
+        }
+
+        if (config.isImageRadius()) {
+            glideRequest.transform(new RoundedCorners(config.getImageRadius()));
+        }
+
+        /*if (config.isBlurImage()) {
+            glideRequest.transform(new BlurTransformation(config.getBlurValue()));
+        }*/
+
+        if (config.getTransformation() != null) {//glide用它来改变图形的形状
+            glideRequest.transform(config.getTransformation());
+        }
+
+        if (config.getPlaceDrawable() != null) {
+            glideRequest.placeholder(config.getPlaceDrawable());
+        }
+
+        if (config.getPlaceholder() != 0)//设置占位符
+            glideRequest.placeholder(config.getPlaceholder());
+
+        if (config.getErrorPic() != 0)//设置错误的图片
+            glideRequest.error(config.getErrorPic());
+
+        if (config.getFallback() != 0)//设置请求 url 为空图片
+            glideRequest.fallback(config.getFallback());
+
+        if (config.getWidth() != 0 && config.getHeight() != 0) {
+            glideRequest.override(config.getWidth(), config.getHeight());
+        }
+
+        if (config.getPriority() != null) {
+            glideRequest.priority(config.getPriority());
+        }
 
         glideRequest
                 .into(config.getImageView());

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/v_space"
+        style="@style/space_style"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="17dp"
+        android:drawablePadding="3dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_space"
+        tools:drawableTop="@mipmap/ic_about_coupon"
+        tools:text="关于订单"/>
+
+    <View
+        android:id="@+id/v_horizontal"
+        android:layout_width="0.5dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:background="@color/color_e7e7e7"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+        app:layout_constraintStart_toEndOf="@+id/tv_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_title"/>
+
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:src="@mipmap/ic_arrow_right_gray_big"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_title"/>
+
+    <View
+        android:id="@+id/v_vertical"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/color_e7e7e7"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintStart_toEndOf="@+id/v_horizontal"
+        app:layout_constraintTop_toTopOf="@+id/tv_title"/>
+
+    <TextView
+        android:id="@+id/tv_top_problem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_808080"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/v_vertical"
+        app:layout_constraintEnd_toEndOf="@+id/v_vertical"
+        app:layout_constraintStart_toStartOf="@+id/v_vertical"
+        app:layout_constraintTop_toTopOf="@+id/tv_title"
+        tools:text="asjhdsajdhahdashdkjashd"/>
+
+    <TextView
+        android:id="@+id/tv_bottom_problem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_808080"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="@+id/v_vertical"
+        app:layout_constraintStart_toStartOf="@+id/v_vertical"
+        app:layout_constraintTop_toTopOf="@+id/v_vertical"
+        tools:text="asjhdsajdhahdashdkjashd"/>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
+</android.support.constraint.ConstraintLayout>

@@ -18,9 +18,6 @@ import com.jess.arms.di.component.AppComponent;
 
 import butterknife.BindView;
 import me.jessyan.peach.shop.R;
-import me.jessyan.peach.shop.dynamic.di.component.DaggerDynamicComponent;
-import me.jessyan.peach.shop.dynamic.mvp.contract.DynamicContract;
-import me.jessyan.peach.shop.dynamic.mvp.presenter.DynamicPresenter;
 
 
 /**
@@ -35,7 +32,7 @@ import me.jessyan.peach.shop.dynamic.mvp.presenter.DynamicPresenter;
  * <a href="https://github.com/JessYanCoding/MVPArmsTemplate">模版请保持更新</a>
  * ================================================
  */
-public class DynamicFragment extends BaseFragment<DynamicPresenter> implements DynamicContract.View {
+public class DynamicFragment extends BaseFragment {
 
     @BindView(R.id.status_view)
     Space mStatusView;
@@ -51,12 +48,7 @@ public class DynamicFragment extends BaseFragment<DynamicPresenter> implements D
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-        DaggerDynamicComponent //如找不到该类,请编译一下项目
-                .builder()
-                .appComponent(appComponent)
-                .view(this)
-                .build()
-                .inject(this);
+        //do nothing
     }
 
     @Override

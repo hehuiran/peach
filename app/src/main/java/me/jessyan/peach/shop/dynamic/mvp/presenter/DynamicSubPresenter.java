@@ -36,15 +36,16 @@ public class DynamicSubPresenter extends BasePresenter<DynamicSubContract.Model,
         super(model, rootView);
     }
 
-    public void getDynamicData(int type, boolean pullToRefresh,boolean showLoading) {
+    public void getDynamicData(int type, boolean pullToRefresh, boolean showLoading) {
         if (pullToRefresh) {
             page = CommonConstant.PAGE_INITIAL;
         }
         mModel.getDynamicData(type, page)
-                .compose(new CommonTransformer<>(this,showLoading))
+                .compose(new CommonTransformer<>(this, showLoading))
                 .subscribe(new ErrorHandleSubscriber<DynamicBean>(mErrorHandler) {
                     @Override
                     public void onNext(DynamicBean dynamicBean) {
+                        page++;
                         mRootView.onGetDynamicSuccess(dynamicBean.getList());
                     }
 

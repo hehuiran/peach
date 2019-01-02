@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.Space;
 import android.widget.TextView;
 
+import com.ali.auth.third.core.model.Session;
+import com.alibaba.baichuan.trade.biz.login.AlibcLogin;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
@@ -90,14 +92,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @BindView(R.id.tv_login)
     TextView mTvLogin;
     private int mLoginType;
-
-
-    //从模块
-    public static final int LOGIN_WAY_MODULES = 1;
-    //从启动页
-    public static final int LOGIN_WAY_SPLASH = 2;
-    //token失效等
-    public static final int LOGIN_WAY_OTHER = 3;
     private long mExitTime;
     private SHARE_MEDIA mPlatform;
     private String mDeviceId;
@@ -105,6 +99,25 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     private ThirdPartyInfoBean mThirdPartyInfoBean;
     private String mMobile;
     private String mPassword;
+
+    //手机登录
+    private static final int LOGIN_CHANNEL_MOBILE = 1;
+    //友盟登录
+    private static final int LOGIN_CHANNEL_UM = 2;
+    //淘宝登录
+    private static final int LOGIN_CHANNEL_TB = 3;
+
+    @IntDef({LOGIN_CHANNEL_MOBILE, LOGIN_CHANNEL_UM, LOGIN_CHANNEL_TB})
+    public @interface LoginChannel {
+
+    }
+
+    //从模块
+    public static final int LOGIN_WAY_MODULES = 1;
+    //从启动页
+    public static final int LOGIN_WAY_SPLASH = 2;
+    //token失效等
+    public static final int LOGIN_WAY_OTHER = 3;
 
     @IntDef({LOGIN_WAY_MODULES, LOGIN_WAY_SPLASH, LOGIN_WAY_OTHER})
     public @interface LoginType {
@@ -173,17 +186,18 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 break;
             case R.id.iv_wechat:
                 mPlatform = SHARE_MEDIA.WEIXIN;
-                mPresenter.readPhoneState(false);
+                mPresenter.readPhoneState(LOGIN_CHANNEL_UM);
                 break;
             case R.id.iv_qq:
                 mPlatform = SHARE_MEDIA.QQ;
-                mPresenter.readPhoneState(false);
+                mPresenter.readPhoneState(LOGIN_CHANNEL_UM);
                 break;
             case R.id.iv_taobao:
+                mPresenter.readPhoneState(LOGIN_CHANNEL_TB);
                 break;
             case R.id.iv_sina:
                 mPlatform = SHARE_MEDIA.SINA;
-                mPresenter.readPhoneState(false);
+                mPresenter.readPhoneState(LOGIN_CHANNEL_UM);
                 break;
         }
     }
@@ -210,7 +224,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 ToastUtils.showShort(R.string.hint_agreement);
                 return;
             }
-            mPresenter.readPhoneState(true);
+            mPresenter.readPhoneState(LOGIN_CHANNEL_MOBILE);
         }
     }
 
@@ -293,7 +307,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @SuppressLint("HardwareIds")
     @Override
-    public void readPhoneStateSuccess(boolean isMobileLogin) {
+    public void readPhoneStateSuccess(@LoginChannel int loginChannel) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             TelephonyManager telephonyManager =
                     (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -302,14 +316,17 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 if (TextUtils.isEmpty(mDeviceId)) {
                     mDeviceId = "unknown";
                 }
-                if (isMobileLogin) {
+                if (loginChannel == LOGIN_CHANNEL_MOBILE) {
                     mobileLogin();
-                } else {
-                    thirdPartyAuth();
+                } else if (loginChannel == LOGIN_CHANNEL_UM) {
+                    UMAuth();
+                } else if (loginChannel == LOGIN_CHANNEL_TB) {
+                    mPresenter.aliLogin();
                 }
             }
         }
     }
+
 
     @Override
     public void onThirdPartyLoginSuccess(BasicResponse<LoginBean> response) {
@@ -333,6 +350,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
     }
 
+    @Override
+    public void onAliLoginSuccess() {
+        Session session = AlibcLogin.getInstance().getSession();
+        thirdPartyLogin(session.openId, session.avatarUrl, -1, session.nick, getAccountTypeByPlatform(null));
+    }
+
     private void mobileLogin() {
         HashMap<String, Object> map = new HashMap<>();
         map.put("mobile", mMobile);
@@ -342,7 +365,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         mPresenter.mobileLogin(map);
     }
 
-    private void thirdPartyAuth() {
+    private void UMAuth() {
         if (mPlatform == null) {
             return;
         }
@@ -363,8 +386,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                         String uid = map.get("uid");
                         String iconUrl = map.get("iconurl");
                         int gender = map.get("gender").equals("男") ? 0 : 1;
-                        String nickname = StringUtils.filterEmoji(map.get("name"));
-                        thirdPartyLogin(uid, iconUrl, gender, nickname);
+                        String nickname = map.get("name");
+                        thirdPartyLogin(uid, iconUrl, gender, nickname, getAccountTypeByPlatform(share_media));
                     }
 
                     @Override
@@ -386,19 +409,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
     }
 
-    private void thirdPartyLogin(String uid, String iconUrl, int gender, String nickname) {
+    private int getAccountTypeByPlatform(SHARE_MEDIA platform) {
+//        platform ==null为淘宝
+        return platform == null ? 3 :
+                platform == SHARE_MEDIA.WEIXIN ? 0 :
+                        platform == SHARE_MEDIA.QQ ? 1
+                                : 2;
+    }
+
+    private void thirdPartyLogin(String uid, String iconUrl, int gender, String nickname, int platform) {
         mThirdPartyInfoBean = new ThirdPartyInfoBean();
         mThirdPartyInfoBean.setDeviceId(mDeviceId);
         mThirdPartyInfoBean.setGender(gender);
         mThirdPartyInfoBean.setIconUrl(iconUrl);
         mThirdPartyInfoBean.setOpenId(uid);
-        mThirdPartyInfoBean.setPlatform(mPlatform == SHARE_MEDIA.QQ ? 0 : 1);
+        mThirdPartyInfoBean.setPlatform(platform);
         mThirdPartyInfoBean.setNickName(nickname);
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put(mPlatform == SHARE_MEDIA.WEIXIN ? "wxopenid" :
-                mPlatform == SHARE_MEDIA.SINA ? "sinaopenid" :
-                        "qqopenid", uid);
+        map.put("wxopenid", uid);
+        map.put("accounttype", String.valueOf(platform));
         map.put("deviceSerialId", mDeviceId);
         mPresenter.thirdPartyLogin(map);
     }

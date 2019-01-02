@@ -3,7 +3,7 @@ package me.jessyan.peach.shop.netconfig.temporary;
 
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
-import me.jessyan.peach.shop.entity.MessageBean;
+import me.jessyan.peach.shop.entity.user.MessageBean;
 import me.jessyan.peach.shop.entity.goods.CollectionBean;
 import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
 import okhttp3.ResponseBody;
@@ -24,7 +24,7 @@ public interface CollectionApiService {
      */
     @FormUrlEncoded
     @POST("follow/queryFollow")
-    Observable<BasicResponse<CollectionBean>> getCollectionList(@Field("pageNo") int page, @Field("pageSize") int pageSize);
+    Observable<BasicResponse<CouponsCommodityBean>> getCollectionList(@Field("pageNo") int page, @Field("pageSize") int pageSize);
 
     @FormUrlEncoded
     @POST("follow/queryFollow")

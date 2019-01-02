@@ -33,8 +33,15 @@ public interface IntentExtra {
     String SHARE_THUMB = "share_thumb";
     String SHARE_LINK = "share_link";
     String SHARE_POSTER = "share_poster";
+    String SHARE_FILE_PATH = "share_file_path";
 
     String POSITION = "position";
 
     String TYPE = "type";
+
+    String PURPOSE = "purpose";
+
+    String URL = "url";
+    String WIDTH = "width";
+    String HEIGHT = "height";
 }

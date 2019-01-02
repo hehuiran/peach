@@ -51,12 +51,12 @@ public class HomeCategoryModel extends BaseModel implements HomeCategoryContract
         Observable<CouponsBannerBean> bannerObservable = mRepositoryManager
                 .obtainRetrofitService(NewApi.class)
                 .getCategoryBanner("02", oneType)
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(CouponsBannerBean.class));
 
         Observable<GoodsCategoryGridBean> channelObservable = mRepositoryManager
                 .obtainRetrofitService(GoodsCategoryApiService.class)
                 .getGridData(typeId, CommonConstant.TYPE_CATEGORY_SECOND_TEN)
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(GoodsCategoryGridBean.class));
 
 
         return Observable.zip(bannerObservable, channelObservable,
@@ -85,7 +85,7 @@ public class HomeCategoryModel extends BaseModel implements HomeCategoryContract
                 .getGoodsCategoryData(page,
                         CommonConstant.PAGE_SIZE,
                         oneType, twoType, selectType, sort, dataTimeStamp)
-                .map(new ResponseFunction<>())
+                .map(new ResponseFunction<>(CouponsCommodityBean.class))
                 .map(new Function<CouponsCommodityBean, CouponsCommodityBean>() {
                     @Override
                     public CouponsCommodityBean apply(CouponsCommodityBean couponsCommodityBean) throws Exception {

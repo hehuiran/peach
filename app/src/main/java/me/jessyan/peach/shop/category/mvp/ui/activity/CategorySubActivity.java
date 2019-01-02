@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Space;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -50,7 +49,7 @@ import me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView;
 public class CategorySubActivity extends BaseActivity<CategorySubPresenter> implements CategorySubContract.View {
 
     @BindView(R.id.status_view)
-    Space mStatusView;
+    View mStatusView;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.toolbar)

@@ -4,11 +4,16 @@ import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ResultBean;
+import me.jessyan.peach.shop.entity.user.LoginBean;
+import me.jessyan.peach.shop.entity.user.UserInfo;
 import me.jessyan.peach.shop.netconfig.temporary.PersonalApiService;
 import me.jessyan.peach.shop.user.mvp.contract.BindMobileContract;
 
@@ -38,5 +43,23 @@ public class BindMobileModel extends BaseModel implements BindMobileContract.Mod
         return mRepositoryManager
                 .obtainRetrofitService(PersonalApiService.class)
                 .getCode(mobile);
+    }
+
+    @Override
+    public Observable<BasicResponse<LoginBean>> bindMobile(HashMap<String, Object> map) {
+        return mRepositoryManager.obtainRetrofitService(PersonalApiService.class)
+                .bindMobile(map)
+                .map(new Function<BasicResponse<LoginBean>, BasicResponse<LoginBean>>() {
+                    @Override
+                    public BasicResponse<LoginBean> apply(BasicResponse<LoginBean> loginBeanBasicResponse) throws Exception {
+                        if (loginBeanBasicResponse.getCode() == 0) {
+                            //登录成功，保存用户信息
+                            LoginBean loginBean = loginBeanBasicResponse.getData();
+                            UserInfo.getInstance().setData(loginBean);
+
+                        }
+                        return loginBeanBasicResponse;
+                    }
+                });
     }
 }

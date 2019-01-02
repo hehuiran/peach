@@ -141,6 +141,54 @@ public final class StringUtils {
         return number;
     }
 
+    public static float parseFloat(String format) {
+        float number;
+        try {
+            number = Float.parseFloat(format);
+        } catch (NumberFormatException e) {
+            number = 0f;
+        } catch (NullPointerException e) {
+            number = 0f;
+        }
+        return number;
+    }
+
+    public static double parseDouble(String format) {
+        double number;
+        try {
+            number = Double.parseDouble(format);
+        } catch (NumberFormatException e) {
+            number = 0d;
+        } catch (NullPointerException e) {
+            number = 0d;
+        }
+        return number;
+    }
+
+    /**
+     * 提供精确的减法运算。
+     *
+     * @param v1 被减数
+     * @param v2 减数
+     * @return 两个参数的差
+     */
+    public static double sub(double v1, double v2) {
+        return sub(Double.toString(v1), Double.toString(v2));
+    }
+
+    /**
+     * 提供精确的减法运算。
+     *
+     * @param v1 被减数
+     * @param v2 减数
+     * @return 两个参数的差
+     */
+    public static double sub(String v1, String v2) {
+        BigDecimal b1 = new BigDecimal(v1);
+        BigDecimal b2 = new BigDecimal(v2);
+        return b1.subtract(b2).doubleValue();
+    }
+
     public static String splitCouponMoney(String format) {
         String[] splits;
         String money;

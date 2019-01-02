@@ -11,6 +11,8 @@ public interface CommonConstant {
 
     String HTTPS = "https:";
 
+    String TAOKE_APP_KEY = "24712221";
+
     /**
      * 商户ID
      */

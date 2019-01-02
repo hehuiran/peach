@@ -5,8 +5,11 @@ import com.jess.arms.mvp.IModel;
 
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
+import me.jessyan.peach.shop.entity.ResultBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailOptionalBean;
+import me.jessyan.peach.shop.home.mvp.ui.activity.GoodsDetailActivity;
+import me.jessyan.peach.shop.netconfig.Optional;
 
 
 /**
@@ -24,6 +27,8 @@ import me.jessyan.peach.shop.entity.home.GoodsDetailOptionalBean;
 public interface GoodsDetailContract {
     //对于经常使用的关于UI的方法可以定义到IView中,如显示隐藏进度条,和显示文字消息
     interface View extends IView {
+        GoodsDetailActivity getActivity();
+
         void onGetGoodsDetailDataSuccess(GoodsDetailOptionalBean optionalBean);
 
         void onGetGoodsDetailDataFailed();
@@ -38,5 +43,7 @@ public interface GoodsDetailContract {
         Observable<BasicResponse<String>> collectionGoods(String itemId);
 
         Observable<BasicResponse<String>> cancelCollectionGoods(String itemId);
+
+        Observable<Optional<ResultBean>> turnLink(String itemId, String pid);
     }
 }

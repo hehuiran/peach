@@ -58,12 +58,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.constraint.Guideline
-                    android:id="@+id/gl_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.7"/>
+                <!--<android.support.constraint.Guideline-->
+                    <!--android:id="@+id/gl_one"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--app:layout_constraintGuide_percent="0.7"/>-->
 
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/iv_avatar"
@@ -85,25 +85,25 @@
                     android:paddingEnd="15dp"
                     android:paddingStart="15dp"
                     android:paddingTop="3dp"
-                    android:text="@string/regular_members"
+                    tools:text="@string/regular_members"
                     android:textColor="@color/color_ff1673"
                     android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="@+id/gl_one"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_nickname"
                     app:layout_constraintTop_toTopOf="@+id/iv_avatar"/>
 
                 <TextView
                     android:id="@+id/tv_nickname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="15dp"
                     android:ellipsize="end"
                     android:includeFontPadding="false"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="15sp"
+                    android:maxWidth="100dp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_members"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_members"
                     app:layout_constraintStart_toEndOf="@+id/iv_avatar"
                     app:layout_constraintTop_toTopOf="@+id/tv_members"
                     tools:text="好的风景更多是法国大使馆发的"/>
@@ -455,7 +455,7 @@
                     android:drawablePadding="5dp"
                     android:drawableTop="@mipmap/ic_contract_customer"
                     android:gravity="center"
-                    android:text="@string/service_provider"
+                    android:text="@string/contract_customer"
                     android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintEnd_toStartOf="@+id/tv_platform_notice"

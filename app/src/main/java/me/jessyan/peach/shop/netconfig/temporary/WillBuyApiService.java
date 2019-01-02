@@ -1,6 +1,8 @@
 package me.jessyan.peach.shop.netconfig.temporary;
 
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ConfigBean;
@@ -17,6 +19,7 @@ import me.jessyan.peach.shop.entity.goods.VirtualMustSeeSectionBean;
 import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
 import me.jessyan.peach.shop.entity.home.taobao.TaoBaoDetailsBean;
 import me.jessyan.peach.shop.entity.home.taobao.TaoBaoImageBean;
+import me.jessyan.peach.shop.entity.search.SearchGoodsBean;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -51,7 +54,10 @@ public interface WillBuyApiService {
      */
     @FormUrlEncoded
     @POST("goods/privilege")
-    Observable<BasicResponse<ResultBean>> turnLink(@Field("itemId") String itemId, @Field("siteId") String siteId, @Field("adzoneId") String adzoneId, @Field("pid") String pid);
+    Observable<BasicResponse<ResultBean>> turnLink(@Field("itemId") String itemId, @Field("pid") String pid);
+    /*@FormUrlEncoded
+    @POST("goods/privilege")
+    Observable<BasicResponse<ResultBean>> turnLink(@Field("itemId") String itemId, @Field("siteId") String siteId, @Field("adzoneId") String adzoneId, @Field("pid") String pid);*/
 
     /**
      * 首页轮播 : 01
@@ -272,8 +278,9 @@ public interface WillBuyApiService {
 
 
     @FormUrlEncoded
-    @POST("goods/queryHaoDanKu")
-    Observable<BasicResponse<CouponsCommodityBean>> getSearchResult(@Field("pageNo") int page, @Field("pageSize") int pageSize
+//    @POST("goods/queryHaoDanKu")
+    @POST("goods/queryTaoBaoOptional")
+    Observable<BasicResponse<List<SearchGoodsBean>>> getSearchResult(@Field("pageNo") int page, @Field("pageSize") int pageSize
             , @Field("condition") String keywords, @Field("sort") String sort, @Field("iscoupon") int iscoupon);
 
     /**

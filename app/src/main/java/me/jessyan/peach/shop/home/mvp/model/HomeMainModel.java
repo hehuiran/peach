@@ -10,7 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Function4;
+import io.reactivex.functions.Function6;
 import me.jessyan.peach.shop.constant.CommonConstant;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelBean;
@@ -51,24 +51,36 @@ public class HomeMainModel extends BaseModel implements HomeMainContract.Model {
         Observable<CouponsBannerBean> bannerObservable = mRepositoryManager
                 .obtainRetrofitService(NewApi.class)
                 .getBanner("01")
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(CouponsBannerBean.class));
 
         Observable<CouponsChannelBean> channelObservable = mRepositoryManager
                 .obtainRetrofitService(WillBuyApiService.class)
                 .getElectronicCommerce(System.currentTimeMillis())
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(CouponsChannelBean.class));
+
+        Observable<CouponsBannerBean> advertisingObservable1 = mRepositoryManager
+                .obtainRetrofitService(NewApi.class)
+                .getBanner("20")
+                .map(new ResponseFunction<>(CouponsBannerBean.class));
+
+        Observable<CouponsBannerBean> advertisingObservable2 = mRepositoryManager
+                .obtainRetrofitService(NewApi.class)
+                .getBanner("20")
+                .map(new ResponseFunction<>(CouponsBannerBean.class));
 
         Observable<OrientationGoodsBean> orientationObservable = mRepositoryManager
                 .obtainRetrofitService(GoodsCategoryApiService.class)
                 .getOrientationGoods("0", CommonConstant.PAGE_SIZE_ORIENTATION)
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(OrientationGoodsBean.class));
 
-        return Observable.zip(bannerObservable, channelObservable,
+        return Observable.zip(bannerObservable, channelObservable, advertisingObservable1, advertisingObservable2,
                 orientationObservable, loadMoreGoods(CommonConstant.PAGE_INITIAL, CommonConstant.EMPTY_STRING),
-                new Function4<CouponsBannerBean, CouponsChannelBean, OrientationGoodsBean, CouponsCommodityBean, HomeMainOptionalBean>() {
+                new Function6<CouponsBannerBean, CouponsChannelBean, CouponsBannerBean, CouponsBannerBean, OrientationGoodsBean, CouponsCommodityBean, HomeMainOptionalBean>() {
                     @Override
                     public HomeMainOptionalBean apply(CouponsBannerBean couponsBannerBean,
                                                       CouponsChannelBean couponsChannelBean,
+                                                      CouponsBannerBean advertisingBean1,
+                                                      CouponsBannerBean advertisingBean2,
                                                       OrientationGoodsBean orientationGoodsBean,
                                                       CouponsCommodityBean couponsCommodityBean) throws Exception {
                         HomeMainOptionalBean homeMainOptionalBean = new HomeMainOptionalBean();
@@ -76,6 +88,12 @@ public class HomeMainModel extends BaseModel implements HomeMainContract.Model {
                         List<CouponsChannelBean.ChannelModel> channelBeanList = couponsChannelBean.getList();
                         if (channelBeanList != null && !channelBeanList.isEmpty()) {
                             homeMainOptionalBean.setChannelData(channelBeanList.get(0));
+                        }
+                        if (!advertisingBean1.getBannerList().isEmpty()){
+                            homeMainOptionalBean.setAdvertisingBean1(advertisingBean1.getBannerList().get(0));
+                        }
+                        if (!advertisingBean2.getBannerList().isEmpty()){
+                            homeMainOptionalBean.setAdvertisingBean2(advertisingBean2.getBannerList().get(0));
                         }
                         homeMainOptionalBean.setHomeSectionList(mockSectionData());
                         homeMainOptionalBean.setOrientationGoodsBean(orientationGoodsBean);
@@ -90,7 +108,7 @@ public class HomeMainModel extends BaseModel implements HomeMainContract.Model {
         return mRepositoryManager
                 .obtainRetrofitService(WillBuyApiService.class)
                 .getCommodity(page, 7, CommonConstant.PAGE_SIZE, "首页", dataTimeStamp)
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(CouponsCommodityBean.class));
 
     }
 

@@ -1,6 +1,8 @@
 package me.jessyan.peach.shop.widget.nine;
 
 import android.content.Context;
+import android.os.Build;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public abstract class NineGridViewAdapter<T> {
      * @param index        当前点击图片的的索引
      * @param imageInfo    图片地址的数据集合
      */
-    protected void onImageItemClick(Context context, NineGridView nineGridView, int index, List<T> imageInfo) {
+    protected void onImageItemClick(Context context, View view, NineGridView nineGridView, int index, List<T> imageInfo) {
     }
 
     /**
@@ -40,6 +42,9 @@ public abstract class NineGridViewAdapter<T> {
      */
     protected ImageView generateImageView(Context context) {
         NineGridViewWrapper imageView = new NineGridViewWrapper(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageView.setTransitionName(context.getString(R.string.transition_name_image));
+        }
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageResource(R.drawable.ic_default_color);
         return imageView;

@@ -249,8 +249,9 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         }
 
         HomeAdvertisingAdapter advertisingAdapter1 = getAdapter(2);
-        if (advertisingAdapter1 != null) {
-            advertisingAdapter1.setAdvertisingUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1544868392232&di=8714b61eb9c1f711d219fdee6035e8cf&imgtype=0&src=http%3A%2F%2Fpic11.photophoto.cn%2F20090603%2F0034034495016977_b.jpg", 2);
+        CouponsBannerBean.BannerBean advertisingBean1 = homeMainOptionalBean.getAdvertisingBean1();
+        if (advertisingAdapter1 != null && advertisingBean1 != null) {
+            advertisingAdapter1.setAdvertisingUrl(advertisingBean1.getDataBean().getImg(), 2);
         }
 
         HomeSectionAdapter sectionAdapter = getAdapter(3);
@@ -260,8 +261,9 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         }
 
         HomeAdvertisingAdapter advertisingAdapter2 = getAdapter(4);
-        if (advertisingAdapter2 != null) {
-            advertisingAdapter2.setAdvertisingUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1544868392232&di=8714b61eb9c1f711d219fdee6035e8cf&imgtype=0&src=http%3A%2F%2Fpic11.photophoto.cn%2F20090603%2F0034034495016977_b.jpg", 4);
+        CouponsBannerBean.BannerBean advertisingBean2 = homeMainOptionalBean.getAdvertisingBean2();
+        if (advertisingAdapter2 != null && advertisingBean2 != null) {
+            advertisingAdapter2.setAdvertisingUrl(advertisingBean2.getDataBean().getImg(), 4);
         }
 
         HomeOrientationAdapter orientationAdapter = getAdapter(5);

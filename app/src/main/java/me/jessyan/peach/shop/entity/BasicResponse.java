@@ -2,6 +2,8 @@ package me.jessyan.peach.shop.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import me.jessyan.peach.shop.netconfig.Optional;
+
 /**
  * author Created by He on 2017/7/13.
  */
@@ -46,5 +48,9 @@ public class BasicResponse<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public Optional<T> transform() {
+        return new Optional<>(getData());
     }
 }

@@ -112,6 +112,9 @@
     public *;
 }
 
+################Matisse###############
+-dontwarn com.bumptech.glide.**
+
 ################okhttp###############
 -keepattributes Signature
 -keepattributes *Annotation*

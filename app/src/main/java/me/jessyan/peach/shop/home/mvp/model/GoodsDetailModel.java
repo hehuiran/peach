@@ -23,6 +23,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.functions.Function4;
 import me.jessyan.peach.shop.constant.CommonConstant;
 import me.jessyan.peach.shop.entity.BasicResponse;
+import me.jessyan.peach.shop.entity.ResultBean;
 import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
 import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
@@ -34,9 +35,11 @@ import me.jessyan.peach.shop.entity.home.taobao.TaoBaoDetailsBean;
 import me.jessyan.peach.shop.entity.home.taobao.TaoBaoImageBean;
 import me.jessyan.peach.shop.entity.home.taobao.TaoBaoPriceBean;
 import me.jessyan.peach.shop.home.mvp.contract.GoodsDetailContract;
+import me.jessyan.peach.shop.netconfig.Optional;
 import me.jessyan.peach.shop.netconfig.function.ResponseFunction;
 import me.jessyan.peach.shop.netconfig.temporary.CollectionApiService;
 import me.jessyan.peach.shop.netconfig.temporary.WillBuyApiService;
+import me.jessyan.peach.shop.netconfig.transformer.RxTransformer;
 import me.jessyan.peach.shop.utils.StringUtils;
 
 
@@ -122,6 +125,13 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
                 .cancelCollectionCommodity(itemId);
     }
 
+    @Override
+    public Observable<Optional<ResultBean>> turnLink(String itemId, String pid) {
+        return mRepositoryManager.obtainRetrofitService(WillBuyApiService.class)
+                .turnLink(itemId, pid)
+                .compose(RxTransformer.handleResponse());
+    }
+
     private Observable<Boolean> getGoodsCollectionStatus(String itemId) {
         return mRepositoryManager
                 .obtainRetrofitService(CollectionApiService.class)
@@ -139,7 +149,7 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
         return mRepositoryManager
                 .obtainRetrofitService(WillBuyApiService.class)
                 .getRecommendGoods(itemId, 8, 2)
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(CouponsCommodityBean.class));
     }
 
     private Observable<CouponsCommodityBean> getOurServerGoodsDetail(String itemId, boolean isRequestDetail) {
@@ -147,7 +157,7 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
                 mRepositoryManager
                         .obtainRetrofitService(WillBuyApiService.class)
                         .getGoodsTitleDetails(itemId)
-                        .map(new ResponseFunction<>()) :
+                        .map(new ResponseFunction<>(CouponsCommodityBean.class)) :
                 Observable.just(new CouponsCommodityBean());
     }
 
@@ -213,6 +223,7 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
 
                         //店铺信息
                         GoodsDetailSellerBean goodsDetailSellerBean = data.getSeller();
+                        goodsDetailSellerBean.setCreditLevelIcon(getUrl(goodsDetailSellerBean.getCreditLevelIcon()));
                         goodsDetailSellerBean.setShopIcon(getUrl(goodsDetailSellerBean.getShopIcon()));
                         infoBean.setShopType(goodsDetailSellerBean.getShopType());
                         optionalBean.setGoodsDetailInfoBean(infoBean);
@@ -259,6 +270,9 @@ public class GoodsDetailModel extends BaseModel implements GoodsDetailContract.M
     }
 
     private String getUrl(String url) {
+        if (TextUtils.isEmpty(url)) {
+            return url;
+        }
         return url.startsWith(CommonConstant.HTTPS) ? url : CommonConstant.HTTPS.concat(url);
     }
 

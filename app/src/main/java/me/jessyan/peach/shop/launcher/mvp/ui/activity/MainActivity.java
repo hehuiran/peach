@@ -14,14 +14,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.integration.EventBusManager;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -33,8 +32,6 @@ import me.jessyan.peach.shop.constant.IntentExtra;
 import me.jessyan.peach.shop.dynamic.mvp.ui.fragment.DynamicFragment;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ConfigBean;
-import me.jessyan.peach.shop.entity.event.LoginSuccessEvent;
-import me.jessyan.peach.shop.entity.event.SearchKeyEvent;
 import me.jessyan.peach.shop.entity.user.UserInfo;
 import me.jessyan.peach.shop.group.mvp.ui.fragment.GroupFragment;
 import me.jessyan.peach.shop.home.mvp.ui.fragment.HomeFragment;
@@ -43,8 +40,6 @@ import me.jessyan.peach.shop.launcher.mvp.contract.MainContract;
 import me.jessyan.peach.shop.launcher.mvp.presenter.MainPresenter;
 import me.jessyan.peach.shop.mine.mvp.ui.fragment.MineFragment;
 import me.jessyan.peach.shop.user.mvp.ui.activity.LoginActivity;
-import me.jessyan.peach.shop.widget.BottomMenu;
-import me.jessyan.peach.shop.widget.BottomMenuLayout;
 
 
 /**
@@ -59,7 +54,7 @@ import me.jessyan.peach.shop.widget.BottomMenuLayout;
  * <a href="https://github.com/JessYanCoding/MVPArmsTemplate">模版请保持更新</a>
  * ================================================
  */
-public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View, BottomMenuLayout.OnBottomMenuCheckedChangeListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements MainContract.View {
 
     @Inject
     RxPermissions mRxPermissions;
@@ -75,16 +70,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     private Fragment[] mFragments;
     private FragmentManager mFragmentManager;
     private int lastIndex = -1;
-    private BottomMenu lastView;
-    private BottomMenuLayout mBottomMenuLayout;
+    private RadioGroup mRadioGroup;
+    private RadioButton lastView;
 
 
     //返回首页用新token重新请求配置信息
     public static final int BACK_TO_MAIN_RESET_TOKEN = 1;
     //仅仅是返回首页,不做任何事情
     public static final int BACK_TO_MAIN_DO_NOTHING = 2;
+    //退出登录
+    public static final int BACK_TO_MAIN_LOGOUT = 3;
 
-    @IntDef({BACK_TO_MAIN_RESET_TOKEN,BACK_TO_MAIN_DO_NOTHING})
+    @IntDef({BACK_TO_MAIN_RESET_TOKEN, BACK_TO_MAIN_DO_NOTHING, BACK_TO_MAIN_LOGOUT})
     public @interface BackToMain {
 
     }
@@ -177,7 +174,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     private void initSuccessView() {
-        if (mViewStubError == null && mErrorView != null) {
+        if (mErrorView != null) {
             mRoot.removeView(mErrorView);
         }
         mViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
@@ -192,25 +189,40 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     private void initView(View view) {
-        mBottomMenuLayout = view.findViewById(R.id.ll_bottom_bar);
-        mBottomMenuLayout.setOnBottomMenuCheckedChangeListener(this);
+        mRadioGroup = view.findViewById(R.id.radio_group);
+        RadioGroup.OnCheckedChangeListener listener = new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = group.findViewById(checkedId);
+                switch (checkedId) {
+                    case R.id.rb_main:
+                        addFragment(0, radioButton);
+                        break;
+                    case R.id.rb_category:
+                        addFragment(1, radioButton);
+                        break;
+                    case R.id.rb_spell_group:
+                        addFragment(2, radioButton);
+                        break;
+                    case R.id.rb_dynamic:
+                        addFragment(3, radioButton);
+                        break;
+                    case R.id.rb_mine:
+                        checkLogin(4, radioButton);
+                        break;
+                }
+            }
+        };
+        mRadioGroup.setOnCheckedChangeListener(listener);
 
-        if (mIsNeedAutoLogin) {
-            EventBusManager.getInstance().post(new LoginSuccessEvent());
-        }
         ConfigBean configBean = configBeanBasicResponse.getData();
         initConfig(configBean);
     }
 
     private void initConfig(ConfigBean configBean) {
-        ArrayList<String> searchList = (ArrayList<String>) configBean.getSearchArray();
-        if (searchList != null) {
-            //EventBus发送粘性事件，推荐搜索关键词
-            EventBusManager.getInstance().postSticky(new SearchKeyEvent(searchList));
-        }
         mFragments = new Fragment[5];
         mFragmentManager = getSupportFragmentManager();
-        mBottomMenuLayout.checkedChild(0);
+        ((RadioButton) mRadioGroup.getChildAt(0)).setChecked(true);
     }
 
     private void initErrorView() {
@@ -232,31 +244,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         }
     }
 
-    @Override
-    public void onBottomMenuCheckedChange(BottomMenu view) {
-        switch (view.getId()) {
-            case R.id.bm_main:
-                addFragment(0, view);
-                break;
-            case R.id.bm_category:
-                addFragment(1, view);
-                break;
-            case R.id.bm_spell_group:
-                addFragment(2, view);
-                break;
-            case R.id.bm_dynamic:
-                addFragment(3, view);
-                break;
-            case R.id.bm_mine:
-                checkLogin(4, view);
-                break;
-        }
-    }
-
     /**
      * 显示对应的fragment
      */
-    private void addFragment(int position, BottomMenu view) {
+    private void addFragment(int position, RadioButton view) {
         FragmentTransaction transaction =
                 mFragmentManager.beginTransaction();
         if (lastIndex >= 0 && mFragments[lastIndex] != null) {
@@ -291,34 +282,50 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         lastView = view;
     }
 
+    private void logout() {
+        ((RadioButton) mRadioGroup.getChildAt(0)).setChecked(true);
+        FragmentTransaction transaction =
+                mFragmentManager.beginTransaction();
+        for (int i = 0; i < mFragments.length; i++) {
+            if (mFragments[i] != null) {
+                if (mFragments[i] instanceof MineFragment) {
+                    transaction.remove(mFragments[i]);
+                    mFragments[i] = null;
+                }
+            }
+        }
+        transaction.commit();
+    }
+
     /**
      * 检查是否登录
      */
     @SuppressWarnings("SameParameterValue")
-    private void checkLogin(int position, BottomMenu bottomMenu) {
+    private void checkLogin(int position, RadioButton radioButton) {
         String token = UserInfo.getInstance().getToken();
         if (TextUtils.isEmpty(token)) {
-            bottomMenu.unSelectMenu();
+            radioButton.setChecked(false);
             if (lastView != null) {
-                lastView.selectMenu(false, true);
-                mBottomMenuLayout.setLastBottomMenu(lastView);
+                lastView.setChecked(true);
             }
             //未登录跳转至登录页面
             LoginActivity.launcher(this, LoginActivity.LOGIN_WAY_MODULES);
             return;
         }
         //已经登录显示相对应的fragment
-        addFragment(position, bottomMenu);
+        addFragment(position, radioButton);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         int type = intent.getIntExtra(IntentExtra.BACK_TO_MAIN, -1);
-        if (type == BACK_TO_MAIN_RESET_TOKEN){
+        if (type == BACK_TO_MAIN_RESET_TOKEN) {
             //重新请求配置信息
             mIsNeedAutoLogin = false;
             requestNetData();
+        } else if (type == BACK_TO_MAIN_LOGOUT) {
+            logout();
         }
     }
 }

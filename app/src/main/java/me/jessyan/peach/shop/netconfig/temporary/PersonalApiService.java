@@ -8,11 +8,10 @@ import me.jessyan.peach.shop.entity.DataBean;
 import me.jessyan.peach.shop.entity.ResultBean;
 import me.jessyan.peach.shop.entity.user.BannerBean;
 import me.jessyan.peach.shop.entity.user.IntegralProblemBean;
-import me.jessyan.peach.shop.entity.user.InviteFriendRecycleBean;
+import me.jessyan.peach.shop.entity.user.InviteFriendBean;
 import me.jessyan.peach.shop.entity.user.LoginBean;
 import me.jessyan.peach.shop.entity.user.ModifyBean;
 import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -85,9 +84,6 @@ public interface PersonalApiService {
     @Multipart
     @POST("user/upload")
     Observable<BasicResponse<ResultBean>> changeIcon(@Part MultipartBody.Part file);
-    @Multipart
-    @POST("user/upload")
-    Observable<ResponseBody> changeIcon2(@Part MultipartBody.Part file);
 
     /**
      * 修改昵称
@@ -151,7 +147,7 @@ public interface PersonalApiService {
      */
     @FormUrlEncoded
     @POST("user/queryFenXiang")
-    Observable<BasicResponse<InviteFriendRecycleBean>> getShareInfo(@Field("timestamp") long millis);
+    Observable<BasicResponse<InviteFriendBean>> getShareInfo(@Field("timestamp") long millis);
 
     /**
      * 查询邀请人数

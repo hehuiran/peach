@@ -65,7 +65,7 @@ public class BasicParamsInterceptor implements Interceptor {
         params.put("timestamp", System.currentTimeMillis());
         params.put("version", AppUtils.getAppVersionName());
         params.put("deviceType", String.valueOf(2));
-        params.put("channel", "");
+        params.put("channel", "android");
         params.put("token", UserInfo.getInstance().getToken());
         //params.put("deviceSerialId", SampleApplicationLike.getIMEI());
 
@@ -118,7 +118,7 @@ public class BasicParamsInterceptor implements Interceptor {
         params.put("timestamp", System.currentTimeMillis());
         params.put("version", AppUtils.getAppVersionName());
         params.put("deviceType", String.valueOf(2));
-        params.put("channel", "");
+        params.put("channel", "android");
         params.put("token", UserInfo.getInstance().getToken());
         String sign = getSign(params);
         params.put("sign", sign);

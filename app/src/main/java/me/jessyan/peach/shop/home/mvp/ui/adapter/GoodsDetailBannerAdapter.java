@@ -55,12 +55,7 @@ public class GoodsDetailBannerAdapter extends VirtualItemAdapter<VirtualItemView
                         return url;
                     }
                 })
-                .setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-
-                    }
-                })
+                .setOnBannerListener(mOnBannerListener)
 //                .setBannerAnimation(ForegroundToBackgroundAlphaTransformer.class)
                 .setIndicatorGravity(BannerConfig.CENTER)
                 .setImages(mData)
@@ -77,5 +72,11 @@ public class GoodsDetailBannerAdapter extends VirtualItemAdapter<VirtualItemView
     @Override
     protected int getDefItemViewType(int position) {
         return RecyclerViewType.BANNER_TYPE;
+    }
+
+    private OnBannerListener mOnBannerListener;
+
+    public void setOnBannerListener(OnBannerListener onBannerListener) {
+        this.mOnBannerListener = onBannerListener;
     }
 }

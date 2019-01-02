@@ -11,13 +11,13 @@ import me.jessyan.peach.shop.entity.MultiItemBean;
 
 public class MineLoginCompletedOrderBean extends MultiItemBean {
 
-    private List<OrderStatusBean.DataModel> data;
+    private List<OrderSubBean.DataBean> data;
 
-    public List<OrderStatusBean.DataModel> getData() {
+    public List<OrderSubBean.DataBean> getData() {
         return data;
     }
 
-    public void setData(List<OrderStatusBean.DataModel> data) {
+    public void setData(List<OrderSubBean.DataBean> data) {
         this.data = data;
     }
 }

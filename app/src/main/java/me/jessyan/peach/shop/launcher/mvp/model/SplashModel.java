@@ -37,6 +37,6 @@ public class SplashModel extends BaseModel implements SplashContract.Model {
     public Observable<CouponsBannerBean> getAdvertising(String type) {
         return mRepositoryManager.obtainRetrofitService(ConfigService.class)
                 .getBanner(type)
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(CouponsBannerBean.class));
     }
 }

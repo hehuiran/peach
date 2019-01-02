@@ -27,7 +27,7 @@ import butterknife.OnClick;
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.constant.IntentExtra;
 import me.jessyan.peach.shop.entity.home.GoodsDetailInfoBean;
-import me.jessyan.peach.shop.help.ShareDialogFragment;
+import me.jessyan.peach.shop.dialog.ShareDialogFragment;
 import me.jessyan.peach.shop.home.di.component.DaggerCreateShareComponent;
 import me.jessyan.peach.shop.home.mvp.contract.CreateShareContract;
 import me.jessyan.peach.shop.home.mvp.presenter.CreateSharePresenter;
@@ -193,7 +193,7 @@ public class CreateShareActivity extends BaseActivity<CreateSharePresenter> impl
     private void shareImage() {
         String img = mImageUrlList.get(mCurrentCheckIndex);
         if (!TextUtils.isEmpty(img)) {
-            ShareDialogFragment.SharePosterBean posterBean = new ShareDialogFragment.SharePosterBean();
+            ShareDialogFragment.ShareGoodsPosterBean posterBean = new ShareDialogFragment.ShareGoodsPosterBean();
             posterBean.setImg(img);
             posterBean.setCouponMoney(StringUtils.keepTwoDecimal(mDetailInfoBean.getCouponMoney()));
             posterBean.setDiscountPrice(StringUtils.keepTwoDecimal(mDetailInfoBean.getDiscountPrice()));

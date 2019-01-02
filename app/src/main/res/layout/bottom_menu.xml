@@ -12,8 +12,7 @@
         android:layout_height="22dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/space"
-        tools:src="@mipmap/icon_tab_home_selected"/>
+        app:layout_constraintTop_toTopOf="@+id/space"/>
 
     <TextView
         android:id="@+id/tv_menu"

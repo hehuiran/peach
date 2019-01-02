@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Space;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -53,7 +52,7 @@ import me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView;
 public class SearchResultActivity extends BaseActivity<SearchResultPresenter> implements SearchResultContract.View {
 
     @BindView(R.id.status_view)
-    Space mStatusView;
+    View mStatusView;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.toolbar)
@@ -179,7 +178,8 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
     @Override
     protected void initImmersionBar() {
         super.initImmersionBar();
-        mImmersionBar.statusBarView(mStatusView)
+        mImmersionBar
+                .statusBarView(mStatusView)
                 .statusBarDarkFont(true, 0.2f)
                 .init();
     }

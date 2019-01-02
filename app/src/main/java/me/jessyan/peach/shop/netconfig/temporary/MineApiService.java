@@ -5,11 +5,12 @@ import java.util.List;
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ResultBean;
-import me.jessyan.peach.shop.entity.mine.AllianceManagementListMineResultBean;
+import me.jessyan.peach.shop.entity.mine.MyFansSubBean;
 import me.jessyan.peach.shop.entity.mine.AllianceManagementListOrderResultBean;
 import me.jessyan.peach.shop.entity.mine.AllianceManagementTeamMineBean;
 import me.jessyan.peach.shop.entity.mine.AllianceManagementTeamOrderBean;
-import me.jessyan.peach.shop.entity.mine.DrawDetailsListBean;
+import me.jessyan.peach.shop.entity.mine.OrderSubBean;
+import me.jessyan.peach.shop.entity.mine.WithdrawRecordBean;
 import me.jessyan.peach.shop.entity.mine.IncomeReportsDetailsBean;
 import me.jessyan.peach.shop.entity.mine.IncomeReportsListBean;
 import me.jessyan.peach.shop.entity.mine.InviteRecordBean;
@@ -19,7 +20,6 @@ import me.jessyan.peach.shop.entity.mine.MineInfoUserIdentityBean;
 import me.jessyan.peach.shop.entity.mine.MineLoginCompletedBannerBean;
 import me.jessyan.peach.shop.entity.mine.MineLoginCompletedLineBean;
 import me.jessyan.peach.shop.entity.mine.MineLoginCompletedOrderBean;
-import me.jessyan.peach.shop.entity.mine.OrderStatusBean;
 import me.jessyan.peach.shop.entity.mine.WithDrawBean;
 import me.jessyan.peach.shop.entity.user.UserAccountBean;
 import okhttp3.RequestBody;
@@ -108,7 +108,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("browse/queryOrderRecord")
-    Observable<BasicResponse<OrderStatusBean>> getOrderDetails(@Field("pageNo") int page, @Field("pageSize") int pageSize, @Field("type") int type);
+    Observable<BasicResponse<OrderSubBean>> getOrderDetails(@Field("pageNo") int page, @Field("pageSize") int pageSize, @Field("type") int type);
 
     /**
      * 获取余额
@@ -136,7 +136,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("user/queryExtractRecord")
-    Observable<BasicResponse<DrawDetailsListBean>> getWithDrawRecord(@Field("type") String type, @Field("pageNo") int page, @Field("pageSize") int pageSize);
+    Observable<BasicResponse<WithdrawRecordBean>> getWithDrawRecord(@Field("type") String type, @Field("pageNo") int page, @Field("pageSize") int pageSize);
 
     /**
      * 获取服务器时间戳
@@ -166,7 +166,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("user/querySearch")
-    Observable<BasicResponse<AllianceManagementListMineResultBean>> allianceListMine(@Field("type") int type, @Field("pageNo") int page, @Field("pageSize") int pageSize);
+    Observable<BasicResponse<MyFansSubBean>> allianceListMine(@Field("type") String type, @Field("pageNo") int page, @Field("pageSize") int pageSize);
 
 
     /**
@@ -188,7 +188,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("user/querySearch")
-    Observable<BasicResponse<AllianceManagementListMineResultBean>> allianceSearch(@Field("type") int type, @Field("content") String searchKey, @Field("pageNo") int page, @Field("pageSize") int pageSize);
+    Observable<BasicResponse<MyFansSubBean>> allianceSearch(@Field("type") int type, @Field("content") String searchKey, @Field("pageNo") int page, @Field("pageSize") int pageSize);
 
     /**
      * 收益报表头部数据
@@ -202,7 +202,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("order/withdraw/logger")
-    Observable<BasicResponse<List<IncomeReportsListBean.DataModel>>> getIncomeReportsListData2(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize, @Field("type") int type);
+    Observable<BasicResponse<List<IncomeReportsListBean.DataBean>>> getIncomeReportsListData2(@Field("pageNo") int pageNo, @Field("pageSize") int pageSize, @Field("type") int type);
 
 
     /**

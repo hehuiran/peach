@@ -13,7 +13,7 @@ import io.reactivex.functions.Function;
 import me.jessyan.peach.shop.constant.CommonConstant;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
 import me.jessyan.peach.shop.entity.BasicResponse;
-import me.jessyan.peach.shop.entity.MessageBean;
+import me.jessyan.peach.shop.entity.user.MessageBean;
 import me.jessyan.peach.shop.netconfig.temporary.CollectionApiService;
 import me.jessyan.peach.shop.user.mvp.contract.MessageContract;
 

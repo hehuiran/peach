@@ -4,27 +4,25 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import me.jessyan.peach.shop.entity.MultiItemBean;
-
 /**
  * author: Created by HuiRan on 2018/4/16 14:07
  * E-Mail: 15260828327@163.com
  * description:
  */
 
-public class IncomeReportsDetailsBean extends MultiItemBean {
+public class IncomeReportsDetailsBean {
 
-    private List<DataModel> data;
+    private List<DataBean> data;
 
-    public List<DataModel> getData() {
+    public List<DataBean> getData() {
         return data;
     }
 
-    public void setData(List<DataModel> data) {
+    public void setData(List<DataBean> data) {
         this.data = data;
     }
 
-    public static class DataModel {
+    public static class DataBean {
 
         @SerializedName("income")
         private String total;

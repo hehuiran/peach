@@ -3,12 +3,16 @@ package me.jessyan.peach.shop.dynamic.mvp.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.ScreenUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
@@ -27,8 +31,11 @@ import me.jessyan.peach.shop.dynamic.mvp.contract.DynamicSubContract;
 import me.jessyan.peach.shop.dynamic.mvp.presenter.DynamicSubPresenter;
 import me.jessyan.peach.shop.dynamic.mvp.ui.adapter.DynamicSubAdapter;
 import me.jessyan.peach.shop.entity.DynamicBean;
+import me.jessyan.peach.shop.home.mvp.ui.activity.PreviewActivity;
+import me.jessyan.peach.shop.utils.ResourceUtils;
 import me.jessyan.peach.shop.widget.RecyclerLoadMoreView;
 import me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView;
+import timber.log.Timber;
 
 
 /**
@@ -99,7 +106,13 @@ public class DynamicSubFragment extends BaseFragment<DynamicSubPresenter> implem
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(manager);
         mAdapter = new DynamicSubAdapter();
-        mAdapter.setHasStableIds(true);
+        mAdapter.setOnImageClickListener(new DynamicSubAdapter.OnImageClickListener() {
+            @Override
+            public void onImageClick(View view, String url) {
+                int size = ScreenUtils.getScreenWidth();
+                launcherPreview(view, url, size, size);
+            }
+        });
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -109,6 +122,19 @@ public class DynamicSubFragment extends BaseFragment<DynamicSubPresenter> implem
         mAdapter.setLoadMoreView(new RecyclerLoadMoreView());
         mAdapter.setEnableLoadMore(false);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void launcherPreview(View view, String imgUrl, int wight, int height) {
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            Pair<View, String> pair = Pair.create(view, ResourceUtils.getResourceString(R.string.transition_name_image));
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(activity, pair);
+            PreviewActivity.luncher(getContext(), imgUrl, wight, height, optionsCompat.toBundle());
+        } else {
+            Timber.tag(TAG).e("getActivity is null...");
+        }
     }
 
     private void refreshData(boolean showLoading) {

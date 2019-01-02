@@ -1,5 +1,9 @@
 package me.jessyan.peach.shop.user.mvp.presenter;
 
+import com.alibaba.baichuan.trade.biz.login.AlibcLogin;
+import com.alibaba.baichuan.trade.biz.login.AlibcLoginCallback;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.PermissionUtil;
@@ -8,10 +12,12 @@ import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.user.LoginBean;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.peach.shop.user.mvp.contract.LoginContract;
+import me.jessyan.peach.shop.user.mvp.ui.activity.LoginActivity;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
@@ -38,16 +44,16 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
         super(model, rootView);
     }
 
-    public void readPhoneState(boolean isMobileLogin) {
+    public void readPhoneState(@LoginActivity.LoginChannel int loginChannel) {
         PermissionUtil.readPhonestate(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
-                mRootView.readPhoneStateSuccess(isMobileLogin);
+                mRootView.readPhoneStateSuccess(loginChannel);
             }
         }, mRootView.getRxPermissions(), mErrorHandler);
     }
 
-    public void mobileLogin(HashMap<String, Object> map){
+    public void mobileLogin(HashMap<String, Object> map) {
         mModel.mobileLogin(map)
                 .compose(new CommonTransformer<>(this))
                 .subscribe(new ErrorHandleSubscriber<LoginBean>(mErrorHandler) {
@@ -66,7 +72,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
 
     public void thirdPartyLogin(HashMap<String, Object> map) {
         mModel.thirdPartyLogin(map)
-                .compose(new CommonTransformer<>(this,false))
+                .compose(new CommonTransformer<>(this, false))
                 .subscribe(new ErrorHandleSubscriber<BasicResponse<LoginBean>>(mErrorHandler) {
                     @Override
                     public void onNext(BasicResponse<LoginBean> loginBeanBasicResponse) {
@@ -80,6 +86,27 @@ public class LoginPresenter extends BasePresenter<LoginContract.Model, LoginCont
                         hideLoading();
                     }
                 });
+    }
+
+    public void aliLogin() {
+        AlibcLogin instance = AlibcLogin.getInstance();
+        if (instance.isLogin()) {
+            mRootView.onAliLoginSuccess();
+        } else {
+            instance.showLogin(new AlibcLoginCallback() {
+                @Override
+                public void onSuccess(int i) {
+                    LogUtils.d(TAG, "淘宝授权成功");
+                    mRootView.onAliLoginSuccess();
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    LogUtils.d(TAG, "淘宝授权失败i=" + i + "->s=" + s);
+                    ToastUtils.showShort(R.string.tb_auth_failed);
+                }
+            });
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@ import me.jessyan.peach.shop.entity.MultiItemBean;
 public class IncomeReportsListBean {
 
     private String totalAmount;
-    private List<DataModel> data;
+    private List<DataBean> data;
 
     @Override
     public String toString() {
@@ -32,15 +32,15 @@ public class IncomeReportsListBean {
         this.totalAmount = totalAmount;
     }
 
-    public List<DataModel> getData() {
+    public List<DataBean> getData() {
         return data;
     }
 
-    public void setData(List<DataModel> data) {
+    public void setData(List<DataBean> data) {
         this.data = data;
     }
 
-    public static class DataModel extends MultiItemBean {
+    public static class DataBean extends MultiItemBean {
         private long addTime;
         private String amount;
         private String remark;

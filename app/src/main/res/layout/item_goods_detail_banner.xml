@@ -10,6 +10,7 @@
         android:id="@+id/banner"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:transitionName="@string/transition_name_image"
         app:delay_time="5000"
         app:indicator_drawable_selected="@drawable/indicator_checked"
         app:indicator_drawable_unselected="@drawable/indicator_normal"

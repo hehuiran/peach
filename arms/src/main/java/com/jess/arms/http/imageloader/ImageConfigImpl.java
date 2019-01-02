@@ -3,6 +3,7 @@ package com.jess.arms.http.imageloader;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
 import java.io.File;
@@ -31,6 +32,9 @@ public class ImageConfigImpl extends ImageConfig {
     private DownloadOnlyListener downloadOnlyListener;
     private int width;
     private int height;
+    private boolean isGif;
+    private Priority priority;
+    private boolean isFitCenter;
 
     private ImageConfigImpl(Builder builder) {
         this.url = builder.url;
@@ -52,6 +56,21 @@ public class ImageConfigImpl extends ImageConfig {
         this.downloadOnlyListener = builder.downloadOnlyListener;
         this.width = builder.width;
         this.height = builder.height;
+        this.isGif = builder.isGif;
+        this.priority = builder.priority;
+        this.isFitCenter = builder.isFitCenter;
+    }
+
+    public boolean isFitCenter() {
+        return isFitCenter;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public boolean isGif() {
+        return isGif;
     }
 
     public int getWidth() {
@@ -143,6 +162,7 @@ public class ImageConfigImpl extends ImageConfig {
         private ImageView[] imageViews;
         private boolean isCrossFade = true;//是否使用淡入淡出过渡动画
         private boolean isCenterCrop;//是否将图片剪切为 CenterCrop
+        private boolean isFitCenter;//是否将图片剪切为 CenterCrop
         private boolean isCircle;//是否将图片剪切为圆形
         private boolean isClearMemory;//清理内存缓存
         private boolean isClearDiskCache;//清理本地缓存
@@ -150,8 +170,20 @@ public class ImageConfigImpl extends ImageConfig {
         private DownloadOnlyListener downloadOnlyListener;
         private int width;
         private int height;
+        private boolean isGif;
+        private Priority priority;
 
         private Builder() {
+        }
+
+        public Builder priority(Priority priority) {
+            this.priority = priority;
+            return this;
+        }
+
+        public Builder asGif() {
+            this.isGif = true;
+            return this;
         }
 
         public Builder width(int width) {
@@ -246,6 +278,11 @@ public class ImageConfigImpl extends ImageConfig {
 
         public Builder isCenterCrop(boolean isCenterCrop) {
             this.isCenterCrop = isCenterCrop;
+            return this;
+        }
+
+        public Builder isFitCenter(boolean isFitCenter) {
+            this.isFitCenter = isFitCenter;
             return this;
         }
 

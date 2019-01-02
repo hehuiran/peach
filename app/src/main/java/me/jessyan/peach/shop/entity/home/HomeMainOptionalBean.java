@@ -27,6 +27,25 @@ public class HomeMainOptionalBean {
     //商品
     private CouponsCommodityBean couponsCommodityBean;
 
+    private CouponsBannerBean.BannerBean advertisingBean1;
+    private CouponsBannerBean.BannerBean advertisingBean2;
+
+    public CouponsBannerBean.BannerBean getAdvertisingBean1() {
+        return advertisingBean1;
+    }
+
+    public void setAdvertisingBean1(CouponsBannerBean.BannerBean advertisingBean1) {
+        this.advertisingBean1 = advertisingBean1;
+    }
+
+    public CouponsBannerBean.BannerBean getAdvertisingBean2() {
+        return advertisingBean2;
+    }
+
+    public void setAdvertisingBean2(CouponsBannerBean.BannerBean advertisingBean2) {
+        this.advertisingBean2 = advertisingBean2;
+    }
+
     public CouponsBannerBean getBannerData() {
         return bannerData;
     }

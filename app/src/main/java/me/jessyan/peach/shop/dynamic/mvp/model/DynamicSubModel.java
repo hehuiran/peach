@@ -39,6 +39,6 @@ public class DynamicSubModel extends BaseModel implements DynamicSubContract.Mod
     public Observable<DynamicBean> getDynamicData(int type, int page) {
         return mRepositoryManager.obtainRetrofitService(NewApi.class)
                 .getDynamicData(type,page, CommonConstant.DYNAMIC_PAGE_SIZE)
-                .map(new ResponseFunction<>());
+                .map(new ResponseFunction<>(DynamicBean.class));
     }
 }

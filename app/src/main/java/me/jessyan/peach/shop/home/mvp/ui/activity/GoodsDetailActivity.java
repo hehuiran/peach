@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Group;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,12 @@ import android.widget.TextView;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.integration.EventBusManager;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +35,14 @@ import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.callback.OnSingleClickListener;
 import me.jessyan.peach.shop.constant.IntentExtra;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
+import me.jessyan.peach.shop.entity.event.GoodsCollectionStateChangeEvent;
 import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailImageBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailInfoBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailOptionalBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailSellerBean;
+import me.jessyan.peach.shop.help.AliTradeHelper;
 import me.jessyan.peach.shop.home.di.component.DaggerGoodsDetailComponent;
 import me.jessyan.peach.shop.home.mvp.contract.GoodsDetailContract;
 import me.jessyan.peach.shop.home.mvp.presenter.GoodsDetailPresenter;
@@ -45,9 +52,11 @@ import me.jessyan.peach.shop.home.mvp.ui.adapter.GoodsDetailImageAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.GoodsDetailInfoAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.GoodsDetailSellerAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeGoodsAdapter;
+import me.jessyan.peach.shop.utils.ResourceUtils;
 import me.jessyan.peach.shop.utils.StringUtils;
 import me.jessyan.peach.shop.vlayout.VirtualAdapter;
 import me.jessyan.peach.shop.vlayout.callback.OnItemChildClickListener;
+import me.jessyan.peach.shop.vlayout.callback.OnItemClickListener;
 import me.jessyan.peach.shop.widget.DispatchTouchRecyclerView;
 import me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView;
 import timber.log.Timber;
@@ -147,12 +156,30 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
         mAdapterList = new ArrayList<>();
 
         GoodsDetailBannerAdapter bannerAdapter = new GoodsDetailBannerAdapter();
+        bannerAdapter.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                View view = virtualLayoutManager.findViewByPosition(0);
+                if (view != null) {
+                    String url = bannerAdapter.getData().get(position);
+                    int size = ScreenUtils.getScreenWidth();
+                    launcherPreview(view.findViewById(R.id.banner), url, size, size);
+                }
+            }
+        });
         mAdapterList.add(bannerAdapter);
 
         OnItemChildClickListener onItemChildClickListener = new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(RecyclerView.Adapter adapter, View view, int position) {
                 onRecyclerViewItemChildClick(adapter, view, position);
+            }
+        };
+
+        OnItemClickListener onItemClickListener = new OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
+                onRecyclerViewItemClick(adapter, view, position);
             }
         };
 
@@ -167,15 +194,37 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
         mAdapterList.add(decorationAdapter1);
 
         GoodsDetailImageAdapter imageAdapter = new GoodsDetailImageAdapter();
+        imageAdapter.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(imageAdapter);
 
         GoodsDetailDecorationAdapter decorationAdapter2 = new GoodsDetailDecorationAdapter();
         mAdapterList.add(decorationAdapter2);
 
         HomeGoodsAdapter goodsAdapter = new HomeGoodsAdapter();
+        goodsAdapter.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(goodsAdapter);
 
         mVirtualAdapter.setAdapters(mAdapterList);
+    }
+
+    private void onRecyclerViewItemClick(RecyclerView.Adapter adapter, View view, int position) {
+        if (adapter instanceof HomeGoodsAdapter) {
+            GoodsBean bean = ((HomeGoodsAdapter) adapter).getData().get(position);
+            if (bean.getItemType() == RecyclerViewType.HOME_GOODS_TYPE) {
+                launcher(this, GoodsDetailConfigBean.generateConfigBean(bean));
+            }
+        } else if (adapter instanceof GoodsDetailImageAdapter) {
+            GoodsDetailImageBean imageBean = ((GoodsDetailImageAdapter) adapter).getData().get(position);
+            launcherPreview(view, imageBean.getImgUrl(), imageBean.getWight(), imageBean.getHeight());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void launcherPreview(View view, String imgUrl, int wight, int height) {
+        Pair<View, String> pair = Pair.create(view, ResourceUtils.getResourceString(R.string.transition_name_image));
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(this, pair);
+        PreviewActivity.luncher(this, imgUrl, wight, height, optionsCompat.toBundle());
     }
 
     private void onRecyclerViewItemChildClick(RecyclerView.Adapter adapter, View view, int position) {
@@ -217,8 +266,13 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
                 launcherCreateShare();
                 break;
             case R.id.v_buy:
+                launcherTaoBao();
                 break;
         }
+    }
+
+    private void launcherTaoBao() {
+        mPresenter.turnLink(mDetailConfigBean.getItemId());
     }
 
     private void launcherCreateShare() {
@@ -231,6 +285,11 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
                 CreateShareActivity.launcher(this, infoBean, data);
             }
         }
+    }
+
+    @Override
+    public GoodsDetailActivity getActivity() {
+        return this;
     }
 
     @Override
@@ -326,6 +385,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
             return;
         }
         tvCollection.setSelected(isCollection);
+        EventBusManager.getInstance().post(new GoodsCollectionStateChangeEvent());
     }
 
     @Override
@@ -369,5 +429,11 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
             return null;
         }
         return (T) mAdapterList.get(position);
+    }
+
+    @Override
+    protected void onDestroy() {
+        AliTradeHelper.getDefault().release();
+        super.onDestroy();
     }
 }

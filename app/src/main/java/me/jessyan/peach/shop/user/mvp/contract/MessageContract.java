@@ -7,7 +7,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
-import me.jessyan.peach.shop.entity.MessageBean;
+import me.jessyan.peach.shop.entity.user.MessageBean;
 
 
 /**

@@ -39,6 +39,13 @@
         </activity>
         <activity android:name=".launcher.mvp.ui.activity.GuideActivity"/>
 
+        <!-- 阿里百川兼容android8.0，替代原有activity的theme -->
+        <activity
+            android:name="com.ali.auth.third.ui.LoginActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme"
+            tools:replace="android:theme"/>
+
         <!-- Arms 配置 -->
         <meta-data
             android:name="me.jessyan.peach.shop.app.GlobalConfiguration"
@@ -63,6 +70,35 @@
         <activity android:name=".category.mvp.ui.activity.CategorySubActivity">
         </activity>
         <activity android:name=".user.mvp.ui.activity.MessageActivity">
+        </activity>
+        <activity android:name=".user.mvp.ui.activity.SettingActivity">
+        </activity>
+        <activity android:name=".user.mvp.ui.activity.ChangeNicknameActivity">
+        </activity>
+        <activity android:name=".user.mvp.ui.activity.ChangePasswordActivity">
+        </activity>
+        <activity android:name=".user.mvp.ui.activity.BindAlipayActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.MyIncomeActivity"/>
+        <activity android:name=".mine.mvp.ui.activity.IncomeDetailActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.WithdrawActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.WithdrawRecordActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.InviteActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.OrderActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.MyFansActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.MyCollectionActivity">
+        </activity>
+        <activity android:name=".home.mvp.ui.activity.PreviewActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.ServiceProviderActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.CommonProblemActivity">
         </activity>
     </application>
 

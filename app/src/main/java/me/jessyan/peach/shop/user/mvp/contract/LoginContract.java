@@ -11,6 +11,7 @@ import java.util.HashMap;
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.user.LoginBean;
+import me.jessyan.peach.shop.user.mvp.ui.activity.LoginActivity;
 
 
 /**
@@ -37,9 +38,11 @@ public interface LoginContract {
 
         void onMobileLoginFailed();
 
-        void readPhoneStateSuccess(boolean isMobileLogin);
+        void readPhoneStateSuccess(@LoginActivity.LoginChannel int loginChannel);
 
         void onThirdPartyLoginSuccess(BasicResponse<LoginBean> response);
+
+        void onAliLoginSuccess();
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
