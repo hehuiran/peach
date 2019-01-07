@@ -10,7 +10,6 @@ import me.jessyan.peach.shop.entity.user.BannerBean;
 import me.jessyan.peach.shop.entity.user.IntegralProblemBean;
 import me.jessyan.peach.shop.entity.user.InviteFriendBean;
 import me.jessyan.peach.shop.entity.user.LoginBean;
-import me.jessyan.peach.shop.entity.user.ModifyBean;
 import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
@@ -27,7 +26,8 @@ import retrofit2.http.Part;
 
 public interface PersonalApiService {
 
-    /**v
+    /**
+     * v
      * 启动页 - 广告图片
      */
     @POST("message/queryslideshowstartup")
@@ -54,7 +54,6 @@ public interface PersonalApiService {
     @FormUrlEncoded
     @POST("user/queryUserInsert")
     Observable<BasicResponse<LoginBean>> bindMobile(@FieldMap Map<String, Object> map);
-
 
 
     /**
@@ -93,11 +92,25 @@ public interface PersonalApiService {
     Observable<BasicResponse<ResultBean>> changeNickname(@Field("nickname") String nickName);
 
     /**
+     * 验证手机
+     */
+    @FormUrlEncoded
+    @POST("user/getverifyCode")
+    Observable<BasicResponse<ResultBean>> verifyMobile(@Field("phone") String mobile, @Field("verifyCode") String verifyCode);
+
+    /**
      * 修改手机
      */
     @FormUrlEncoded
-    @POST("user/bindingUpdate")
-    Observable<BasicResponse<ModifyBean>> changeMobile(@Field("newMobile") String newMobile, @Field("mobile") String mobile, @Field("verifyCode") String verifyCode);
+    @POST("user/updatePhone")
+    Observable<BasicResponse<ResultBean>> modifyMobile(@Field("yphone") String oldMobile, @Field("xphone") String newMobile, @Field("verifyCode") String verifyCode);
+
+    /**
+     * 修改密码
+     */
+    @FormUrlEncoded
+    @POST("user/updatePassworld")
+    Observable<BasicResponse<ResultBean>> changePassword(@Field("phone") String mobile, @Field("verifyCode") String verifyCode, @Field("passworld") String password);
 
     /**
      * 绑定和修改支付宝
@@ -128,13 +141,13 @@ public interface PersonalApiService {
     Observable<BasicResponse<String>> queryMobile(@Field("mobile") String mobile);
 
 
-
     /**
      * 查询该手机是否已经注册并存在于服务端
      */
     @FormUrlEncoded
     @POST("user/queryUserRelationship")
     Observable<BasicResponse<String>> queryMobile(@Field("mobile") String mobile, @Field("loginType") int loginType);
+
     /**
      * 填写邀请码 / 关系绑定
      */
@@ -155,8 +168,6 @@ public interface PersonalApiService {
     @FormUrlEncoded
     @POST("user/querySumPeople")
     Observable<BasicResponse<DataBean>> queryInviteCount(@Field("timestamp") long millis);
-
-
 
 
 }

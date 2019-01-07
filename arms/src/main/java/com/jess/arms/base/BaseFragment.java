@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.integration.cache.Cache;
@@ -174,6 +175,7 @@ public abstract class BaseFragment<P extends IPresenter> extends Fragment implem
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ToastUtils.cancel();
         if (mImmersionBar != null)
             mImmersionBar.destroy();
         if (mPresenter != null) mPresenter.onDestroy();//释放资源

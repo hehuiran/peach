@@ -6,6 +6,7 @@ import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.DynamicBean;
 import me.jessyan.peach.shop.entity.NavigationBarBean;
+import me.jessyan.peach.shop.entity.SuccessBean;
 import me.jessyan.peach.shop.entity.WebShipBean;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.SearchCommodityBean;
@@ -102,7 +103,7 @@ public interface NewApi {
 
 
     @GET("appMain/addSendCircleShareNum")
-    Observable<ResponseBody> findShareNum(@Query("id") String id);
+    Observable<BasicResponse<SuccessBean>> addShareNum(@Query("id") String id);
 
 
     @GET("shorten.json?source=211160679")

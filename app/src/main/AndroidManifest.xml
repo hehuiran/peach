@@ -100,6 +100,22 @@
         </activity>
         <activity android:name=".mine.mvp.ui.activity.CommonProblemActivity">
         </activity>
+        <activity android:name=".user.mvp.ui.activity.ChangeMobileActivity">
+        </activity>
+        <activity android:name=".home.mvp.ui.activity.WebActivity">
+        </activity>
+        <activity android:name=".home.mvp.ui.activity.SectionActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.FeedbackActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.NewUserGuidelineActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.ContractCustomerActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.PlatformNoticeActivity">
+        </activity>
+        <activity android:name=".mine.mvp.ui.activity.AboutUsActivity">
+        </activity>
     </application>
 
 </manifest>

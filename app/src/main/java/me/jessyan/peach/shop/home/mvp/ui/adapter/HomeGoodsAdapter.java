@@ -96,7 +96,7 @@ public class HomeGoodsAdapter extends VirtualMultiListItemAdapter<GoodsBean, Vir
         couponsLayout.setMoney(bean.getCouponmoney());
 
         TextView tvTitle = holder.getView(R.id.tv_title);
-        SpannableString titleSpannable = new SpannableString(bean.getTitle());
+        SpannableString titleSpannable = new SpannableString(" " + bean.getTitle());
         Drawable drawable = ContextCompat.getDrawable(tvTitle.getContext(),
                 bean.getShoptype() != null && bean.getShoptype().equals("B") ? R.mipmap.ic_tag_tmall : R.mipmap.ic_tag_taobao);
         if (drawable == null) {

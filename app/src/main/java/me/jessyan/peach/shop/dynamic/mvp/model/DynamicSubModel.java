@@ -11,8 +11,11 @@ import io.reactivex.Observable;
 import me.jessyan.peach.shop.constant.CommonConstant;
 import me.jessyan.peach.shop.dynamic.mvp.contract.DynamicSubContract;
 import me.jessyan.peach.shop.entity.DynamicBean;
+import me.jessyan.peach.shop.entity.SuccessBean;
+import me.jessyan.peach.shop.netconfig.Optional;
 import me.jessyan.peach.shop.netconfig.function.ResponseFunction;
 import me.jessyan.peach.shop.netconfig.temporary.NewApi;
+import me.jessyan.peach.shop.netconfig.transformer.RxTransformer;
 
 
 /**
@@ -38,7 +41,14 @@ public class DynamicSubModel extends BaseModel implements DynamicSubContract.Mod
     @Override
     public Observable<DynamicBean> getDynamicData(int type, int page) {
         return mRepositoryManager.obtainRetrofitService(NewApi.class)
-                .getDynamicData(type,page, CommonConstant.DYNAMIC_PAGE_SIZE)
+                .getDynamicData(type, page, CommonConstant.DYNAMIC_PAGE_SIZE)
                 .map(new ResponseFunction<>(DynamicBean.class));
+    }
+
+    @Override
+    public Observable<Optional<SuccessBean>> addShareNum(String id) {
+        return mRepositoryManager.obtainRetrofitService(NewApi.class)
+                .addShareNum(id)
+                .compose(RxTransformer.handleResponse());
     }
 }

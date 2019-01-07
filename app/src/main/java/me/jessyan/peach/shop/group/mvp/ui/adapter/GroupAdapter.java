@@ -48,7 +48,7 @@ public class GroupAdapter extends BaseQuickAdapter<GroupBean.DataBean, BaseViewH
                 .setText(R.id.tv_group_price, group);
 
         TextView tvTitle = helper.getView(R.id.tv_title);
-        SpannableString titleSpannable = new SpannableString(item.getTitle());
+        SpannableString titleSpannable = new SpannableString(" " + item.getTitle());
         Drawable drawable = ContextCompat.getDrawable(tvTitle.getContext(),
                 item.getShopType() != null && item.getShopType().equals("1") ? R.mipmap.ic_tag_tmall : R.mipmap.ic_tag_taobao);
         if (drawable == null) {

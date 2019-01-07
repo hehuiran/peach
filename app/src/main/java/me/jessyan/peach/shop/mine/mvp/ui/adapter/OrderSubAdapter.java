@@ -45,7 +45,7 @@ public class OrderSubAdapter extends BaseQuickAdapter<OrderSubBean.DataBean, Bas
                         .transformation(new GlideRoundTransform())
                         .build());
 
-        SpannableString titleSpannable = new SpannableString(item.getTitle());
+        SpannableString titleSpannable = new SpannableString(" " + item.getTitle());
         Drawable drawable = ContextCompat.getDrawable(mContext,
                 !item.getOrderType().equals("淘宝") ? R.mipmap.ic_tag_tmall : R.mipmap.ic_tag_taobao);
         if (drawable != null) {

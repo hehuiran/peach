@@ -35,9 +35,9 @@ public class IncomeModel extends BaseModel implements IncomeContract.Model {
     }
 
     @Override
-    public Observable<IncomeReportsDetailsBean> getIncomeReportsDetails() {
+    public Observable<IncomeReportsDetailsBean> getIncomeReportsDetails(String shopType) {
         return mRepositoryManager.obtainRetrofitService(MineApiService.class)
-                .getIncomeReportsDetails(System.currentTimeMillis())
+                .getIncomeReportsDetails(shopType)
                 .map(new ResponseFunction<>(IncomeReportsDetailsBean.class));
     }
 }

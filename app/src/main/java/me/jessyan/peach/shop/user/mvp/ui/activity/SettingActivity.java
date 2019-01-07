@@ -21,11 +21,11 @@ import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.http.imageloader.ImageConfigImpl;
 import com.jess.arms.http.imageloader.ImageLoader;
-import com.jess.arms.integration.EventBusManager;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -155,6 +155,7 @@ public class SettingActivity extends BaseActivity<SettingPresenter> implements S
                 ChangeNicknameActivity.launcher(this);
                 break;
             case R.id.v_mobile:
+                ChangeMobileActivity.launcher(this);
                 break;
             case R.id.v_password:
                 ChangePasswordActivity.launcher(this);
@@ -262,7 +263,7 @@ public class SettingActivity extends BaseActivity<SettingPresenter> implements S
         }
         UserInfo.getInstance().setHeadImgUrl(avatarUrl);
         setAvatarImage();
-        EventBusManager.getInstance().post(new ChangeAvatarEvent());
+        EventBus.getDefault().post(new ChangeAvatarEvent());
     }
 
     @Override

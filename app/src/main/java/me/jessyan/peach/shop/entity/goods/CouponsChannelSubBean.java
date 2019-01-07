@@ -1,10 +1,10 @@
 package me.jessyan.peach.shop.entity.goods;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import me.jessyan.peach.shop.entity.ExtraBean;
 import me.jessyan.peach.shop.entity.MultiItemBean;
 
 /**
@@ -23,8 +23,7 @@ public class CouponsChannelSubBean extends MultiItemBean {
     private String action;
     private int linktype;
     private List<GiveGoodsDetailBean> items;
-    private JSONObject extra;
-
+    private ExtraBean extra;
 
 
     public String getUrl() {
@@ -76,11 +75,14 @@ public class CouponsChannelSubBean extends MultiItemBean {
         this.items = items;
     }
 
-    public JSONObject getExtra() {
+
+    public ExtraBean getExtra() {
         return extra;
     }
 
-    public void setExtra(JSONObject extra) {
+    public void setExtra(ExtraBean extra) {
         this.extra = extra;
     }
+
+
 }

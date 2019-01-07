@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jessyan.peach.shop.R;
-import me.jessyan.peach.shop.constant.CommonConstant;
 import timber.log.Timber;
 
 /**
@@ -107,10 +106,32 @@ public class StickyLayout extends FrameLayout {
         }
 
         if (mOnStickyTabChangeListener != null) {
-            String sort = newState == TOP ? "top" :
-                    newState == BOTTOM ? "bot" : CommonConstant.EMPTY_STRING;
+            String sort = String.valueOf(getSortByPositionAndState(position, newState));
             mOnStickyTabChangeListener.onStickyTabChange(position, sort);
         }
+    }
+
+
+    public static String getDefaultSort() {
+        return String.valueOf(getSortByPositionAndState(0, TOP));
+    }
+
+    private static int getSortByPositionAndState(int position, int state) {
+        int sort;
+        if (position == 0) {
+            //券面值
+            sort = state == TOP ? 1 : 2;
+        } else if (position == 1) {
+            //券后价
+            sort = state == TOP ? 3 : 4;
+        } else if (position == 2) {
+            //预估佣金
+            sort = state == TOP ? 5 : 6;
+        } else {
+            //当前销量
+            sort = state == TOP ? 7 : 8;
+        }
+        return sort;
     }
 
     private void setTagState(TextView view, int state) {

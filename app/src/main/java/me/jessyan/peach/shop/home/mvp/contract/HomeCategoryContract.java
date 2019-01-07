@@ -40,11 +40,10 @@ public interface HomeCategoryContract {
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
         Observable<HomeCategoryOptionalBean> getHomeCategoryData(int typeId, String oneType,
-                                                                 String twoType, int selectType,
+                                                                 String twoType,
                                                                  String sort);
 
         Observable<CouponsCommodityBean> getGoods(int page, String oneType,
-                                                  String twoType, int selectType,
-                                                  String sort, String dataTimeStamp);
+                                                  String twoType, String sort, String dataTimeStamp);
     }
 }

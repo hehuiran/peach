@@ -15,6 +15,9 @@ import com.flyco.tablayout.SlidingTabLayout;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.callback.OnSingleClickListener;
+import me.jessyan.peach.shop.entity.event.ChangeTabEvent;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleMainBean;
 import me.jessyan.peach.shop.help.LoginHelper;
@@ -117,6 +121,19 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
             case R.id.iv_category:
                 showMoreChannelWindow();
                 break;
+        }
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReceiveEvent(ChangeTabEvent event) {
+        int position = event.getPosition();
+        if (position < mTabLayout.getTabCount()) {
+            mTabLayout.setCurrentTab(position);
         }
     }
 

@@ -37,11 +37,11 @@ public class OrderSubPresenter extends BasePresenter<OrderSubContract.Model, Ord
         super(model, rootView);
     }
 
-    public void getOrderDetail(int type, boolean pullToRefresh, boolean showLoading) {
+    public void getOrderDetail(int orderType, int type, boolean pullToRefresh, boolean showLoading) {
         if (pullToRefresh) {
             page = CommonConstant.PAGE_INITIAL;
         }
-        mModel.getOrderDetail(type, page)
+        mModel.getOrderDetail(orderType, type, page)
                 .compose(new CommonTransformer<>(this, showLoading))
                 .subscribe(new ErrorHandleSubscriber<Optional<OrderSubBean>>(mErrorHandler) {
                     @Override

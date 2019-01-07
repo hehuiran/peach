@@ -30,11 +30,12 @@ public class OrderParentFragment extends BaseFragment {
     SlidingTabLayout mTabLayout;
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
+    private int mOrderType;
 
-    public static OrderParentFragment newInstance(int type) {
+    public static OrderParentFragment newInstance(int orderType) {
         OrderParentFragment fragment = new OrderParentFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(IntentExtra.TYPE, type);
+        bundle.putInt(IntentExtra.ORDER_TYPE, orderType);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -53,13 +54,13 @@ public class OrderParentFragment extends BaseFragment {
     public void initData() {
 
         Bundle bundle = getArguments();
-        if (bundle!= null){
-            int type = bundle.getInt(IntentExtra.TYPE);
+        if (bundle != null) {
+            mOrderType = bundle.getInt(IntentExtra.ORDER_TYPE);
         }
 
         String[] tabs = getResources().getStringArray(R.array.order_tab_array);
         int[] types = getResources().getIntArray(R.array.order_tab_type_array);
-        OrderPagerAdapter pagerAdapter = new OrderPagerAdapter(getChildFragmentManager(), tabs, types);
+        OrderPagerAdapter pagerAdapter = new OrderPagerAdapter(getChildFragmentManager(), tabs, types, mOrderType);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setOffscreenPageLimit(tabs.length);
         mTabLayout.setViewPager(mViewPager);
@@ -74,16 +75,18 @@ public class OrderParentFragment extends BaseFragment {
 
         private String[] mTabs;
         private int[] mTypes;
+        private int orderType;
 
-        private OrderPagerAdapter(FragmentManager fm, String[] tabs, int[] types) {
+        private OrderPagerAdapter(FragmentManager fm, String[] tabs, int[] types, int orderType) {
             super(fm);
             this.mTabs = tabs;
             this.mTypes = types;
+            this.orderType = orderType;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return OrderSubFragment.newInstance(mTypes[position]);
+            return OrderSubFragment.newInstance(mTypes[position], orderType);
         }
 
         @Override

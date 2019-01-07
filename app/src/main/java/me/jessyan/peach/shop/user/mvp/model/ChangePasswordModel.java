@@ -39,4 +39,11 @@ public class ChangePasswordModel extends BaseModel implements ChangePasswordCont
                 .obtainRetrofitService(PersonalApiService.class)
                 .getCode(mobile);
     }
+
+    @Override
+    public Observable<BasicResponse<ResultBean>> changePassword(String mobile, String verifyCode, String password) {
+        return mRepositoryManager
+                .obtainRetrofitService(PersonalApiService.class)
+                .changePassword(mobile, verifyCode, password);
+    }
 }

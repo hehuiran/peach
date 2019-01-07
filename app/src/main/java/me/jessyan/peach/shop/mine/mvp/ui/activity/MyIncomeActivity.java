@@ -53,8 +53,9 @@ public class MyIncomeActivity extends BaseActivity {
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         String[] tabs = getResources().getStringArray(R.array.income_tab_array);
+        String[] shopTypes = getResources().getStringArray(R.array.income_shop_type_array);
 
-        IncomePagerAdapter pagerAdapter = new IncomePagerAdapter(getSupportFragmentManager(), tabs);
+        IncomePagerAdapter pagerAdapter = new IncomePagerAdapter(getSupportFragmentManager(), tabs, shopTypes);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setOffscreenPageLimit(tabs.length);
         mTabLayout.setViewPager(mViewPager);
@@ -85,15 +86,17 @@ public class MyIncomeActivity extends BaseActivity {
     private static class IncomePagerAdapter extends FragmentPagerAdapter {
 
         private String[] mTabs;
+        private String[] shopTypes;
 
-        private IncomePagerAdapter(FragmentManager fm, String[] tabs) {
+        private IncomePagerAdapter(FragmentManager fm, String[] tabs, String[] shopTypes) {
             super(fm);
             this.mTabs = tabs;
+            this.shopTypes = shopTypes;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return IncomeFragment.newInstance(position);
+            return IncomeFragment.newInstance(shopTypes[position]);
         }
 
         @Override

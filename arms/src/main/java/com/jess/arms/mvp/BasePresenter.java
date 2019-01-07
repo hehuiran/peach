@@ -27,10 +27,11 @@ import android.support.v4.app.SupportActivity;
 import android.view.View;
 
 import com.jess.arms.dialog.BaseDialog;
-import com.jess.arms.integration.EventBusManager;
 import com.jess.arms.utils.Preconditions;
 import com.jess.arms.widget.PointLoadingView;
 import com.trello.rxlifecycle2.RxLifecycle;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -93,7 +94,7 @@ public class BasePresenter<M extends IModel, V extends IView> implements IPresen
             }
         }
         if (useEventBus())//如果要使用 Eventbus 请将此方法返回 true
-            EventBusManager.getInstance().register(this);//注册 Eventbus
+            EventBus.getDefault().register(this);//注册 Eventbus
     }
 
     /**
@@ -103,7 +104,7 @@ public class BasePresenter<M extends IModel, V extends IView> implements IPresen
     public void onDestroy() {
         hideLoading();
         if (useEventBus())//如果要使用 Eventbus 请将此方法返回 true
-            EventBusManager.getInstance().unregister(this);//解除注册 Eventbus
+            EventBus.getDefault().unregister(this);//解除注册 Eventbus
         unDispose();//解除订阅
         if (mModel != null)
             mModel.onDestroy();
@@ -140,7 +141,7 @@ public class BasePresenter<M extends IModel, V extends IView> implements IPresen
      * @return 返回 {@code true} (默认为使用 {@code true}), Arms 会自动注册 EventBus
      */
     public boolean useEventBus() {
-        return true;
+        return false;
     }
 
 

@@ -29,6 +29,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.callback.OnSingleClickListener;
 import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.entity.BannerCategoryClickBean;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.group.GroupBean;
 import me.jessyan.peach.shop.entity.group.GroupOptionalBean;
@@ -37,7 +38,9 @@ import me.jessyan.peach.shop.group.mvp.contract.GroupContract;
 import me.jessyan.peach.shop.group.mvp.presenter.GroupPresenter;
 import me.jessyan.peach.shop.group.mvp.ui.adapter.GroupAdapter;
 import me.jessyan.peach.shop.help.AliTradeHelper;
+import me.jessyan.peach.shop.help.BannerCategoryClickHelper;
 import me.jessyan.peach.shop.help.BannerImageLoader;
+import me.jessyan.peach.shop.help.LoginHelper;
 import me.jessyan.peach.shop.widget.RecyclerLoadMoreView;
 import me.jessyan.peach.shop.widget.refresh.PullRefreshBannerView;
 
@@ -110,8 +113,10 @@ public class GroupFragment extends BaseFragment<GroupPresenter> implements Group
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                String clickUrl = mAdapter.getData().get(position).getClickUrl();
-                launcherTaoBao(clickUrl);
+                if (LoginHelper.checkLogin(getContext())) {
+                    String clickUrl = mAdapter.getData().get(position).getClickUrl();
+                    launcherTaoBao(clickUrl);
+                }
             }
         });
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -177,28 +182,44 @@ public class GroupFragment extends BaseFragment<GroupPresenter> implements Group
         if (mHeadView == null) {
             mHeadView = LayoutInflater.from(getContext()).inflate(R.layout.item_group_banner, ((ViewGroup) mPullRefreshView.getParent()), false);
             mBanner = mHeadView.findViewById(R.id.banner);
-            mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                    .setImageLoader(new BannerImageLoader<CouponsBannerBean.BannerBean, String>() {
-                        @Override
-                        protected String getPath(CouponsBannerBean.BannerBean bean) {
-                            return bean.getDataBean().getImg();
-                        }
-                    })
-                    .setOnBannerListener(new OnBannerListener() {
-                        @Override
-                        public void OnBannerClick(int position) {
-
-                        }
-                    })
-                    .setIndicatorGravity(BannerConfig.CENTER)
-                    .setImages(bannerList)
-                    .start();
-        } else {
-            mBanner.update(bannerList);
         }
+        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setImageLoader(new BannerImageLoader<CouponsBannerBean.BannerBean, String>() {
+                    @Override
+                    protected String getPath(CouponsBannerBean.BannerBean bean) {
+                        return bean.getDataBean().getImg();
+                    }
+                })
+                .setOnBannerListener(new OnBannerListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        if (LoginHelper.checkLogin(getContext())) {
+                            handleBannerClick(bannerList.get(position));
+                        }
+                    }
+                })
+                .setIndicatorGravity(BannerConfig.CENTER)
+                .setImages(bannerList)
+                .start();
         if (mAdapter.getHeaderLayoutCount() == 0) {
             mAdapter.addHeaderView(mHeadView);
         }
+    }
+
+    private void handleBannerClick(CouponsBannerBean.BannerBean bannerBean) {
+        CouponsBannerBean.BannerBean.DataBean data = bannerBean.getDataBean();
+
+        BannerCategoryClickBean bannerCategoryClickBean = new BannerCategoryClickBean();
+        bannerCategoryClickBean.setAction(data.getAction());
+        bannerCategoryClickBean.setExtraBean(data.getExtra());
+        if (data.getItems() != null && !data.getItems().isEmpty()) {
+            bannerCategoryClickBean.setGiveGoodsDetailBean(data.getItems().get(0));
+        }
+        bannerCategoryClickBean.setTitle(data.getTitle());
+        bannerCategoryClickBean.setUrl(data.getImageUrl());
+        bannerCategoryClickBean.setType(bannerBean.getType());
+
+        new BannerCategoryClickHelper().handleClick(getContext(), bannerCategoryClickBean);
     }
 
     @Override

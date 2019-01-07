@@ -6,6 +6,7 @@ import com.jess.arms.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
+import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.entity.BasicResponse;
 import me.jessyan.peach.shop.entity.ResultBean;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
@@ -47,7 +48,7 @@ public class ChangePasswordPresenter extends BasePresenter<ChangePasswordContrac
                             mRootView.onGetVerifyCodeSuccess();
                         } else {
                             //验证码发送失败,Toast提示用户
-                            String result = resultBeanBasicResponse.getData().getResult();
+                            String result = resultBeanBasicResponse.getMsg();
                             ToastUtils.showShort(result);
                             mRootView.onGetVerifyCodeFailed();
                         }
@@ -57,6 +58,32 @@ public class ChangePasswordPresenter extends BasePresenter<ChangePasswordContrac
                     public void onError(Throwable t) {
                         super.onError(t);
                         mRootView.onGetVerifyCodeFailed();
+                    }
+                });
+    }
+
+    public void changePassword(String mobile, String verifyCode, String password){
+        mModel.changePassword(mobile, verifyCode, password)
+                .compose(new CommonTransformer<>(this))
+                .subscribe(new ErrorHandleSubscriber<BasicResponse<ResultBean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BasicResponse<ResultBean> resultBeanBasicResponse) {
+                        if (resultBeanBasicResponse.getCode() == 0) {
+                            //修改成功
+                            ToastUtils.showShort(R.string.modify_success);
+                            mRootView.onChangePasswordSuccess();
+                        } else {
+                            //修改失败,Toast提示用户
+                            String result = resultBeanBasicResponse.getMsg();
+                            ToastUtils.showShort(result);
+                            mRootView.onChangePasswordFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        mRootView.onChangePasswordFailed();
                     }
                 });
     }

@@ -46,7 +46,7 @@ public class HomeCategoryModel extends BaseModel implements HomeCategoryContract
 
     @Override
     public Observable<HomeCategoryOptionalBean> getHomeCategoryData(int typeId, String oneType,
-                                                                    String twoType, int selectType,
+                                                                    String twoType,
                                                                     String sort) {
         Observable<CouponsBannerBean> bannerObservable = mRepositoryManager
                 .obtainRetrofitService(NewApi.class)
@@ -61,7 +61,7 @@ public class HomeCategoryModel extends BaseModel implements HomeCategoryContract
 
         return Observable.zip(bannerObservable, channelObservable,
                 getGoods(CommonConstant.PAGE_INITIAL, oneType, twoType,
-                        selectType, sort, CommonConstant.EMPTY_STRING),
+                         sort, CommonConstant.EMPTY_STRING),
                 new Function3<CouponsBannerBean, GoodsCategoryGridBean, CouponsCommodityBean, HomeCategoryOptionalBean>() {
                     @Override
                     public HomeCategoryOptionalBean apply(CouponsBannerBean couponsBannerBean,
@@ -78,13 +78,13 @@ public class HomeCategoryModel extends BaseModel implements HomeCategoryContract
 
     @Override
     public Observable<CouponsCommodityBean> getGoods(int page, String oneType,
-                                                     String twoType, int selectType,
+                                                     String twoType,
                                                      String sort, String dataTimeStamp) {
         return mRepositoryManager
                 .obtainRetrofitService(GoodsCategoryApiService.class)
                 .getGoodsCategoryData(page,
                         CommonConstant.PAGE_SIZE,
-                        oneType, twoType, selectType, sort, dataTimeStamp)
+                        oneType, twoType, sort, dataTimeStamp)
                 .map(new ResponseFunction<>(CouponsCommodityBean.class))
                 .map(new Function<CouponsCommodityBean, CouponsCommodityBean>() {
                     @Override

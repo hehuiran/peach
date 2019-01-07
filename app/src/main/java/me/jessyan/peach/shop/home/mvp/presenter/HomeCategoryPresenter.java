@@ -44,10 +44,10 @@ public class HomeCategoryPresenter extends BasePresenter<HomeCategoryContract.Mo
     }
 
     public void getHomeCategoryData(int typeId, String oneType,
-                                    String twoType, int selectType,
+                                    String twoType,
                                     String sort) {
 
-        mModel.getHomeCategoryData(typeId, oneType, twoType, selectType, sort)
+        mModel.getHomeCategoryData(typeId, oneType, twoType, sort)
                 .compose(new CommonTransformer<>(this))
                 .subscribe(new ErrorHandleSubscriber<HomeCategoryOptionalBean>(mErrorHandler) {
                     @Override
@@ -66,11 +66,11 @@ public class HomeCategoryPresenter extends BasePresenter<HomeCategoryContract.Mo
     }
 
     public void getGoods(String oneType, String twoType,
-                         int selectType, String sort, boolean isLoadMore) {
+                         String sort, boolean isLoadMore) {
         if (!isLoadMore) {
             page = CommonConstant.PAGE_INITIAL;
         }
-        mModel.getGoods(page, oneType, twoType, selectType, sort, dataTimeStamp)
+        mModel.getGoods(page, oneType, twoType, sort, dataTimeStamp)
                 .compose(new CommonTransformer<>(this, false))
                 .subscribe(new ErrorHandleSubscriber<CouponsCommodityBean>(mErrorHandler) {
                     @Override

@@ -1,5 +1,7 @@
 package me.jessyan.peach.shop.category.mvp.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import me.jessyan.peach.shop.category.di.component.DaggerCategorySubComponent;
 import me.jessyan.peach.shop.category.mvp.contract.CategorySubContract;
 import me.jessyan.peach.shop.category.mvp.presenter.CategorySubPresenter;
 import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.constant.IntentExtra;
 import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.GoodsQuickAdapter;
 import me.jessyan.peach.shop.widget.RecyclerLoadMoreView;
@@ -65,10 +69,20 @@ public class CategorySubActivity extends BaseActivity<CategorySubPresenter> impl
     @BindView(R.id.pull_refresh_view)
     PullRefreshBannerView mPullRefreshView;
     private boolean canRefresh, isLinear;
-    private String mSort = CommonConstant.EMPTY_STRING;
+    private String mSort;
     private GoodsQuickAdapter mAdapter;
     private View mNetErrorView;
     private View mEmptyView;
+    private String mOneType;
+    private String mTwoType;
+
+    public static void launcher(Context context, String title, String oneType, String twoType) {
+        Intent intent = new Intent(context, CategorySubActivity.class);
+        intent.putExtra(IntentExtra.TITLE, title);
+        intent.putExtra(IntentExtra.ONE_TYPE, oneType);
+        intent.putExtra(IntentExtra.TWO_TYPE, twoType);
+        context.startActivity(intent);
+    }
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -87,12 +101,23 @@ public class CategorySubActivity extends BaseActivity<CategorySubPresenter> impl
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        String title = intent.getStringExtra(IntentExtra.TITLE);
+        mOneType = intent.getStringExtra(IntentExtra.ONE_TYPE);
+        mTwoType = intent.getStringExtra(IntentExtra.TWO_TYPE);
+
+        if (TextUtils.isEmpty(title)) {
+            title = TextUtils.isEmpty(mTwoType) ? mOneType : mTwoType;
+        }
+        mTvTitle.setText(title);
+
+        mSort = StickyLayout.getDefaultSort();
 
         initListener();
 
         initRecyclerView();
 
-        refreshData();
+        refreshData(true);
     }
 
     private void initRecyclerView() {
@@ -109,7 +134,7 @@ public class CategorySubActivity extends BaseActivity<CategorySubPresenter> impl
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-//                mPresenter.getSearchResult(mValue, mSort, false);
+                mPresenter.fetchCategorySubData(false, false, mOneType, mTwoType, mSort);
             }
         }, mRecyclerView);
         mAdapter.setLoadMoreView(new RecyclerLoadMoreView());
@@ -121,7 +146,7 @@ public class CategorySubActivity extends BaseActivity<CategorySubPresenter> impl
         mPullRefreshView.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refreshData();
+                refreshData(false);
             }
 
             /**
@@ -142,14 +167,14 @@ public class CategorySubActivity extends BaseActivity<CategorySubPresenter> impl
             @Override
             public void onStickyTabChange(int position, String sort) {
                 mSort = sort;
-                refreshData();
+                refreshData(false);
             }
         });
     }
 
 
-    private void refreshData() {
-//        mPresenter.getSearchResult(mValue, mSort, true);
+    private void refreshData(boolean showLoading) {
+        mPresenter.fetchCategorySubData(true, showLoading, mOneType, mTwoType, mSort);
     }
 
     /**
@@ -207,7 +232,7 @@ public class CategorySubActivity extends BaseActivity<CategorySubPresenter> impl
             mNetErrorView.findViewById(R.id.tv_reload).setOnClickListener(new OnSingleClickListener() {
                 @Override
                 public void onClicked(View view) {
-                    refreshData();
+                    refreshData(false);
                 }
             });
         }

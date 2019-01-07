@@ -3,6 +3,7 @@ package me.jessyan.peach.shop.mine.mvp.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,11 +60,12 @@ public class IncomeFragment extends BaseFragment<IncomePresenter> implements Inc
     TextView mTvBuyMoney;
     @BindView(R.id.tv_service_provider_money)
     TextView mTvServiceProviderMoney;
+    private String mShopType;
 
-    public static IncomeFragment newInstance(int type) {
+    public static IncomeFragment newInstance(String shopType) {
         IncomeFragment fragment = new IncomeFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(IntentExtra.TYPE, type);
+        bundle.putString(IntentExtra.SHOP_TYPE, shopType);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -87,9 +89,11 @@ public class IncomeFragment extends BaseFragment<IncomePresenter> implements Inc
     public void initData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            int type = bundle.getInt(IntentExtra.TYPE);
+            mShopType = bundle.getString(IntentExtra.SHOP_TYPE);
         }
-        mPresenter.getIncomeReportsDetails();
+        if (!TextUtils.isEmpty(mShopType)) {
+            mPresenter.getIncomeReportsDetails(mShopType);
+        }
     }
 
     @Override
@@ -121,5 +125,21 @@ public class IncomeFragment extends BaseFragment<IncomePresenter> implements Inc
 
         String lastSettlementFormat = String.format(getString(R.string.rmb), StringUtils.keepTwoDecimal(data.getLastSettlement()));
         mTvLastSettlement.setText(lastSettlementFormat);
+
+        mTvTodayCount.setText(data.getTodayCount());
+
+        String todayCommission = String.format(getString(R.string.rmb), StringUtils.keepTwoDecimal(data.getTodayCommission()));
+        mTvTodayCommission.setText(todayCommission);
+
+        mTvYesterdayCount.setText(data.getYesterdayCount());
+
+        String yesterdayCommission = String.format(getString(R.string.rmb), StringUtils.keepTwoDecimal(data.getYesterdayCommission()));
+        mTvYesterdayCommission.setText(yesterdayCommission);
+
+        String buyMoney = String.format(getString(R.string.rmb), StringUtils.keepTwoDecimal(data.getBuyMoney()));
+        mTvBuyMoney.setText(buyMoney);
+
+        String serviceProviderMoney = String.format(getString(R.string.rmb), StringUtils.keepTwoDecimal(data.getServiceProviderMoney()));
+        mTvServiceProviderMoney.setText(serviceProviderMoney);
     }
 }

@@ -36,8 +36,8 @@ public class IncomePresenter extends BasePresenter<IncomeContract.Model, IncomeC
         super(model, rootView);
     }
 
-    public void getIncomeReportsDetails() {
-        mModel.getIncomeReportsDetails()
+    public void getIncomeReportsDetails(String shopType) {
+        mModel.getIncomeReportsDetails(shopType)
                 .compose(new CommonTransformer<>(this))
                 .subscribe(new ErrorHandleSubscriber<IncomeReportsDetailsBean>(mErrorHandler) {
                     @Override

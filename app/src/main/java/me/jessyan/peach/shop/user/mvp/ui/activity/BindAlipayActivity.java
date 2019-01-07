@@ -19,7 +19,8 @@ import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.integration.EventBusManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -187,7 +188,7 @@ public class BindAlipayActivity extends BaseActivity<BindAlipayPresenter> implem
     public void onBindAlipaySuccess() {
         UserInfo.getInstance().setAlipay(mAlipay);
         UserInfo.getInstance().setRealName(mRealName);
-        EventBusManager.getInstance().post(new BindAlipayEvent());
+        EventBus.getDefault().post(new BindAlipayEvent());
         if (mPurpose == PURPOSE_WITHDRAW) {
             WithdrawActivity.launcher(this);
         }

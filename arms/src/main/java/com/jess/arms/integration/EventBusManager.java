@@ -17,9 +17,6 @@ package com.jess.arms.integration;
 
 import java.lang.reflect.Method;
 
-import static com.jess.arms.base.Platform.DEPENDENCY_ANDROID_EVENTBUS;
-import static com.jess.arms.base.Platform.DEPENDENCY_EVENTBUS;
-
 /**
  * ================================================
  * EventBus 的管理类, Arms 核心库并不会依赖某个 EventBus, 如果您想使用 EventBus, 则请在项目中自行依赖对应的 EventBus, 如果不想使用则不依赖
@@ -35,7 +32,7 @@ import static com.jess.arms.base.Platform.DEPENDENCY_EVENTBUS;
 public final class EventBusManager {
     private static volatile EventBusManager sInstance;
 
-    public static EventBusManager getInstance() {
+    public static EventBusManager getDefault() {
         if (sInstance == null) {
             synchronized (EventBusManager.class) {
                 if (sInstance == null) {
@@ -54,14 +51,20 @@ public final class EventBusManager {
      * @param subscriber 订阅者
      */
     public void register(Object subscriber) {
-        if (DEPENDENCY_ANDROID_EVENTBUS) {
+        /*if (DEPENDENCY_ANDROID_EVENTBUS) {
             org.simple.eventbus.EventBus.getDefault().register(subscriber);
         }
         if (DEPENDENCY_EVENTBUS) {
             if (haveAnnotation(subscriber)) {
                 org.greenrobot.eventbus.EventBus.getDefault().register(subscriber);
             }
+        }*/
+
+        if (haveAnnotation(subscriber)) {
+            org.greenrobot.eventbus.EventBus.getDefault().register(subscriber);
         }
+
+//        org.greenrobot.eventbus.EventBus.getDefault().register(subscriber);
     }
 
     /**
@@ -70,14 +73,20 @@ public final class EventBusManager {
      * @param subscriber 订阅者
      */
     public void unregister(Object subscriber) {
-        if (DEPENDENCY_ANDROID_EVENTBUS) {
+        /*if (DEPENDENCY_ANDROID_EVENTBUS) {
             org.simple.eventbus.EventBus.getDefault().unregister(subscriber);
         }
         if (DEPENDENCY_EVENTBUS) {
             if (haveAnnotation(subscriber)) {
                 org.greenrobot.eventbus.EventBus.getDefault().unregister(subscriber);
             }
+        }*/
+
+        if (haveAnnotation(subscriber)) {
+            org.greenrobot.eventbus.EventBus.getDefault().unregister(subscriber);
         }
+
+//        org.greenrobot.eventbus.EventBus.getDefault().unregister(subscriber);
     }
 
     /**
@@ -86,11 +95,13 @@ public final class EventBusManager {
      * @param event 事件
      */
     public void post(Object event) {
-        if (DEPENDENCY_ANDROID_EVENTBUS) {
+        /*if (DEPENDENCY_ANDROID_EVENTBUS) {
             org.simple.eventbus.EventBus.getDefault().post(event);
         } else if (DEPENDENCY_EVENTBUS) {
             org.greenrobot.eventbus.EventBus.getDefault().post(event);
-        }
+        }*/
+
+        org.greenrobot.eventbus.EventBus.getDefault().post(event);
     }
 
     /**
@@ -99,11 +110,13 @@ public final class EventBusManager {
      * @param event 事件
      */
     public void postSticky(Object event) {
-        if (DEPENDENCY_ANDROID_EVENTBUS) {
+        /*if (DEPENDENCY_ANDROID_EVENTBUS) {
             org.simple.eventbus.EventBus.getDefault().postSticky(event);
         } else if (DEPENDENCY_EVENTBUS) {
             org.greenrobot.eventbus.EventBus.getDefault().postSticky(event);
-        }
+        }*/
+
+        org.greenrobot.eventbus.EventBus.getDefault().postSticky(event);
     }
 
     /**
@@ -114,24 +127,28 @@ public final class EventBusManager {
      * @return
      */
     public <T> T removeStickyEvent(Class<T> eventType) {
-        if (DEPENDENCY_ANDROID_EVENTBUS) {
+        /*if (DEPENDENCY_ANDROID_EVENTBUS) {
             org.simple.eventbus.EventBus.getDefault().removeStickyEvent(eventType);
             return null;
         } else if (DEPENDENCY_EVENTBUS) {
             return org.greenrobot.eventbus.EventBus.getDefault().removeStickyEvent(eventType);
         }
-        return null;
+        return null;*/
+
+        return org.greenrobot.eventbus.EventBus.getDefault().removeStickyEvent(eventType);
     }
 
     /**
      * 清除订阅者和事件的缓存, 如果您在项目中同时依赖了两个 EventBus, 请自己使用想使用的 EventBus 的 Api 清除订阅者和事件的缓存
      */
     public void clear() {
-        if (DEPENDENCY_ANDROID_EVENTBUS) {
+        /*if (DEPENDENCY_ANDROID_EVENTBUS) {
             org.simple.eventbus.EventBus.getDefault().clear();
         } else if (DEPENDENCY_EVENTBUS) {
             org.greenrobot.eventbus.EventBus.clearCaches();
-        }
+        }*/
+
+        org.greenrobot.eventbus.EventBus.clearCaches();
     }
 
     /**

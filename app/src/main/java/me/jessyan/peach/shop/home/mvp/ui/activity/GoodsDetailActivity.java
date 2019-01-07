@@ -20,9 +20,10 @@ import com.alibaba.android.vlayout.VirtualLayoutManager;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.integration.EventBusManager;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -385,7 +386,7 @@ public class GoodsDetailActivity extends BaseActivity<GoodsDetailPresenter> impl
             return;
         }
         tvCollection.setSelected(isCollection);
-        EventBusManager.getInstance().post(new GoodsCollectionStateChangeEvent());
+        EventBus.getDefault().post(new GoodsCollectionStateChangeEvent());
     }
 
     @Override

@@ -28,23 +28,31 @@ import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import me.jessyan.peach.shop.R;
+import me.jessyan.peach.shop.entity.BannerCategoryClickBean;
 import me.jessyan.peach.shop.entity.event.ChangeAvatarEvent;
 import me.jessyan.peach.shop.entity.event.ChangeNicknameEvent;
+import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.mine.MineOptionalBean;
 import me.jessyan.peach.shop.entity.user.UserAccountBean;
 import me.jessyan.peach.shop.entity.user.UserInfo;
+import me.jessyan.peach.shop.help.BannerCategoryClickHelper;
 import me.jessyan.peach.shop.help.ImageLoaderHelper;
 import me.jessyan.peach.shop.help.UserGradeHelper;
 import me.jessyan.peach.shop.help.glide.GlideRoundTransform;
 import me.jessyan.peach.shop.mine.di.component.DaggerMineComponent;
 import me.jessyan.peach.shop.mine.mvp.contract.MineContract;
 import me.jessyan.peach.shop.mine.mvp.presenter.MinePresenter;
+import me.jessyan.peach.shop.mine.mvp.ui.activity.AboutUsActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.CommonProblemActivity;
+import me.jessyan.peach.shop.mine.mvp.ui.activity.ContractCustomerActivity;
+import me.jessyan.peach.shop.mine.mvp.ui.activity.FeedbackActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.InviteActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.MyCollectionActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.MyFansActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.MyIncomeActivity;
+import me.jessyan.peach.shop.mine.mvp.ui.activity.NewUserGuidelineActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.OrderActivity;
+import me.jessyan.peach.shop.mine.mvp.ui.activity.PlatformNoticeActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.ServiceProviderActivity;
 import me.jessyan.peach.shop.mine.mvp.ui.activity.WithdrawActivity;
 import me.jessyan.peach.shop.user.mvp.ui.activity.BindAlipayActivity;
@@ -93,6 +101,7 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
     @BindView(R.id.iv_advertising)
     ImageView mIvAdvertising;
     private ImageLoader mImageLoader;
+    private CouponsBannerBean.BannerBean mBannerBean;
 
     public static MineFragment newInstance() {
         MineFragment fragment = new MineFragment();
@@ -137,6 +146,9 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
 
         String inviteCodeText = String.format(getString(R.string.invite_code), UserInfo.getInstance().getInviteCode());
         mTvInviteCode.setText(inviteCodeText);
+
+        String fansCountText = String.format(getString(R.string.fans_count), UserInfo.getInstance().getFansCount());
+        mTvFans.setText(fansCountText);
 
     }
 
@@ -209,11 +221,13 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
                 InviteActivity.launcher(getContext());
                 break;
             case R.id.iv_advertising:
+                clickAdvertising();
                 break;
             case R.id.tv_service_provider:
                 ServiceProviderActivity.launcher(getContext());
                 break;
             case R.id.tv_new_user_guide:
+                NewUserGuidelineActivity.launcher(getContext());
                 break;
             case R.id.tv_my_collection:
                 MyCollectionActivity.launcher(getContext());
@@ -222,13 +236,37 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
                 CommonProblemActivity.launcher(getContext());
                 break;
             case R.id.tv_contract_customer:
+                ContractCustomerActivity.launcher(getContext());
                 break;
             case R.id.tv_platform_notice:
+                PlatformNoticeActivity.launcher(getContext());
                 break;
             case R.id.tv_feedback:
+                FeedbackActivity.launcher(getContext());
                 break;
             case R.id.tv_about_us:
+                AboutUsActivity.launcher(getContext());
                 break;
+        }
+    }
+
+    private void clickAdvertising() {
+        if (mBannerBean == null) {
+            InviteActivity.launcher(getContext());
+        } else {
+            CouponsBannerBean.BannerBean.DataBean data = mBannerBean.getDataBean();
+
+            BannerCategoryClickBean bannerCategoryClickBean = new BannerCategoryClickBean();
+            bannerCategoryClickBean.setAction(data.getAction());
+            bannerCategoryClickBean.setExtraBean(data.getExtra());
+            if (data.getItems() != null && !data.getItems().isEmpty()) {
+                bannerCategoryClickBean.setGiveGoodsDetailBean(data.getItems().get(0));
+            }
+            bannerCategoryClickBean.setTitle(data.getTitle());
+            bannerCategoryClickBean.setUrl(data.getImageUrl());
+            bannerCategoryClickBean.setType(mBannerBean.getType());
+
+            new BannerCategoryClickHelper().handleClick(getContext(), bannerCategoryClickBean);
         }
     }
 
@@ -261,13 +299,15 @@ public class MineFragment extends BaseFragment<MinePresenter> implements MineCon
             mPullRefreshView.refreshComplete();
         }
 
-        String advertising = optionalBean.getAdvertising();
-        if (!TextUtils.isEmpty(advertising)) {
+        mBannerBean = optionalBean.getBannerBean();
+        if (mBannerBean != null) {
             mImageLoader.loadImage(getContext(), ImageConfigImpl.builder()
                     .imageView(mIvAdvertising)
-                    .url(optionalBean.getAdvertising())
+                    .url(mBannerBean.getDataBean().getImg())
                     .transformation(new GlideRoundTransform())
                     .build());
+        } else {
+            mIvAdvertising.setImageResource(R.mipmap.ic_mine_ad);
         }
 
         UserAccountBean accountBean = optionalBean.getAccountBean();

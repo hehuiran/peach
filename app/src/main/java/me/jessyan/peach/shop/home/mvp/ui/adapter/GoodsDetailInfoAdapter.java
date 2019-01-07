@@ -67,7 +67,7 @@ public class GoodsDetailInfoAdapter extends VirtualItemAdapter<VirtualItemViewHo
                 .setText(R.id.tv_sold_count, soldCount);
 
         TextView tvTitle = holder.getView(R.id.tv_title);
-        SpannableString titleSpannable = new SpannableString(mBean.getTitle());
+        SpannableString titleSpannable = new SpannableString(" " + mBean.getTitle());
         Drawable drawable = ContextCompat.getDrawable(tvTitle.getContext(),
                 mBean.getShopType() != null && mBean.getShopType().equals("B") ? R.mipmap.ic_tag_tmall : R.mipmap.ic_tag_taobao);
         if (drawable == null) {

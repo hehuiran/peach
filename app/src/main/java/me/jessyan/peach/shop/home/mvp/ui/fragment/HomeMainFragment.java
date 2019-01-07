@@ -30,6 +30,7 @@ import me.jessyan.peach.shop.callback.OnSingleClickListener;
 import me.jessyan.peach.shop.constant.CommonConstant;
 import me.jessyan.peach.shop.constant.IntentExtra;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
+import me.jessyan.peach.shop.entity.BannerCategoryClickBean;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.CouponsChannelSubBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleBean;
@@ -37,10 +38,13 @@ import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
 import me.jessyan.peach.shop.entity.home.HomeMainOptionalBean;
 import me.jessyan.peach.shop.entity.home.HomeSectionBean;
+import me.jessyan.peach.shop.help.BannerCategoryClickHelper;
+import me.jessyan.peach.shop.help.LoginHelper;
 import me.jessyan.peach.shop.home.di.component.DaggerHomeMainComponent;
 import me.jessyan.peach.shop.home.mvp.contract.HomeMainContract;
 import me.jessyan.peach.shop.home.mvp.presenter.HomeMainPresenter;
 import me.jessyan.peach.shop.home.mvp.ui.activity.GoodsDetailActivity;
+import me.jessyan.peach.shop.home.mvp.ui.activity.SectionActivity;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeAdvertisingAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeBannerAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeChannelAdapter;
@@ -49,6 +53,7 @@ import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeMainRecommendTitleAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeOrientationAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeOrientationItemAdapter;
 import me.jessyan.peach.shop.home.mvp.ui.adapter.HomeSectionAdapter;
+import me.jessyan.peach.shop.utils.ResourceUtils;
 import me.jessyan.peach.shop.vlayout.VirtualAdapter;
 import me.jessyan.peach.shop.vlayout.callback.OnItemClickListener;
 import me.jessyan.peach.shop.widget.DispatchTouchRecyclerView;
@@ -170,24 +175,37 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         HomeBannerAdapter bannerAdapter = new HomeBannerAdapter(R.layout.item_home_main_banner);
         mAdapterList.add(bannerAdapter);
 
+        OnItemClickListener onItemClickListener = new OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
+                onRecyclerViewItemClick(adapter, view, position);
+            }
+        };
+
         HomeChannelAdapter channelAdapter = new HomeChannelAdapter();
+        channelAdapter.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(channelAdapter);
 
         HomeAdvertisingAdapter advertisingAdapter1 = new HomeAdvertisingAdapter(false);
+        advertisingAdapter1.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(advertisingAdapter1);
 
         HomeSectionAdapter sectionAdapter = new HomeSectionAdapter();
+        sectionAdapter.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(sectionAdapter);
 
         HomeAdvertisingAdapter advertisingAdapter2 = new HomeAdvertisingAdapter(true);
+        advertisingAdapter2.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(advertisingAdapter2);
 
         HomeOrientationAdapter orientationAdapter = new HomeOrientationAdapter(viewPool);
         orientationAdapter.setQuickAdapterOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                GoodsBean bean = ((HomeOrientationItemAdapter) adapter).getData().get(position);
-                launcherGoodsDetail(bean);
+                if (LoginHelper.checkLogin(getContext())) {
+                    GoodsBean bean = ((HomeOrientationItemAdapter) adapter).getData().get(position);
+                    launcherGoodsDetail(bean);
+                }
             }
         });
         mAdapterList.add(orientationAdapter);
@@ -195,18 +213,56 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         mAdapterList.add(new HomeMainRecommendTitleAdapter());
 
         HomeGoodsAdapter goodsAdapter = new HomeGoodsAdapter();
-        goodsAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
+        goodsAdapter.setOnItemClickListener(onItemClickListener);
+        mAdapterList.add(goodsAdapter);
+
+        mVirtualAdapter.setAdapters(mAdapterList);
+    }
+
+    private void onRecyclerViewItemClick(RecyclerView.Adapter adapter, View view, int position) {
+        if (LoginHelper.checkLogin(getContext())) {
+            if (adapter instanceof HomeGoodsAdapter) {
                 GoodsBean bean = ((HomeGoodsAdapter) adapter).getData().get(position);
                 if (bean.getItemType() == RecyclerViewType.HOME_GOODS_TYPE) {
                     launcherGoodsDetail(bean);
                 }
-            }
-        });
-        mAdapterList.add(goodsAdapter);
+            } else if (adapter instanceof HomeChannelAdapter) {
+                CouponsChannelSubBean data = ((HomeChannelAdapter) adapter).getData().get(position);
 
-        mVirtualAdapter.setAdapters(mAdapterList);
+                BannerCategoryClickBean bannerCategoryClickBean = new BannerCategoryClickBean();
+                bannerCategoryClickBean.setAction(data.getAction());
+                bannerCategoryClickBean.setExtraBean(data.getExtra());
+                if (data.getItems() != null && !data.getItems().isEmpty()) {
+                    bannerCategoryClickBean.setGiveGoodsDetailBean(data.getItems().get(0));
+                }
+                bannerCategoryClickBean.setTitle(data.getTitle());
+                bannerCategoryClickBean.setUrl(data.getUrl());
+                bannerCategoryClickBean.setType(String.valueOf(data.getLinktype()));
+
+                new BannerCategoryClickHelper().handleClick(getContext(), bannerCategoryClickBean);
+            } else if (adapter instanceof HomeAdvertisingAdapter) {
+                CouponsBannerBean.BannerBean bannerBean = ((HomeAdvertisingAdapter) adapter).getBannerBean();
+                CouponsBannerBean.BannerBean.DataBean data = bannerBean.getDataBean();
+
+                BannerCategoryClickBean bannerCategoryClickBean = new BannerCategoryClickBean();
+                bannerCategoryClickBean.setAction(data.getAction());
+                bannerCategoryClickBean.setExtraBean(data.getExtra());
+                if (data.getItems() != null && !data.getItems().isEmpty()) {
+                    bannerCategoryClickBean.setGiveGoodsDetailBean(data.getItems().get(0));
+                }
+                bannerCategoryClickBean.setTitle(data.getTitle());
+                bannerCategoryClickBean.setUrl(data.getImageUrl());
+                bannerCategoryClickBean.setType(bannerBean.getType());
+
+                new BannerCategoryClickHelper().handleClick(getContext(), bannerCategoryClickBean);
+            } else if (adapter instanceof HomeSectionAdapter) {
+                if (position == 1) {
+                    SectionActivity.launcher(getContext(), ResourceUtils.getResourceString(R.string.nine_nine), 2);
+                } else if (position == 2) {
+                    SectionActivity.launcher(getContext(), ResourceUtils.getResourceString(R.string.sentiment_zone), 1);
+                }
+            }
+        }
     }
 
     /**
@@ -251,7 +307,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         HomeAdvertisingAdapter advertisingAdapter1 = getAdapter(2);
         CouponsBannerBean.BannerBean advertisingBean1 = homeMainOptionalBean.getAdvertisingBean1();
         if (advertisingAdapter1 != null && advertisingBean1 != null) {
-            advertisingAdapter1.setAdvertisingUrl(advertisingBean1.getDataBean().getImg(), 2);
+            advertisingAdapter1.setData(advertisingBean1, 2);
         }
 
         HomeSectionAdapter sectionAdapter = getAdapter(3);
@@ -263,7 +319,7 @@ public class HomeMainFragment extends BaseFragment<HomeMainPresenter> implements
         HomeAdvertisingAdapter advertisingAdapter2 = getAdapter(4);
         CouponsBannerBean.BannerBean advertisingBean2 = homeMainOptionalBean.getAdvertisingBean2();
         if (advertisingAdapter2 != null && advertisingBean2 != null) {
-            advertisingAdapter2.setAdvertisingUrl(advertisingBean2.getDataBean().getImg(), 4);
+            advertisingAdapter2.setData(advertisingBean2, 4);
         }
 
         HomeOrientationAdapter orientationAdapter = getAdapter(5);

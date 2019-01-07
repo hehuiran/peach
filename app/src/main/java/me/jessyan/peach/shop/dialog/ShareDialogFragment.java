@@ -5,12 +5,12 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,20 +80,33 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
     private ShareGoodsPosterBean mShareGoodsPosterBean;
     @BindView(R.id.root)
     ConstraintLayout mRoot;
-    private String mFilePath;
+    private String mImage;
+
+    public static final int SHARE_TYPE_NET_IMAGE = 1;
+    public static final int SHARE_TYPE_FILE = 2;
+    public static final int SHARE_TYPE_POSTER = 3;
+    public static final int SHARE_TYPE_WEB = 4;
+    private int mShareType;
+
+    @IntDef({SHARE_TYPE_NET_IMAGE, SHARE_TYPE_FILE, SHARE_TYPE_POSTER, SHARE_TYPE_WEB})
+    public @interface ShareType {
+
+    }
 
     public static ShareDialogFragment newInstance(ShareGoodsPosterBean shareGoodsPosterBean) {
         ShareDialogFragment fragment = new ShareDialogFragment();
         Bundle bundle = new Bundle();
+        bundle.putInt(IntentExtra.SHARE_TYPE, SHARE_TYPE_POSTER);
         bundle.putParcelable(IntentExtra.SHARE_POSTER, shareGoodsPosterBean);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public static ShareDialogFragment newInstance(String filePath) {
+    public static ShareDialogFragment newInstance(@ShareType int shareType, String image) {
         ShareDialogFragment fragment = new ShareDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(IntentExtra.SHARE_FILE_PATH, filePath);
+        bundle.putInt(IntentExtra.SHARE_TYPE, shareType);
+        bundle.putString(IntentExtra.SHARE_IMAGE, image);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -101,6 +114,7 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
     public static ShareDialogFragment newInstance(String thumb, String title, String des, String link) {
         ShareDialogFragment fragment = new ShareDialogFragment();
         Bundle bundle = new Bundle();
+        bundle.putInt(IntentExtra.SHARE_TYPE, SHARE_TYPE_WEB);
         bundle.putString(IntentExtra.SHARE_THUMB, thumb);
         bundle.putString(IntentExtra.SHARE_TITLE, title);
         bundle.putString(IntentExtra.SHARE_DES, des);
@@ -137,9 +151,12 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
     private void initView() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mShareGoodsPosterBean = bundle.getParcelable(IntentExtra.SHARE_POSTER);
-            mFilePath = bundle.getString(IntentExtra.SHARE_FILE_PATH);
-            if (mShareGoodsPosterBean == null && TextUtils.isEmpty(mFilePath)) {
+            mShareType = bundle.getInt(IntentExtra.SHARE_TYPE);
+            if (mShareType == SHARE_TYPE_POSTER) {
+                mShareGoodsPosterBean = bundle.getParcelable(IntentExtra.SHARE_POSTER);
+            } else if (mShareType == SHARE_TYPE_FILE || mShareType == SHARE_TYPE_NET_IMAGE) {
+                mImage = bundle.getString(IntentExtra.SHARE_IMAGE);
+            } else if (mShareType == SHARE_TYPE_WEB) {
                 mThumb = bundle.getString(IntentExtra.SHARE_THUMB);
                 mTitle = bundle.getString(IntentExtra.SHARE_TITLE);
                 mDes = bundle.getString(IntentExtra.SHARE_DES);
@@ -172,6 +189,14 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRxPermissions = null;
+        mOnShareListener = null;
+        ToastUtils.cancel();
     }
 
     @OnClick({R.id.tv_wechat, R.id.tv_circle, R.id.tv_qq, R.id.tv_qzone,
@@ -212,7 +237,7 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
         }
     }
 
-    private void share(SHARE_MEDIA shareType) {
+    private void share(SHARE_MEDIA platform) {
         UMShareListener umShareListener = new UMShareListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
@@ -222,6 +247,9 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
             @Override
             public void onResult(SHARE_MEDIA share_media) {
                 ToastUtils.showShort(R.string.share_success);
+                if (mOnShareListener != null) {
+                    mOnShareListener.onShareSuccess(share_media);
+                }
             }
 
             @Override
@@ -234,23 +262,34 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
                 ToastUtils.showShort(R.string.share_cancel);
             }
         };
-        if (mShareGoodsPosterBean == null && TextUtils.isEmpty(mFilePath)) {
+        if (mShareType == SHARE_TYPE_WEB) {
             //分享链接
-            shareLink(shareType, umShareListener);
-        } else if (mShareGoodsPosterBean != null) {
+            shareLink(platform, umShareListener);
+        } else if (mShareType == SHARE_TYPE_POSTER) {
             //分享二维码
-            shareGoodsPoster(shareType, umShareListener);
-        } else if (!TextUtils.isEmpty(mFilePath)) {
+            shareGoodsPoster(platform, umShareListener);
+        } else if (mShareType == SHARE_TYPE_FILE) {
             //分享文件图片
-            shareFile(mFilePath, shareType, umShareListener);
+            shareFile(mImage, platform, umShareListener);
+        } else if (mShareType == SHARE_TYPE_NET_IMAGE) {
+            //分享网络图片
+            shareNetImage(mImage,platform,umShareListener);
         }
-
     }
 
-    private void shareFile(String filePath, SHARE_MEDIA shareType, UMShareListener shareListener) {
+    private void shareNetImage(String image, SHARE_MEDIA platform, UMShareListener shareListener) {
+        UMImage umImage = new UMImage(getContext(), image);
+        new ShareAction(getActivity())
+                .setPlatform(platform)
+                .withMedia(umImage)
+                .setCallback(shareListener)
+                .share();
+    }
+
+    private void shareFile(String filePath, SHARE_MEDIA platform, UMShareListener shareListener) {
         UMImage umImage = new UMImage(getContext(), new File(filePath));
         new ShareAction(getActivity())
-                .setPlatform(shareType)
+                .setPlatform(platform)
                 .withMedia(umImage)
                 .setCallback(shareListener)
                 .share();
@@ -369,6 +408,18 @@ public class ShareDialogFragment extends DialogFragment implements FragmentLifec
     public Subject<FragmentEvent> provideLifecycleSubject() {
         return mLifecycleSubject;
     }
+
+    public interface OnShareListener {
+        void onShareSuccess(SHARE_MEDIA platform);
+    }
+
+    private OnShareListener mOnShareListener;
+
+    public ShareDialogFragment setOnShareListener(OnShareListener onShareListener) {
+        mOnShareListener = onShareListener;
+        return this;
+    }
+
 
     public static class ShareGoodsPosterBean implements Parcelable {
 

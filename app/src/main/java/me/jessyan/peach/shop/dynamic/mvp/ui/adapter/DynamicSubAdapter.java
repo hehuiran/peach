@@ -29,9 +29,11 @@ public class DynamicSubAdapter extends BaseQuickAdapter<DynamicBean.ListBean, Ba
 
     private final ImageLoader mImageLoader;
     private final NineGridViewImageLoader mNineGridViewImageLoader;
+    private final int type;
 
-    public DynamicSubAdapter() {
+    public DynamicSubAdapter(int type) {
         super(R.layout.item_dynamic_sub);
+        this.type = type;
         mImageLoader = ImageLoaderHelper.getImageLoader();
         mNineGridViewImageLoader = new NineGridViewImageLoader();
     }
@@ -44,6 +46,7 @@ public class DynamicSubAdapter extends BaseQuickAdapter<DynamicBean.ListBean, Ba
                 .url(item.getHeadImg())
                 .build());
 
+
         String discount = String.format(ResourceUtils.getResourceString(R.string.rmb), StringUtils.keepTwoDecimal(item.getDiscountPrice()));
         String commission = String.format(ResourceUtils.getResourceString(R.string.estimate_the_commission), StringUtils.keepTwoDecimal(item.getTkMoney()));
         long millis = StringUtils.parseLong(item.getAddTime()) * 1000L;
@@ -53,7 +56,8 @@ public class DynamicSubAdapter extends BaseQuickAdapter<DynamicBean.ListBean, Ba
                 .setText(R.id.tv_content, item.getContent())
                 .setText(R.id.tv_discount_price, discount)
                 .setText(R.id.tv_commission, commission)
-                .setText(R.id.tv_comment, item.getComment());
+                .setText(R.id.tv_comment, item.getComment())
+                .setGone(R.id.group, type == 0);
 
         List<String> smallImages = item.getSmallImages();
         NineGridView nineGridView = helper.getView(R.id.nine_grid_view);
@@ -73,6 +77,9 @@ public class DynamicSubAdapter extends BaseQuickAdapter<DynamicBean.ListBean, Ba
         } else {
             nineGridView.setVisibility(View.GONE);
         }
+
+        helper.addOnClickListener(R.id.tv_share)
+                .addOnClickListener(R.id.tv_copy);
     }
 
     private static class NineGridViewImageLoader implements NineGridView.ImageLoader {

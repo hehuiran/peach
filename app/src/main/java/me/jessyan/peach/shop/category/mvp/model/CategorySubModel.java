@@ -1,13 +1,17 @@
 package me.jessyan.peach.shop.category.mvp.model;
 
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 
-import com.jess.arms.di.scope.ActivityScope;
-
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import me.jessyan.peach.shop.category.mvp.contract.CategorySubContract;
+import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
+import me.jessyan.peach.shop.netconfig.function.ResponseFunction;
+import me.jessyan.peach.shop.netconfig.temporary.GoodsCategoryApiService;
 
 
 /**
@@ -28,5 +32,17 @@ public class CategorySubModel extends BaseModel implements CategorySubContract.M
     @Inject
     public CategorySubModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
+    }
+
+    @Override
+    public Observable<CouponsCommodityBean> fetchCategorySubData(int page, String oneType,
+                                                                 String twoType, String sort,
+                                                                 String dataTimeStamp) {
+        return mRepositoryManager
+                .obtainRetrofitService(GoodsCategoryApiService.class)
+                .getGoodsCategoryData(page,
+                        CommonConstant.PAGE_SIZE,
+                        oneType, twoType, sort, dataTimeStamp)
+                .map(new ResponseFunction<>(CouponsCommodityBean.class));
     }
 }

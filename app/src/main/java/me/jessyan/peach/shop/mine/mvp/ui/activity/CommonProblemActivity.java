@@ -83,7 +83,7 @@ public class CommonProblemActivity extends BaseActivity<CommonProblemPresenter> 
     private List<CommonProblemBean> fetchData() {
         List<CommonProblemBean> list = new ArrayList<>();
 
-        int[] icons = {R.mipmap.ic_about_commission, R.mipmap.ic_about_commission, R.mipmap.ic_about_coupon, R.mipmap.ic_about_share, R.mipmap.ic_about_other};
+        int[] icons = {R.mipmap.ic_about_order, R.mipmap.ic_about_commission, R.mipmap.ic_about_coupon, R.mipmap.ic_about_share, R.mipmap.ic_about_other};
         String[] titles = getResources().getStringArray(R.array.common_problem_title_array);
         String[] tops = getResources().getStringArray(R.array.common_problem_top_array);
         String[] bottoms = getResources().getStringArray(R.array.common_problem_bottom_array);

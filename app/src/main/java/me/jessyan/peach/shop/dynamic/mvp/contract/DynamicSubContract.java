@@ -7,6 +7,8 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import me.jessyan.peach.shop.entity.DynamicBean;
+import me.jessyan.peach.shop.entity.SuccessBean;
+import me.jessyan.peach.shop.netconfig.Optional;
 
 
 /**
@@ -27,10 +29,14 @@ public interface DynamicSubContract {
         void onGetDynamicSuccess(List<DynamicBean.ListBean> list);
 
         void onGetDynamicFailed();
+
+        void onAddShareNumSuccess(int position);
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
-        Observable<DynamicBean> getDynamicData(int type,int page);
+        Observable<DynamicBean> getDynamicData(int type, int page);
+
+        Observable<Optional<SuccessBean>> addShareNum(String id);
     }
 }

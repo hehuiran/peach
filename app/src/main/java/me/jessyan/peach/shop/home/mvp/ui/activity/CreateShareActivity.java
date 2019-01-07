@@ -181,6 +181,7 @@ public class CreateShareActivity extends BaseActivity<CreateSharePresenter> impl
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
+                onBackPressed();
                 break;
             case R.id.tv_copy_password:
                 break;

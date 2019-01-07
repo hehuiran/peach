@@ -26,6 +26,7 @@ import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.http.imageloader.ImageConfigImpl;
 import com.jess.arms.http.imageloader.ImageLoader;
+import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -136,7 +137,7 @@ public class InviteActivity extends BaseActivity<InvitePresenter> implements Inv
                     + System.currentTimeMillis() + ".jpg";
             if (FileUtils.createOrExistsFile(path) &&
                     ImageUtils.save(ImageUtils.view2Bitmap(view), path, Bitmap.CompressFormat.JPEG)) {
-                ShareDialogFragment.newInstance(path).show(getSupportFragmentManager());
+                ShareDialogFragment.newInstance(ShareDialogFragment.SHARE_TYPE_FILE, path).show(getSupportFragmentManager());
             }
         }
     }
@@ -199,6 +200,12 @@ public class InviteActivity extends BaseActivity<InvitePresenter> implements Inv
         mViewPager.setAdapter(new InviteFriendPagerAdapter(views));
         mViewPager.setOffscreenPageLimit(views.size());
         mViewPager.setPageMargin(SizeUtils.dp2px(30));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     private static class InviteFriendPagerAdapter extends PagerAdapter {

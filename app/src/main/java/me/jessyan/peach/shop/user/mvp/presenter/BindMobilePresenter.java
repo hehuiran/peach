@@ -50,7 +50,7 @@ public class BindMobilePresenter extends BasePresenter<BindMobileContract.Model,
                             mRootView.onGetVerifyCodeSuccess();
                         } else {
                             //验证码发送失败,Toast提示用户
-                            String result = resultBeanBasicResponse.getData().getResult();
+                            String result = resultBeanBasicResponse.getMsg();
                             ToastUtils.showShort(result);
                             mRootView.onGetVerifyCodeFailed();
                         }

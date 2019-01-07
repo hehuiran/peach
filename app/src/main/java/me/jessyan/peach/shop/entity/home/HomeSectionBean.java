@@ -9,7 +9,7 @@ public class HomeSectionBean {
     private int id;
     private String title;
     private String des;
-    private String img;
+    private int img;
 
     public int getId() {
         return id;
@@ -35,11 +35,11 @@ public class HomeSectionBean {
         this.des = des;
     }
 
-    public String getImg() {
+    public int getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public void setImg(int img) {
         this.img = img;
     }
 }

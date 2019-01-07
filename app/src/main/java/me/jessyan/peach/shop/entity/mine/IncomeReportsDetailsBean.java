@@ -36,6 +36,66 @@ public class IncomeReportsDetailsBean {
         private String currentSettlement;
         @SerializedName("topSettlement")
         private String lastSettlement;
+        @SerializedName("orderCount")
+        private String todayCount;
+        @SerializedName("jr")
+        private String todayCommission;
+        @SerializedName("zrCount")
+        private String yesterdayCount;
+        @SerializedName("zr")
+        private String yesterdayCommission;
+        @SerializedName("zg")
+        private String buyMoney;
+        @SerializedName("fws")
+        private String serviceProviderMoney;
+
+        public String getTodayCount() {
+            return todayCount;
+        }
+
+        public void setTodayCount(String todayCount) {
+            this.todayCount = todayCount;
+        }
+
+        public String getTodayCommission() {
+            return todayCommission;
+        }
+
+        public void setTodayCommission(String todayCommission) {
+            this.todayCommission = todayCommission;
+        }
+
+        public String getYesterdayCount() {
+            return yesterdayCount;
+        }
+
+        public void setYesterdayCount(String yesterdayCount) {
+            this.yesterdayCount = yesterdayCount;
+        }
+
+        public String getYesterdayCommission() {
+            return yesterdayCommission;
+        }
+
+        public void setYesterdayCommission(String yesterdayCommission) {
+            this.yesterdayCommission = yesterdayCommission;
+        }
+
+        public String getBuyMoney() {
+            return buyMoney;
+        }
+
+        public void setBuyMoney(String buyMoney) {
+            this.buyMoney = buyMoney;
+        }
+
+        public String getServiceProviderMoney() {
+            return serviceProviderMoney;
+        }
+
+        public void setServiceProviderMoney(String serviceProviderMoney) {
+            this.serviceProviderMoney = serviceProviderMoney;
+        }
 
         public String getBalance() {
             return balance;

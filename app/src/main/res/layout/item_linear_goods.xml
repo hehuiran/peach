@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="5dp"
+    android:layout_marginStart="5dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="5dp"
     app:cardElevation="2dp"
@@ -14,7 +16,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_solid_white_radius_5">
+        android:background="@drawable/shape_solid_white_radius_5"
+        android:padding="5dp">
 
         <ImageView
             android:id="@+id/iv_img"
@@ -82,9 +85,9 @@
             android:id="@+id/coupons_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/tv_original_price"
             app:layout_constraintBottom_toBottomOf="@+id/tv_sold_count"
-            app:layout_constraintEnd_toEndOf="@+id/tv_title"/>
+            app:layout_constraintEnd_toEndOf="@+id/tv_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_original_price"/>
 
         <TextView
             android:id="@+id/tv_discount_price"

@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import me.jessyan.peach.shop.constant.CommonConstant;
 import me.jessyan.peach.shop.dynamic.mvp.contract.DynamicSubContract;
 import me.jessyan.peach.shop.entity.DynamicBean;
+import me.jessyan.peach.shop.entity.SuccessBean;
+import me.jessyan.peach.shop.netconfig.Optional;
 import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
@@ -53,6 +55,19 @@ public class DynamicSubPresenter extends BasePresenter<DynamicSubContract.Model,
                     public void onError(Throwable t) {
                         super.onError(t);
                         mRootView.onGetDynamicFailed();
+                    }
+                });
+    }
+
+    public void addShareNum(int position, String id) {
+        mModel.addShareNum(id)
+                .compose(new CommonTransformer<>(this, false))
+                .subscribe(new ErrorHandleSubscriber<Optional<SuccessBean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(Optional<SuccessBean> successBeanOptional) {
+                        if (!successBeanOptional.isEmpty() && successBeanOptional.get().isSuccess()) {
+                            mRootView.onAddShareNumSuccess(position);
+                        }
                     }
                 });
     }

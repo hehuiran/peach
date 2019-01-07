@@ -1,5 +1,6 @@
 package me.jessyan.peach.shop.entity.mine;
 
+import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.user.UserAccountBean;
 
 /**
@@ -9,8 +10,16 @@ import me.jessyan.peach.shop.entity.user.UserAccountBean;
  */
 public class MineOptionalBean {
 
-    private String advertising;
+    private CouponsBannerBean.BannerBean mBannerBean;
     private UserAccountBean mAccountBean;
+
+    public CouponsBannerBean.BannerBean getBannerBean() {
+        return mBannerBean;
+    }
+
+    public void setBannerBean(CouponsBannerBean.BannerBean bannerBean) {
+        mBannerBean = bannerBean;
+    }
 
     public UserAccountBean getAccountBean() {
         return mAccountBean;
@@ -20,11 +29,4 @@ public class MineOptionalBean {
         mAccountBean = accountBean;
     }
 
-    public String getAdvertising() {
-        return advertising;
-    }
-
-    public void setAdvertising(String advertising) {
-        this.advertising = advertising;
-    }
 }

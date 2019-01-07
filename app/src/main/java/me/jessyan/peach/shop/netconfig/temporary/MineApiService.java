@@ -108,7 +108,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("browse/queryOrderRecord")
-    Observable<BasicResponse<OrderSubBean>> getOrderDetails(@Field("pageNo") int page, @Field("pageSize") int pageSize, @Field("type") int type);
+    Observable<BasicResponse<OrderSubBean>> getOrderDetails(@Field("pageNo") int page, @Field("pageSize") int pageSize, @Field("ordertype") int orderType, @Field("type") int type);
 
     /**
      * 获取余额
@@ -195,7 +195,7 @@ public interface MineApiService {
      */
     @FormUrlEncoded
     @POST("order/queryProfit")
-    Observable<BasicResponse<IncomeReportsDetailsBean>> getIncomeReportsDetails(@Field("timestamp") long millis);
+    Observable<BasicResponse<IncomeReportsDetailsBean>> getIncomeReportsDetails(@Field("shoptype") String shopType);
 
     /**
      * 收益报表列表数据

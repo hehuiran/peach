@@ -182,11 +182,12 @@ public interface WillBuyApiService {
     Observable<BasicResponse<FreeShippingOnePlusNWrapBean>> getNewBrandCategory(@Field("timestamp") long millis);
 
     /**
-     * 品牌上新商品
+     * 9.9等
      */
     @FormUrlEncoded
     @POST("goods/queryCommodity")
-    Observable<BasicResponse<CouponsCommodityBean>> getNewBrandCommodity(@Field("pageNo") int page, @Field("pageSize") int pageSize,
+    Observable<BasicResponse<CouponsCommodityBean>> getSectionData(@Field("pageNo") int page, @Field("pageSize") int pageSize,
+                                                                         @Field("sort") String sort,
                                                                          @Field("activitytype") int activityType);
 
     /**

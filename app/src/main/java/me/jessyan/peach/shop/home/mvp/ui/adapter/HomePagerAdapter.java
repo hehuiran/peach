@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import java.util.List;
 
 import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.entity.ExtraBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleMainBean;
 import me.jessyan.peach.shop.home.mvp.ui.fragment.HomeCategoryFragment;
@@ -29,7 +30,7 @@ public class HomePagerAdapter extends CommonPagerAdapter<GoodsCategoryTitleBean.
         GoodsCategoryTitleBean.DataBean dataBean = mData.get(position);
         if (position != 0) {
             String oneType = CommonConstant.EMPTY_STRING, twoType = CommonConstant.EMPTY_STRING;
-            GoodsCategoryTitleBean.DataBean.ExtraBean extra = dataBean.getExtra();
+            ExtraBean extra = dataBean.getExtra();
             if (extra != null) {
                 oneType = extra.getOneType() != null ? extra.getOneType() : CommonConstant.EMPTY_STRING;
                 twoType = extra.getTwoType() != null ? extra.getTwoType() : CommonConstant.EMPTY_STRING;

@@ -51,12 +51,13 @@ public class OrderSubFragment extends BaseFragment<OrderSubPresenter> implements
     PullRefreshBannerView mPullRefreshView;
     private OrderSubAdapter mAdapter;
     private View mEmptyView, mNetErrorView;
-    private int mType;
+    private int mType, mOrderType;
 
-    public static OrderSubFragment newInstance(int type) {
+    public static OrderSubFragment newInstance(int type, int orderType) {
         OrderSubFragment fragment = new OrderSubFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(IntentExtra.TYPE, type);
+        bundle.putInt(IntentExtra.ORDER_TYPE, orderType);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -81,6 +82,7 @@ public class OrderSubFragment extends BaseFragment<OrderSubPresenter> implements
         Bundle bundle = getArguments();
         if (bundle != null) {
             mType = bundle.getInt(IntentExtra.TYPE);
+            mOrderType = bundle.getInt(IntentExtra.ORDER_TYPE);
         }
 
         mPullRefreshView.setPtrHandler(new PtrDefaultHandler() {
@@ -103,7 +105,7 @@ public class OrderSubFragment extends BaseFragment<OrderSubPresenter> implements
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.getOrderDetail(mType, false, false);
+                mPresenter.getOrderDetail(mOrderType, mType, false, false);
             }
         }, mRecyclerView);
         mAdapter.setLoadMoreView(new RecyclerLoadMoreView());
@@ -112,7 +114,7 @@ public class OrderSubFragment extends BaseFragment<OrderSubPresenter> implements
     }
 
     private void refreshData(boolean showLoading) {
-        mPresenter.getOrderDetail(mType, true, showLoading);
+        mPresenter.getOrderDetail(mOrderType, mType, true, showLoading);
     }
 
     private void showEmptyView() {

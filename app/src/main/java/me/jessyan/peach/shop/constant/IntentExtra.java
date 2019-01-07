@@ -11,8 +11,10 @@ public interface IntentExtra {
     String IS_NEED_AUTO_LOGIN = "is_need_auto_login";
 
     String ID = "id";
+    String TITLE = "title";
     String ONE_TYPE = "one_type";
     String TWO_TYPE = "two_type";
+    String ACTIVITY_TYPE = "activity_type";
 
     String HOME_CATEGORY_LIST = "home_category_list";
 
@@ -28,16 +30,20 @@ public interface IntentExtra {
     String GOODS_DETAIL = "goods_detail";
     String ITEM_ID = "item_id";
 
+    String SHARE_TYPE = "share_type";
     String SHARE_TITLE = "share_title";
     String SHARE_DES = "share_des";
     String SHARE_THUMB = "share_thumb";
     String SHARE_LINK = "share_link";
     String SHARE_POSTER = "share_poster";
-    String SHARE_FILE_PATH = "share_file_path";
+    String SHARE_IMAGE = "share_image";
+
 
     String POSITION = "position";
 
     String TYPE = "type";
+    String ORDER_TYPE = "order_type";
+    String SHOP_TYPE = "shop_type";
 
     String PURPOSE = "purpose";
 

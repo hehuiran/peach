@@ -18,15 +18,8 @@ public class LoginBean {
     private String subordinate;
     @SerializedName("user")
     private UserBean user;
-    private String msg;
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+    @SerializedName("number")
+    private String fansCount;
 
     @Override
     public String toString() {
@@ -38,6 +31,14 @@ public class LoginBean {
                 ", subordinate='" + subordinate + '\'' +
                 ", user=" + user.toString() +
                 '}';
+    }
+
+    public String getFansCount() {
+        return fansCount;
+    }
+
+    public void setFansCount(String fansCount) {
+        this.fansCount = fansCount;
     }
 
     public String getSubordinate() {

@@ -26,6 +26,7 @@ import me.jessyan.peach.shop.entity.user.UserInfo;
 import me.jessyan.peach.shop.user.di.component.DaggerChangePasswordComponent;
 import me.jessyan.peach.shop.user.mvp.contract.ChangePasswordContract;
 import me.jessyan.peach.shop.user.mvp.presenter.ChangePasswordPresenter;
+import me.jessyan.peach.shop.utils.StringUtils;
 
 
 /**
@@ -54,6 +55,8 @@ public class ChangePasswordActivity extends BaseActivity<ChangePasswordPresenter
     EditText mEditPasswordAgain;
     @BindView(R.id.tv_mobile)
     TextView mTvMobile;
+    @BindView(R.id.tv_confirm)
+    TextView mTvConfirm;
     private CountDownTimer mCountDownTimer;
 
     public static void launcher(Context context) {
@@ -101,7 +104,23 @@ public class ChangePasswordActivity extends BaseActivity<ChangePasswordPresenter
                 sendVerifyCode();
                 break;
             case R.id.tv_confirm:
+                commit();
                 break;
+        }
+    }
+
+    private void commit() {
+        String mobile = UserInfo.getInstance().getMobile();
+        String verifyCode = checkVerifyCode();
+        String password = checkPassword();
+        String againPassword = checkAgainPassword();
+        if (!StringUtils.isEmpty(mobile, verifyCode, password, againPassword)) {
+            if (password.equals(againPassword)) {
+                mTvConfirm.setEnabled(false);
+                mPresenter.changePassword(mobile, verifyCode, password);
+            } else {
+                ToastUtils.showShort(R.string.hint_password_twice_error);
+            }
         }
     }
 
@@ -154,6 +173,16 @@ public class ChangePasswordActivity extends BaseActivity<ChangePasswordPresenter
     @Override
     public void onGetVerifyCodeFailed() {
         mTvSendCode.setEnabled(true);
+    }
+
+    @Override
+    public void onChangePasswordSuccess() {
+        backPrevious();
+    }
+
+    @Override
+    public void onChangePasswordFailed() {
+        mTvConfirm.setEnabled(true);
     }
 
     private void countDown() {

@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import me.jessyan.peach.shop.entity.ExtraBean;
+
 /**
  * author: Created by HuiRan on 2018/4/28 17:39
  * E-Mail: 15260828327@163.com
@@ -167,6 +169,7 @@ public class GoodsCategoryTitleBean {
             isChecked = checked;
         }
 
+
         @Override
         public int describeContents() {
             return 0;
@@ -185,62 +188,6 @@ public class GoodsCategoryTitleBean {
             dest.writeInt(linktype);
             dest.writeTypedList(items);
             dest.writeParcelable(extra, flags);
-        }
-
-        public static class ExtraBean implements Parcelable {
-
-            @SerializedName("onetype")
-            private String oneType;
-            @SerializedName("twotype")
-            private String twoType;
-
-            public ExtraBean() {
-
-            }
-
-            protected ExtraBean(Parcel in) {
-                oneType = in.readString();
-                twoType = in.readString();
-            }
-
-            public static final Creator<ExtraBean> CREATOR = new Creator<ExtraBean>() {
-                @Override
-                public ExtraBean createFromParcel(Parcel in) {
-                    return new ExtraBean(in);
-                }
-
-                @Override
-                public ExtraBean[] newArray(int size) {
-                    return new ExtraBean[size];
-                }
-            };
-
-            public String getOneType() {
-                return oneType;
-            }
-
-            public void setOneType(String oneType) {
-                this.oneType = oneType;
-            }
-
-            public String getTwoType() {
-                return twoType;
-            }
-
-            public void setTwoType(String twoType) {
-                this.twoType = twoType;
-            }
-
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeString(oneType);
-                dest.writeString(twoType);
-            }
         }
     }
 }

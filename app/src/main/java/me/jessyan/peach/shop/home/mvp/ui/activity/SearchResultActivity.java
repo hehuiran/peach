@@ -68,7 +68,7 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
     @BindView(R.id.pull_refresh_view)
     PullRefreshBannerView mPullRefreshView;
     private boolean canRefresh, isLinear;
-    private String mSort = CommonConstant.EMPTY_STRING;
+    private String mSort;
     private GoodsQuickAdapter mAdapter;
     private View mNetErrorView;
     private View mEmptyView;
@@ -99,6 +99,8 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
     public void initData(@Nullable Bundle savedInstanceState) {
         Intent intent = getIntent();
         mValue = intent.getStringExtra(IntentExtra.VALUE);
+
+        mSort = StickyLayout.getDefaultSort();
 
         initListener();
 

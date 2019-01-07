@@ -1,11 +1,11 @@
 package me.jessyan.peach.shop.entity.goods;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.jessyan.peach.shop.entity.ExtraBean;
 import me.jessyan.peach.shop.entity.MultiItemBean;
 
 /**
@@ -32,7 +32,7 @@ public class CouponsBannerBean extends MultiItemBean {
 
     public static class BannerBean {
 
-        private String type;            //action=1时有用；   商品详情  0;商品分类  1;拉起分享  2；  无  99
+        private String type;            //action=1时有用；   商品详情0;商品分类1;拉起分享2；  无  99
         @SerializedName("ret")
         private DataBean mDataBean;
 
@@ -94,7 +94,7 @@ public class CouponsBannerBean extends MultiItemBean {
             //新字段
             private String action;      //系统页面  1 ；自定义链接  3 ；外链  2
             private List<GiveGoodsDetailBean> items;
-            private JSONObject extra;
+            private ExtraBean extra;
 
 
             public DataBean() {
@@ -214,11 +214,11 @@ public class CouponsBannerBean extends MultiItemBean {
                 this.items = items;
             }
 
-            public JSONObject getExtra() {
+            public ExtraBean getExtra() {
                 return extra;
             }
 
-            public void setExtra(JSONObject extra) {
+            public void setExtra(ExtraBean extra) {
                 this.extra = extra;
             }
         }

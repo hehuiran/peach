@@ -49,7 +49,7 @@ public interface GoodsCategoryApiService {
     @POST("goods/querySpecialsale")
     Observable<BasicResponse<CouponsCommodityBean>> getGoodsCategoryData(@Field("pageNo") int page, @Field("pageSize")
             int pageSize, @Field("shoptype") String shoptype
-            , @Field("typeTwo") String typeTwo, @Field("number") int number, @Field("sort") String sort
+            , @Field("typeTwo") String typeTwo,@Field("sort") String sort
             , @Field("dataTimeStamp") String dataTimeStamp);
 
 

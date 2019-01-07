@@ -16,7 +16,8 @@ import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.integration.EventBusManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -111,7 +112,7 @@ public class ChangeNicknameActivity extends BaseActivity<ChangeNicknamePresenter
     @Override
     public void onChangeNicknameSuccess(String nickname) {
         UserInfo.getInstance().setNickname(nickname);
-        EventBusManager.getInstance().post(new ChangeNicknameEvent());
+        EventBus.getDefault().post(new ChangeNicknameEvent());
         backPrevious();
     }
 }

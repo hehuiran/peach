@@ -34,6 +34,6 @@ public interface OrderSubContract {
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
 
-        Observable<Optional<OrderSubBean>> getOrderDetail(int type, int page);
+        Observable<Optional<OrderSubBean>> getOrderDetail(int orderType, int type, int page);
     }
 }

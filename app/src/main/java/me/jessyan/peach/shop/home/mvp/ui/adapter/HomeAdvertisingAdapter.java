@@ -1,7 +1,6 @@
 package me.jessyan.peach.shop.home.mvp.ui.adapter;
 
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,6 +13,7 @@ import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.utils.ArmsUtils;
 
 import me.jessyan.peach.shop.R;
+import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.help.glide.GlideRoundTransform;
 import me.jessyan.peach.shop.utils.ResourceUtils;
 import me.jessyan.peach.shop.vlayout.VirtualItemAdapter;
@@ -26,7 +26,7 @@ import me.jessyan.peach.shop.vlayout.VirtualItemViewHolder;
  */
 public class HomeAdvertisingAdapter extends VirtualItemAdapter<VirtualItemViewHolder> {
 
-    private String advertisingUrl;
+    private CouponsBannerBean.BannerBean bannerBean;
     private final ImageLoader mImageLoader;
     private boolean isPaddingBottom;
 
@@ -36,14 +36,18 @@ public class HomeAdvertisingAdapter extends VirtualItemAdapter<VirtualItemViewHo
         mImageLoader = ArmsUtils.getImageLoaderInstance(Utils.getApp());
     }
 
-    public void setAdvertisingUrl(String advertisingUrl, int position) {
-        this.advertisingUrl = advertisingUrl;
+    public void setData(CouponsBannerBean.BannerBean bannerBean, int position) {
+        this.bannerBean = bannerBean;
         notifyItemChanged(position);
+    }
+
+    public CouponsBannerBean.BannerBean getBannerBean() {
+        return bannerBean;
     }
 
     @Override
     public int getDefItemCount() {
-        return TextUtils.isEmpty(advertisingUrl) ? 0 : 1;
+        return bannerBean == null || bannerBean.getDataBean() == null ? 0 : 1;
     }
 
     @Override
@@ -55,11 +59,12 @@ public class HomeAdvertisingAdapter extends VirtualItemAdapter<VirtualItemViewHo
         box.setBackgroundColor(isPaddingBottom ? Color.TRANSPARENT :
                 ResourceUtils.getResourceColor(R.color.color_ff1673));
 
+        String img = bannerBean.getDataBean().getImg();
         ImageView ivAd = holder.getView(R.id.iv_ad);
         mImageLoader.loadImage(ivAd.getContext(),
                 ImageConfigImpl.builder()
                         .imageView(ivAd)
-                        .url(advertisingUrl)
+                        .url(img)
                         .transformation(new GlideRoundTransform())
                         .build());
     }

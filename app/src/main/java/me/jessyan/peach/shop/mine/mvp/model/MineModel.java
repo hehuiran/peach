@@ -79,7 +79,7 @@ public class MineModel extends BaseModel implements MineContract.Model {
                 if (couponsBannerBeanBasicResponse.getCode() == 0) {
                     List<CouponsBannerBean.BannerBean> data = couponsBannerBeanBasicResponse.getData().getBannerList();
                     if (data != null && !data.isEmpty()) {
-                        optionalBean.setAdvertising(data.get(0).getDataBean().getImg());
+                        optionalBean.setBannerBean(data.get(0));
                     }
                 }
                 return optionalBean;

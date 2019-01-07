@@ -3,9 +3,9 @@ package me.jessyan.peach.shop.entity.goods;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.alibaba.fastjson.JSONObject;
-
 import java.util.List;
+
+import me.jessyan.peach.shop.entity.ExtraBean;
 
 /**
  * author: Created by HuiRan on 2018/4/25 18:34
@@ -26,17 +26,8 @@ public class GoodsCategoryGridBean {
         this.data = data;
     }
 
-    public static class DataBean implements Parcelable{
-        //{"image":"https://hulivoide.oss-cn-beijing.aliyuncs.com/fenlei6@2x.png","hid":8,"is_disabled":"0","linktype":0,"sort":0,"title":"休闲食品","url":"","twotypeid":0,"is_deleted":"0","action":"","id":158,"items":[],"extra":{}
+    public static class DataBean implements Parcelable {
 
-        public DataBean(String title, String action, int linktype, String url, List<GiveGoodsDetailBean> items, JSONObject extra) {
-            this.title = title;
-            this.action = action;
-            this.linktype = linktype;
-            this.url = url;
-            this.items = items;
-            this.extra = extra;
-        }
 
         public DataBean() {
         }
@@ -50,7 +41,6 @@ public class GoodsCategoryGridBean {
          */
 
 
-
         private int id;
         private int twotypeid;
         private String title;
@@ -61,7 +51,8 @@ public class GoodsCategoryGridBean {
         private int linktype;
         private String url;
         private List<GiveGoodsDetailBean> items;
-        private JSONObject extra;
+        private ExtraBean extra;
+
 
         protected DataBean(Parcel in) {
             id = in.readInt();
@@ -73,24 +64,7 @@ public class GoodsCategoryGridBean {
             linktype = in.readInt();
             url = in.readString();
             items = in.createTypedArrayList(GiveGoodsDetailBean.CREATOR);
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(id);
-            dest.writeInt(twotypeid);
-            dest.writeString(title);
-            dest.writeInt(hid);
-            dest.writeString(image);
-            dest.writeString(action);
-            dest.writeInt(linktype);
-            dest.writeString(url);
-            dest.writeTypedList(items);
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
+            extra = in.readParcelable(ExtraBean.class.getClassLoader());
         }
 
         public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
@@ -104,6 +78,14 @@ public class GoodsCategoryGridBean {
                 return new DataBean[size];
             }
         };
+
+        public ExtraBean getExtra() {
+            return extra;
+        }
+
+        public void setExtra(ExtraBean extra) {
+            this.extra = extra;
+        }
 
         public int getId() {
             return id;
@@ -145,7 +127,6 @@ public class GoodsCategoryGridBean {
             this.image = image;
         }
 
-
         public String getAction() {
             return action;
         }
@@ -178,12 +159,23 @@ public class GoodsCategoryGridBean {
             this.items = items;
         }
 
-        public JSONObject getExtra() {
-            return extra;
+        @Override
+        public int describeContents() {
+            return 0;
         }
 
-        public void setExtra(JSONObject extra) {
-            this.extra = extra;
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(id);
+            dest.writeInt(twotypeid);
+            dest.writeString(title);
+            dest.writeInt(hid);
+            dest.writeString(image);
+            dest.writeString(action);
+            dest.writeInt(linktype);
+            dest.writeString(url);
+            dest.writeTypedList(items);
+            dest.writeParcelable(extra, flags);
         }
     }
 }

@@ -21,6 +21,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.umeng.socialize.UMShareAPI;
 
 import javax.inject.Inject;
 
@@ -327,5 +328,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         } else if (type == BACK_TO_MAIN_LOGOUT) {
             logout();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

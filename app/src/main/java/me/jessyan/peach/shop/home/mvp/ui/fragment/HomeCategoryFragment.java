@@ -23,14 +23,17 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import me.jessyan.peach.shop.R;
 import me.jessyan.peach.shop.callback.OnSingleClickListener;
+import me.jessyan.peach.shop.category.mvp.ui.activity.CategorySubActivity;
 import me.jessyan.peach.shop.constant.CommonConstant;
 import me.jessyan.peach.shop.constant.IntentExtra;
 import me.jessyan.peach.shop.constant.RecyclerViewType;
+import me.jessyan.peach.shop.entity.ExtraBean;
 import me.jessyan.peach.shop.entity.goods.CouponsBannerBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryGridBean;
 import me.jessyan.peach.shop.entity.home.GoodsBean;
 import me.jessyan.peach.shop.entity.home.GoodsDetailConfigBean;
 import me.jessyan.peach.shop.entity.home.HomeCategoryOptionalBean;
+import me.jessyan.peach.shop.help.LoginHelper;
 import me.jessyan.peach.shop.home.di.component.DaggerHomeCategoryComponent;
 import me.jessyan.peach.shop.home.mvp.contract.HomeCategoryContract;
 import me.jessyan.peach.shop.home.mvp.presenter.HomeCategoryPresenter;
@@ -69,12 +72,10 @@ public class HomeCategoryFragment extends BaseFragment<HomeCategoryPresenter> im
     private List<DelegateAdapter.Adapter> mAdapterList;
     private VirtualAdapter mVirtualAdapter;
     private View mNetErrorView;
-    private int[] mStickySelectTypes;
     private int mTypeId;
     private String mOneType;
     private String mTwoType;
-    private int mSelectType;
-    private String mSort = CommonConstant.EMPTY_STRING;
+    private String mSort;
 
     public static HomeCategoryFragment newInstance(int typeId, String oneType, String twoType) {
         HomeCategoryFragment fragment = new HomeCategoryFragment();
@@ -117,20 +118,18 @@ public class HomeCategoryFragment extends BaseFragment<HomeCategoryPresenter> im
             }
         });
 
-        mStickySelectTypes = getResources().getIntArray(R.array.category_tag_array);
-        mSelectType = mStickySelectTypes[0];
-
+        mSort = StickyLayout.getDefaultSort();
         initRecyclerView();
 
         refreshData();
     }
 
     private void refreshData() {
-        mPresenter.getHomeCategoryData(mTypeId, mOneType, mTwoType, mSelectType, mSort);
+        mPresenter.getHomeCategoryData(mTypeId, mOneType, mTwoType, mSort);
     }
 
     private void getGoods(boolean isLoadMore) {
-        mPresenter.getGoods(mOneType, mTwoType, mSelectType, mSort, isLoadMore);
+        mPresenter.getGoods(mOneType, mTwoType, mSort, isLoadMore);
     }
 
     private void initRecyclerView() {
@@ -162,17 +161,24 @@ public class HomeCategoryFragment extends BaseFragment<HomeCategoryPresenter> im
 
         mAdapterList = new ArrayList<>();
 
+        OnItemClickListener onItemClickListener = new OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
+                onRecyclerViewItemClick(adapter, view, position);
+            }
+        };
+
         HomeBannerAdapter bannerAdapter = new HomeBannerAdapter(R.layout.item_home_category_banner);
         mAdapterList.add(bannerAdapter);
 
         HomeCategoryChannelAdapter channelAdapter = new HomeCategoryChannelAdapter();
+        channelAdapter.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(channelAdapter);
 
         HomeCategoryStickyAdapter stickyAdapter = new HomeCategoryStickyAdapter();
         stickyAdapter.setOnStickyTabChangeListener(new StickyLayout.OnStickyTabChangeListener() {
             @Override
             public void onStickyTabChange(int position, String sort) {
-                mSelectType = mStickySelectTypes[position];
                 mSort = sort;
                 getGoods(false);
             }
@@ -180,16 +186,26 @@ public class HomeCategoryFragment extends BaseFragment<HomeCategoryPresenter> im
         mAdapterList.add(stickyAdapter);
 
         HomeGoodsAdapter goodsAdapter = new HomeGoodsAdapter();
-        goodsAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView.Adapter adapter, View view, int position) {
-                GoodsBean bean = ((HomeGoodsAdapter) adapter).getData().get(position);
-                launcherGoodsDetail(bean);
-            }
-        });
+        goodsAdapter.setOnItemClickListener(onItemClickListener);
         mAdapterList.add(goodsAdapter);
 
         mVirtualAdapter.setAdapters(mAdapterList);
+    }
+
+    private void onRecyclerViewItemClick(RecyclerView.Adapter adapter, View view, int position) {
+        if (!LoginHelper.checkLogin(getContext())) {
+            return;
+        }
+        if (adapter instanceof HomeGoodsAdapter) {
+            GoodsBean bean = ((HomeGoodsAdapter) adapter).getData().get(position);
+            if (bean.getItemType() == RecyclerViewType.HOME_GOODS_TYPE) {
+                launcherGoodsDetail(bean);
+            }
+        } else if (adapter instanceof HomeCategoryChannelAdapter) {
+            GoodsCategoryGridBean.DataBean dataBean = ((HomeCategoryChannelAdapter) adapter).getData().get(position);
+            ExtraBean extra = dataBean.getExtra();
+            CategorySubActivity.launcher(getContext(), dataBean.getTitle(), extra.getOneType(), extra.getTwoType());
+        }
     }
 
     /**

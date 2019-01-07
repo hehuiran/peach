@@ -30,8 +30,6 @@ public class UserInfo {
     private String realName;
     private String pid;
     private String adZoneId;
-
-    private String searchUrl;
     private String inviteMobile;
     private String token;
     private String salt;
@@ -39,7 +37,15 @@ public class UserInfo {
     private int identityStatus;
     private String inviteCode;
     private int subordinate;
+    private String fansCount;
 
+    public String getFansCount() {
+        return fansCount;
+    }
+
+    public void setFansCount(String fansCount) {
+        this.fansCount = fansCount;
+    }
 
     public String getAdZoneId() {
         return adZoneId;
@@ -104,16 +110,6 @@ public class UserInfo {
 
     public void setInviteMobile(String inviteMobile) {
         this.inviteMobile = inviteMobile;
-    }
-
-    @Deprecated
-    public String getSearchUrl() {
-        return searchUrl;
-    }
-
-    @Deprecated
-    public void setSearchUrl(String searchUrl) {
-        this.searchUrl = searchUrl;
     }
 
     public String getPid() {
@@ -270,6 +266,8 @@ public class UserInfo {
         String inviteCode = user.getInviter_code();
         setInviteCode(TextUtils.isEmpty(inviteCode) ? String.valueOf(user.getId()) : inviteCode);
 
+        setFansCount(loginBean.getFansCount());
+
         SPUtils.getInstance().put(SPKey.TOKEN, loginBean.getToken());
         SPUtils.getInstance().put(SPKey.INVITE_CODE, loginBean.getToken());
         SPUtils.getInstance().put(SPKey.USER_GRADE, loginBean.getToken());
@@ -319,6 +317,7 @@ public class UserInfo {
 
         setSubordinate(0);
 
+        setFansCount(null);
 
         //删除极光别名
         /*TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();

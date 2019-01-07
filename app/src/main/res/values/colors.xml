@@ -14,7 +14,6 @@
     <color name="colorThemePrimaryTransparent">#a0FF664A</color>
     <color name="colorThemePrimaryLight">#FFFF6C47</color>
     <color name="color_ff5250">#FFFF5260</color>
-    <color name="color_ff4650">#ff4650</color>
     <!--toolbar标题等-->
     <color name="color_282828">#282828</color>
     <!--商品标题等-->
@@ -85,5 +84,7 @@
     <color name="color_030303">#030303</color>
     <color name="color_909090">#909090</color>
     <color name="color_989898">#989898</color>
+    <color name="color_ffb94c">#ffb94c</color>
+    <color name="color_ff4650">#ff4650</color>
 
 </resources>

@@ -37,9 +37,9 @@ public class OrderSubModel extends BaseModel implements OrderSubContract.Model {
     }
 
     @Override
-    public Observable<Optional<OrderSubBean>> getOrderDetail(int type, int page) {
+    public Observable<Optional<OrderSubBean>> getOrderDetail(int orderType, int type, int page) {
         return mRepositoryManager.obtainRetrofitService(MineApiService.class)
-                .getOrderDetails(page, CommonConstant.PAGE_SIZE, type)
+                .getOrderDetails(page, CommonConstant.PAGE_SIZE, orderType, type)
                 .compose(RxTransformer.handleResponse());
     }
 }

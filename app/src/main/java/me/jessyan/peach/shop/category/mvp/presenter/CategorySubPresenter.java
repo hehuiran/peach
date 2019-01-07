@@ -6,7 +6,11 @@ import com.jess.arms.mvp.BasePresenter;
 import javax.inject.Inject;
 
 import me.jessyan.peach.shop.category.mvp.contract.CategorySubContract;
+import me.jessyan.peach.shop.constant.CommonConstant;
+import me.jessyan.peach.shop.entity.home.CouponsCommodityBean;
+import me.jessyan.peach.shop.netconfig.transformer.CommonTransformer;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 /**
@@ -25,10 +29,37 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 public class CategorySubPresenter extends BasePresenter<CategorySubContract.Model, CategorySubContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
+    private int page = CommonConstant.PAGE_INITIAL;
+    private String dataTimeStamp = CommonConstant.EMPTY_STRING;
 
     @Inject
     public CategorySubPresenter(CategorySubContract.Model model, CategorySubContract.View rootView) {
         super(model, rootView);
+    }
+
+    public void fetchCategorySubData(boolean pullToRefresh, boolean showLoading,
+                                     String oneType, String twoType, String sort) {
+        if (pullToRefresh) {
+            page = CommonConstant.PAGE_INITIAL;
+        }
+        mModel.fetchCategorySubData(page, oneType, twoType, sort, dataTimeStamp)
+                .compose(new CommonTransformer<>(this, showLoading))
+                .subscribe(new ErrorHandleSubscriber<CouponsCommodityBean>(mErrorHandler) {
+                    @Override
+                    public void onNext(CouponsCommodityBean couponsCommodityBean) {
+                        if (pullToRefresh) {
+                            dataTimeStamp = couponsCommodityBean.getDataTimestamp();
+                        }
+                        page++;
+                        mRootView.onFetchCategorySubDataSuccess(couponsCommodityBean.getList());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        mRootView.onFetchCategorySubDataFailed();
+                    }
+                });
     }
 
     @Override

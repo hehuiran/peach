@@ -232,17 +232,35 @@
 
     <string name="invite_code_is_not_exist">邀请码不存在</string>
     <string name="tb_auth_failed">淘宝授权失败</string>
+    <string name="original_mobile_number">原手机号</string>
+    <string name="verify_success_bind_new_mobile">验证后绑定新手机</string>
 
-    <integer-array name="category_tag_array">
-        <!-- 最新上架 -->
+    <string name="share_make_money">分享赚%1$s元</string>
+    <string name="receive_coupon">领%1$s元券</string>
+    <string name="buy_receive_money">下单领%1$s元</string>
+    <string name="find_coupon">一键找券查佣金</string>
+    <string name="high_coupon">高额券</string>
+    <string name="super_bargain">超级划算</string>
+    <string name="nine_nine">9块9包邮</string>
+    <string name="sentiment_zone">超人气专区</string>
+    <string name="input_feedback">请输入你要反馈的内容...</string>
+    <string name="commit">提交</string>
+    <string name="how_much">您还能输入%1$s个字符</string>
+    <string name="current_version">当前版本</string>
+    <string name="version_update">版本更新</string>
+    <string name="go_update">去更新</string>
+    <string name="about_peach">关于小桃</string>
+
+    <!--<integer-array name="category_tag_array">
+        &lt;!&ndash; 最新上架 &ndash;&gt;
         <item>2</item>
-        <!-- 销量最高 -->
+        &lt;!&ndash; 销量最高 &ndash;&gt;
         <item>3</item>
-        <!-- 综合最优 -->
+        &lt;!&ndash; 综合最优 &ndash;&gt;
         <item>1</item>
-        <!-- 价格最低 -->
+        &lt;!&ndash; 价格最低 &ndash;&gt;
         <item>4</item>
-    </integer-array>
+    </integer-array>-->
 
     <string-array name="dynamic_tab_array">
         <item>每日爆款</item>
@@ -255,6 +273,13 @@
         <item>天猫</item>
         <item>京东</item>
         <item>综合商城</item>
+    </string-array>
+
+    <string-array name="income_shop_type_array">
+        <item>C</item>
+        <item>B</item>
+        <item>J</item>
+        <item>Z</item>
     </string-array>
 
     <string-array name="income_detail_tab_array">

@@ -27,8 +27,10 @@ import me.jessyan.peach.shop.callback.OnSingleClickListener;
 import me.jessyan.peach.shop.category.di.component.DaggerCategoryComponent;
 import me.jessyan.peach.shop.category.mvp.contract.CategoryContract;
 import me.jessyan.peach.shop.category.mvp.presenter.CategoryPresenter;
+import me.jessyan.peach.shop.category.mvp.ui.activity.CategorySubActivity;
 import me.jessyan.peach.shop.category.mvp.ui.adapter.CategoryChildAdapter;
 import me.jessyan.peach.shop.category.mvp.ui.adapter.CategoryParentAdapter;
+import me.jessyan.peach.shop.entity.ExtraBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryGridBean;
 import me.jessyan.peach.shop.entity.goods.GoodsCategoryTitleBean;
 import me.jessyan.peach.shop.help.LoginHelper;
@@ -125,10 +127,14 @@ public class CategoryFragment extends BaseFragment<CategoryPresenter> implements
     private void initChildRecyclerView() {
         mRecyclerViewChild.setLayoutManager(new GridLayoutManager(getContext(), 3));
         mChildAdapter = new CategoryChildAdapter();
-        mChildAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mChildAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                // TODO: 2018/12/23 jump to CategorySubActivity
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (LoginHelper.checkLogin(getContext())) {
+                    GoodsCategoryGridBean.DataBean dataBean = mChildAdapter.getData().get(position);
+                    ExtraBean extra = dataBean.getExtra();
+                    CategorySubActivity.launcher(getContext(), dataBean.getTitle(), extra.getOneType(), extra.getTwoType());
+                }
             }
         });
         mRecyclerViewChild.setAdapter(mChildAdapter);
